@@ -1,0 +1,917 @@
+/* Content
+-----------------------------------------------------------------------------*/
+.content-title
+  text-align center
+  display flex
+  align-content center
+  align-items center
+  height 222px
+  color #fff
+  justify-content center
+  padding 44px 0 0
+  margin 0 0 36px
+  font-size 21px
+  letter-spacing 0.01em
+  background url(../../images/icons/gears-white.svg) center center no-repeat
+  background-size 1300px auto
+  background-color #eba351
+.long-title
+  background #00b8d4
+  color #fff
+  font-size 21px
+  text-align center
+  margin 20px -9999px 28px
+  padding 9px 9999px 11px
+.section
+  padding 38px 0
+  &.dark
+    .section__title,
+    .section__subtitle
+      color $clr-white
+  &__title
+    font-size 22px
+    line-height 1.4
+    text-align center
+    margin 0
+    padding 0
+    color $clr-yellow
+  &__subtitle
+    font-size 16px
+    line-height 1.4
+    text-align center
+    margin 4px 0 24px
+    padding 0
+    color $clr-yellow
+    &.light
+      color $clr-white
+.intro
+  padding 233px 0 175px
+  margin 0 0 -42px
+  min-height 622px
+  position relative
+  /*background url(../svg/intro-bottom.svg) no-repeat bottom center
+    ,linear-gradient(
+    rgba(67, 65, 74, 0.6),
+    rgba(67, 65, 74, 0.6)
+    ), url(../img/intro-bg.jpg) no-repeat center;
+  background-size 100% 150px, auto, cover;*/
+  background linear-gradient(rgba(67, 65, 74, 0.6), rgba(67, 65, 74, 0.6)), url(../../images/intro-bg.jpg) no-repeat center
+  background-size auto, cover
+  &:before
+    content ''
+    position absolute
+    bottom 0
+    left 0
+    right 0
+    width 100%
+    height 180px
+    min-width 1280px
+    background url(../../images/icons/intro-bottom.svg) no-repeat bottom center
+    background-size 100%
+  &__inner
+    max-width 500px
+  &__title
+    font-size 31px
+    color #fff
+    font-weight 300
+    margin 0
+  &__p
+    font-size 21px
+    color #eba352
+    margin 4px 0
+  &__btn
+    text-align center
+    margin 19px 0 58px
+  &__btn-video
+    font-size 14px
+    background transparent
+    border none
+    display block
+    color #fff
+    cursor pointer
+    padding 0
+    &:hover
+      i
+        left 3px
+    i
+      font-size 21px
+      vertical-align top
+      position relative
+      top -2px
+      left 0
+      margin 0 10px 0 0
+      transition all .2s
+.mission-section
+  padding-bottom 25px
+  &__title
+    color $clr-yellow
+    font-size 21px
+    margin 13px 0 17px
+    padding 0 0.8em
+  p
+    text-align justify
+    text-indent 2em
+    margin 0 0 1em
+@media (min-width 768px)
+  .mission-section
+    .cols-wrapper
+      position relative
+      .robo-wrapper
+        position absolute
+        top -30vw
+        right 0
+.quotes-section
+  min-height 302px
+  background url(../../images/icons/gears.svg) center center no-repeat
+  background-color #00b8d4
+  background-size 1300px auto
+  &:before
+    content ''
+    width 64px
+    height 46px
+    display block
+    display block
+    margin 0 auto 5px
+    background url(../../images/icons/quotes.svg) no-repeat
+.quotes-slider
+  &__slide
+    margin 0
+  &__text
+    max-width 500px
+    margin 28px auto 0
+    line-height 1.3
+    letter-spacing 0.015em
+    font-size 12px
+    color #fff
+    text-align center
+  &__author
+    display block
+    max-width 500px
+    margin 11px auto
+    line-height 1.3
+    letter-spacing 0.015em
+    font-size 14px
+    font-style normal
+    color $clr-yellow
+    text-align center
+  &__nav
+    display flex
+    justify-content center
+    padding 0
+    margin 8px 0
+    list-style none
+    li
+      margin 0 8px
+      width 46px
+      height 46px
+      overflow hidden
+      opacity 0.7
+      filter grayscale(100%)
+      &:hover
+        cursor pointer
+      &.slick-active
+        opacity 1
+        filter grayscale(0%)
+      img
+        border-radius 50%
+        display block
+.big-news
+  padding-left 15px
+  list-style none
+  @media screen and (max-width 768px)
+    display block
+  &.last
+    margin-bottom 0
+  &__item
+    position relative
+    border-radius 4px
+    overflow hidden
+    list-style none
+    margin 0 0 30px
+    &:after
+      content ''
+      position absolute
+      left 1px
+      right 14px
+      top 0
+      bottom 0
+      background #EBA352
+      opacity .6
+      border-radius 5px
+    &.blue
+      &:after
+        background #00A5B6
+      .big-news__desc:after
+        border-color #00A5B6 transparent transparent transparent
+  &__photo
+    width 100%
+    position relative
+    left -6px
+    top 2px
+    height auto
+  &__desc
+    position absolute
+    left 0
+    right 0
+    top 0
+    bottom 0
+    z-index 1
+    color #fff
+    padding 25px 20px
+    display flex
+    flex-direction column
+    &:after
+      content ''
+      display block
+      position absolute
+      left 0
+      top 0
+      width 0
+      height 0
+      border-style solid
+      border-width 240px 240px 0 0
+      border-color #EBA352 transparent transparent transparent
+      opacity .6
+      z-index -1
+    &:hover
+      cursor pointer
+      .big-news__link
+        opacity 1
+  &__title
+    font-size 14px
+    margin 0 0 7px
+    width 160px
+    a
+      color #fff
+  &__date
+    font-size 12px
+    margin 0
+    width 100px
+  &__link
+    text-align center
+    margin auto 15px 0
+    opacity 0
+    .fa
+      margin 0 5px 0 0
+  &__age
+    display block
+    margin 10px 0
+    height 42px
+    width 42px
+    border-radius 50%
+    text-align center
+    font-size 21px
+    line-height 41px
+    color #00b8d4
+    background #fff
+.ready
+  min-height 248px
+  margin 12px 0 0
+  display flex
+  align-items center
+  background url(../../images/ready_bg.jpg) center center no-repeat
+  background-size cover
+.partners-list
+  padding 0
+  text-align center
+  & .item
+    display inline-block
+    opacity 0.6
+    margin 4% 1vw
+    width 100px
+    transition all .2s
+    & a
+      display block
+      width 100%
+    &:hover
+      opacity 1
+    img
+      width 100%
+      display block
+.contacts-section
+  position relative
+  background #00b8d4
+  color #fff
+  min-height 400px
+  @media screen and (max-width 768px)
+    padding 0
+  .section__title
+    text-align left
+    @media screen and (max-width 768px)
+      text-align center
+  &__info
+    // display flex;
+    // margin-bottom 34px;
+    @media (max-width 480px)
+      font-size 3vw
+    @media (min-width 480px)
+      font-size 13px
+  &__info-item
+    margin 1em 0
+    white-space nowrap
+    // position relative;
+    // margin 11px 0;
+    // flex 1 1 50%;
+    &:last-child
+      text-align right
+    i
+      font-size 24px
+      // position absolute;
+      // left 1px;
+      // top 3px;
+    p
+      text-align left
+      display inline-block
+      padding 0
+      margin 0 0 0 0.5em
+    a
+      color inherit
+      &:hover
+        color inherit
+        text-decoration underline
+  .basic-form
+    .captcha-wrapper
+      img
+        width 100%
+    .submit-button-wrapper button
+      min-width 0
+      width 100%
+  .map-wrapper
+    position absolute
+    top 0
+    bottom 0
+    right 0
+    left 50%
+    @media screen and (max-width 767px)
+      position relative
+      height 450px
+      left 0
+      padding-top 35px
+    &:after
+      content ''
+      position absolute
+      left 0
+      top 28px
+      width 0
+      height 0
+      border-style solid
+      border-width 37px 0 37px 37px
+      border-color transparent transparent transparent #00b8d4
+      z-index 1
+      @media screen and (max-width 768px)
+        display none
+    #map
+      width 100%
+      height 100%
+.article-container
+  max-width 684px
+  margin 0 auto 30px
+  text-align justify
+  font-size 14px
+  line-height 1.4
+.article
+  p
+    font-size 14px
+    margin 10px 0 20px
+  img
+    display block
+    max-width 100%
+    height auto
+    margin 1em auto
+  h3
+    color $clr-yellow
+    font-size 16px
+    margin 20px 0 10px
+  ul
+    @extend .basic-list
+  li
+    @extend .basic-list__item
+.article-footer
+  @extend .clearfix
+  &__share
+    width 50%
+    float left
+    min-height 1px
+  &__info
+    width 50%
+    float left
+    text-align right
+  &__date
+    margin 0
+  &__author
+    margin 0
+.basic-list
+  padding 0
+  margin 0
+  list-style none
+  &__item
+    padding 0 0 0 60px
+    margin 16px 0
+.reports-list
+  padding 0
+  margin 0 0 20px -25px
+  list-style none
+  display flex
+  flex-wrap wrap
+  justify-content space-between
+  letter-spacing 0.01em
+  & li
+    margin 0.5em 0
+  &__link
+    color #009dc4
+    display block
+    padding 5px
+    &:hover
+      background #00b8d4
+      color #fff
+      .reports-list__btn
+        color #fff
+        padding 0 0 0 25px
+        &:before
+          left -3px
+  &__date
+    padding 4px 8px
+    margin 0 0 7px
+    font-size 12px
+    display inline-block
+    background #eba351
+    color #fff
+    border-radius 2px
+    border 1px solid #e79332
+  &__title
+    text-align justify
+    padding 0 0 16px
+    margin 0 0 9px
+    font-weight normal
+    font-size 22px
+    line-height 1.2
+    letter-spacing -0.01em
+    border-bottom 1px solid #eba351
+  &__btn
+    color #eba351
+    font-size 14px
+    display inline-block
+    transition all .1s
+    overflow hidden
+    &:before
+      content ''
+      display inline-block
+      width 5px
+      height 5px
+      position relative
+      left -6px
+      border 1px solid #fff
+      border-width 0 0 1px 1px
+      transform rotate(-135deg)
+      transform-origin 0
+.pager-list
+  padding 0
+  margin 0 0 40px
+  list-style none
+  font-size 16px
+  text-align center
+  &__item
+    margin 0 10px
+    display inline-block
+  &__link
+    @extend .basic-btn
+    @extend .basic-btn.yellow
+    display inline-block
+    &[disabled]
+      cursor default
+      opacity 0.5
+.section-404
+  padding 120px 0 100px
+  text-align center
+  &__title
+    font-size 100px
+    font-weight bold
+    color #eba352
+  &__info
+    margin 0 0 3em
+  &__back
+    .fa
+      margin-right 5px
+.container-fluid
+  padding 0
+@media (max-width 768px)
+  .intro
+    text-align center
+.faq-wrapper
+  .item-wrapper
+    cursor pointer
+    margin 0 0 30px 0
+    .title-wrapper span,
+    .subtitle-wrapper span
+      line-height 1.5em
+      position relative
+      padding-left 2em
+      box-decoration-break clone
+      &:before
+        content ''
+        width 0.75em
+        height 0.75em
+        margin 0.35em 0 0 -1.5em
+        position absolute
+        display inline-block
+    .title-wrapper span:before
+      background url("../../images/icons/plus-white.svg") 0 0 / 100% 100% no-repeat
+    .subtitle-wrapper span:before
+      background url("../../images/icons/plus.svg") 0 0 / 100% 100% no-repeat
+    .title-wrapper
+      .title-inner-wrapper
+        padding 0
+      .title
+        display table
+        overflow hidden
+        position relative
+        width 100%
+        border-radius 5px
+        background #00B8D4
+        padding 10px 0.75em
+        color white
+        &:before
+          content ''
+          position absolute
+          left 0
+          top 0
+          width 0.75em
+          height 100%
+          background #f89f4f
+    .subtitle-wrapper
+      display none
+      .subtitle
+        color #00B8D4
+        padding 30px 0 0 50px
+    .text-wrapper
+      display none
+      .text
+        text-align justify
+        padding 10px 0 0 100px
+.course
+  .short-desc
+    .subtitle,
+    .lesson-duration
+      color #f79f50
+    .lesson-number
+      color #00b8d5
+    .plan-wrapper
+      display block
+      margin 5px 0
+    .signinButton
+      margin 15px 0
+      text-align center
+  .gallery-preview-wrapper
+    background #f79f50
+    margin 50px 0 0 0
+    .gallery-preview
+      h3
+        color white
+      .gallery-preview-slider
+        margin 0 -5px 30px -5px
+        .slide
+          margin 0 5px
+          img
+            width 100%
+  .lessons-desc
+    margin 20px auto 30px auto
+    .lesson-desc
+      .lesson-title
+        margin 30px 0
+        color white
+        background #00b8d5
+        border-radius 0 30px 30px 0
+        position relative
+        display inline-block
+        h2
+          margin 15px 0
+          padding 0 70px 0 30px
+          display inline-block
+        img
+          position absolute
+          right 0.5%
+          top 50%
+          transform translateY(-50%)
+          height 80%
+          max-height 60px
+      .lesson-tasks
+        .task-wrapper
+          line-height 1.5em
+          display block
+          font-size 0.75em
+          .task-estimate
+            color #f79f50
+          .task-subtitle
+            font-size 1.3em
+            display block
+            color #f79f50
+            font-weight bold
+            margin 15px 0 5px 0
+      .additional-info
+        color #f79f50
+        font-size 0.75em
+        margin 15px 0
+        line-height 1.5em
+    .course-actions
+      margin-top 30px
+      .signin-button-wrapper
+        padding 0
+        .signin-button
+          text-align center
+      .socials-wrapper
+        text-align right
+        span
+          border-radius 5px
+          margin 0 2px
+        .fa
+          padding 5px
+          color white
+        .fa-facebook
+          padding 5px 9px
+          background #3e649e
+        .fa-vk
+          background #47749b
+        .fa-twitter
+          background #00baeb
+        .fa-ellipsis-h
+          background #a7a7a7
+          padding 5px 6px
+        .share-count
+          border-radius 5px
+          border 1px solid #e0e0e0
+          padding 3px
+  .see-also-header-wrapper
+    background #00b9d4
+    margin 30px 0
+    padding 0
+    .see-also-header
+      color white
+      margin 0
+      padding 15px 0
+      text-align center
+.mission
+  .title-line-wrapper
+    margin 0 0 30px
+    .title-line
+      width 60%
+      position relative
+      color white
+      display inline-block
+      h2
+        margin 15px 0
+        display inline-block
+      img
+        position absolute
+        top 50%
+        transform translateY(-50%)
+        height 80%
+        max-height 60px
+      &.title-blue
+        background #00b8d5
+      &.title-orange
+        background #f79f50
+      &.title-right
+        position relative
+        left 40%
+        border-radius 30px 0 0 30px
+        h2
+          padding 0 30px 0 70px
+        img
+          left 0.5%
+      &.title-left
+        position relative
+        border-radius 0 30px 30px 0
+        h2
+          float right
+          padding 0 70px 0 30px
+        img
+          right 0.5%
+  .articles-row
+    margin-bottom 50px
+    .column-wrapper
+      .column
+        text-align justify
+        &.right-column
+          width 65%
+          margin-left 35%
+        &.left-column
+          width 65%
+        .subtitle
+          margin 0 0 20px 0
+          color #f79f50
+        span
+          display inline-block
+          text-indent 30px
+        img
+          width 100%
+          &.image-right
+            border-radius 5px 0 0 5px
+          &.image-left
+            border-radius 0 5px 5px 0
+  .donation-wrapper
+    background #00b8d5
+    margin 0 0 50px 0
+    padding 0 0 15px 0
+    position relative
+    .donation-text-wrapper
+      color white
+      span
+        font-size 0.75em
+    .donation-form-wrapper
+      position absolute
+      height 100%
+      right 0
+      .basic-form
+        height 100%
+        display flex
+        align-items center
+        .basic-input
+          background white
+          color #00B8D5
+          &::placeholder
+            color #00b8d5
+.partners
+  .partner-wrapper
+    display flex
+    align-items stretch
+    color white
+    margin 0 0 30px 0
+    background #00b8d5
+    border-radius 5px
+    border-left solid 10px #f79f50
+    position relative
+    .partner-logo-wrapper
+      padding 0
+      background white
+      position relative
+      .partner-logo
+        position relative
+        top 50%
+        transform translateY(-50%)
+        width 100%
+    .partner-desc-wrapper
+      .partner-name
+        margin 10px 0
+      margin 0 0 10px 0
+      .partner-desc
+        font-size 0.75em
+.team
+  .team-member-wrapper
+    color white
+    margin 0 0 30px 0
+    .team-member-photo
+      width 100%
+    .person-desc-wrapper
+      position relative
+      .person-full-desc
+        width 100%
+        height 100%
+        top 0
+        opacity 0
+        position absolute
+        transition all 0.3s ease
+        display block
+        overflow hidden
+        font-size 0.75em
+        background rgba(#00b8d5, 0.75)
+        overflow hidden
+        span
+          position absolute
+          bottom 0
+          display block
+          margin 10px 10px 20px
+          vertical-align bottom
+      &:hover .person-full-desc
+        opacity 1
+    .person-short-desc
+      background #00B8D5
+      padding 0 15px
+      h3
+        margin -5px 0 0 0
+        padding 10px 0
+      .person-socials
+        .fa,
+        .fa:link,
+        .fa:visited
+          cursor pointer
+          color white
+          margin 0 15px 10px 0
+  .button-wrapper
+    text-align center
+    margin 0 0 30px 0
+.presentations
+  position relative
+  .presentation-wrapper
+    margin-bottom 30px
+    padding 15px
+    background #00B8D5
+    border-radius 5px
+    border-left 10px solid #f79f50
+    .presentation-desc-wrapper
+      color white
+      .presentation-name
+        margin 0 0 10px 0
+      .presentation-desc
+        font-size 0.75em
+    .presentation-links-wrapper
+      position absolute
+      right 15px
+      top 0
+      padding 0
+      display flex
+      height 100%
+      align-items center
+      text-align center
+      .button-wrapper
+        margin 10px 0
+        text-align center
+        display inline-block
+        .basic-btn
+          text-align center
+          .fa
+            margin-right 1em
+.gallery
+  .filter-wrapper
+    margin 0 0 30px 0
+    text-align center
+    .basic-btn
+      border-radius 0
+      background $clr-dark-yellow
+      min-width 0
+      &.active
+        background $clr-yellow
+      &:first-child
+        border-radius 3px 0 0 3px
+      &:last-child
+        border-radius 0 3px 3px 0
+.preview
+  margin 0 0 30px 0
+  .preview-wrapper
+    position relative
+    border-radius 5px
+    overflow hidden
+    .preview-img
+      width 100%
+      vertical-align top
+    .overlay
+      color white
+      position absolute
+      top 0
+      left 0
+      width 100%
+      height 100%
+      background rgba(#eba352, 0.6)
+      &:after
+        z-index 0
+        content ''
+        position absolute
+        top 0
+        left 0
+        width 0
+        height 0
+        border-style solid
+        border-width 240px 240px 0 0
+        border-color rgba(#eba352, 0.6) transparent transparent transparent
+      .overlay-content
+        z-index 1
+        padding 20px 15px 15px
+        width 100%
+        height 100%
+        position relative
+        @media (max-width 480px)
+          font-size 3vw
+        .title
+          width 80%
+          margin 0
+        .date
+          font-size 0.75em
+        .icon
+          margin 20px 0 0 0
+          font-size 3em
+          .age-icon
+            font-size 0.5em
+            display flex
+            align-items center
+            justify-content center
+            width 2em
+            height 2em
+            background white
+            color $clr-blue
+            border-radius 50%
+        .button-wrapper
+          position absolute
+          left 50%
+          opacity 0
+          bottom 15px
+          transition all 0.5s ease
+          transform translateX(-50%)
+          text-align center
+          .fa
+            margin 0 15px 0 0
+        &:hover .button-wrapper
+          opacity 1
+    &.blue
+      .overlay
+        background rgba($clr-blue, 0.6)
+        &:after
+          border-color rgba($clr-blue, 0.6) transparent transparent transparent
