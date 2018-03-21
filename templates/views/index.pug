@@ -1,23 +1,120 @@
 extends ../layouts/default
 
 block content
-	.container: .jumbotron
-		img(src='/images/logo.svg', width='160')
-		h1 Welcome
-		p This is your new <a href='http://keystonejs.com' target='_blank'>KeystoneJS</a> website.
-		p It includes the latest versions of
-			| <a href='http://getbootstrap.com/' target='_blank'>Bootstrap</a>
-			| and <a href='http://www.jquery.com/' target='_blank'>jQuery</a>.
-		p Visit the <a href='http://keystonejs.com/guide' target='_blank'>Getting Started</a> guide to learn how to customise it.
-		hr
-		if user && user.canAccessKeystone
-			p
-				a(href='/keystone').btn.btn-lg.btn-primary Open the Admin UI
-		else
-			p We have created a default Admin user for you with the email <strong>user@keystonejs.com</strong> and the password <strong>admin</strong>.
-			p
-				a(href='/keystone/signin', style='margin-right: 10px').btn.btn-lg.btn-primary Sign in
-				|  to use the Admin UI.
-		hr
-		p Remember to <a href='https://github.com/keystonejs/keystone' target='_blank'>Star KeystoneJS on GitHub</a> and
-			| <a href='https://twitter.com/keystonejs' target='_blank'>follow @keystonejs</a> on twitter for updates.
+  .preloader
+    .preloader__inner
+      .preloader__gear
+      .preloader__logo
+  .intro
+    .container
+      .col-md-6
+        h1.intro__title Lorem Ipsum is simply
+        p.intro__p Lorem Ipsum
+        a.basic-btn.red.intro__btn(href='https://docs.google.com/forms/d/e/1FAIpQLSfrSVaZQDWh3WFHDEAX_49ysAvfU5comCSM-XBJP-QZt1XWzQ/viewform') Зареєструватись
+        button.intro__btn-video(type='button')
+          i.fa.fa-play-circle(aria-hidden='true')
+          |  Дивитись відео
+  main.content
+    section.section.mission-section
+      .container
+        .row
+          h3.mission-section__title Місія
+        .row.cols-wrapper
+          .col-xs-6.col-sm-4
+            p
+              | Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+          .col-xs-6.col-sm-4
+            p
+              | Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+          .col-xs-offset-4.col-xs-4.robo-wrapper
+            img(src='./images/icons/robo.svg', alt='RoboClub IF')
+    section.section.quotes-section
+      .container
+        .quotes-slider
+          blockquote.quotes-slider__slide
+            p.quotes-slider__text
+              | Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+            cite.quotes-slider__author John Doe
+            img.quotes-slider__photo(src='./images/faces_1.png', height='46', width='46', alt='', title='')
+          blockquote.quotes-slider__slide
+            p.quotes-slider__text
+              | 2/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+            cite.quotes-slider__author John Doe
+            img.quotes-slider__photo(src='./images/faces_2.png', height='46', width='46', alt='', title='')
+          blockquote.quotes-slider__slide
+            p.quotes-slider__text
+              | 3/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+            cite.quotes-slider__author John Doe
+            img.quotes-slider__photo(src='./images/faces_3.png', height='46', width='46', alt='', title='')
+          blockquote.quotes-slider__slide
+            p.quotes-slider__text
+              | 4/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+            cite.quotes-slider__author John Doe
+            img.quotes-slider__photo(src='./images/faces_4.png', height='46', width='46', alt='', title='')
+          blockquote.quotes-slider__slide
+            p.quotes-slider__text
+              | 5/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+            cite.quotes-slider__author John Doe
+            img.quotes-slider__photo(src='./images/faces_5.png', height='46', width='46', alt='', title='')
+    section.section
+      .container
+        h2.section__title Останні новини
+        br
+        .row
+          //- +preview({
+          //-   title: 'Lorem ipsum dolor sit amet',
+          //-   date: '20 січня 2017',
+          //-   link: './article.html',
+          //-   bgSRC: './images/news_1.jpg',
+          //- })
+          //- +preview({
+          //-   title: 'Lorem ipsum dolor sit amet',
+          //-   date: '20 січня 2017',
+          //-   link: './article.html',
+          //-   bgSRC: './images/news_2.jpg',
+          //-   blue: true,
+          //- })
+          //- +preview({
+          //-   title: 'Lorem ipsum dolor sit amet',
+          //-   date: '20 січня 2017',
+          //-   link: './article.html',
+          //-   bgSRC: './images/news_3.jpg',
+          //- })
+          //- +preview({
+          //-   title: 'Lorem ipsum dolor sit amet',
+          //-   date: '20 січня 2017',
+          //-   link: './article.html',
+          //-   bgSRC: './images/news_4.jpg',
+          //-   blue: true,
+          //- })
+        a(href='/news.html')
+          button.basic-btn.yellow.centered(type='button') Всі новини
+    section.section.ready.dark
+      .container
+        h2.section__title Готові розпочати?
+        h3.section__subtitle Lorem Ipsum is simply dummy text of the printing and typesetting industry
+        a.basic-btn.yellow.centered(href='https://docs.google.com/forms/d/e/1FAIpQLSfrSVaZQDWh3WFHDEAX_49ysAvfU5comCSM-XBJP-QZt1XWzQ/viewform') Зареєструватись
+    section.section.partners.container
+      h2.section__title Наші партнери
+      .partners-list
+        .item
+          a(href='#')
+            img(src='./images/icons/partners_1.jpg')
+        .item
+          a(href='#')
+            img(src='./images/icons/partners_2.jpg')
+        .item
+          a(href='#')
+            img(src='./images/icons/partners_3.jpg')
+        .item
+          a(href='#')
+            img(src='./images/icons/partners_4.jpg')
+        .item
+          a(href='#')
+            img(src='./images/icons/partners_5.jpg')
+        .item
+          a(href='#')
+            img(src='./images/icons/partners_6.jpg')
+        .item
+          a(href='#')
+            img(src='./images/icons/partners_7.jpg')

@@ -13,7 +13,7 @@ keystone.init({
 	'name': 'RoboClubIF',
 	'brand': 'RoboClubIF',
 
-	'stylus': 'public',
+	'sass': 'public',
 	'static': 'public',
 	'favicon': 'public/favicon.ico',
 	'views': 'templates/views',

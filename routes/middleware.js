@@ -19,10 +19,21 @@ var _ = require('lodash');
 */
 exports.initLocals = function (req, res, next) {
 	res.locals.navLinks = [
-		{ label: 'Home', key: 'home', href: '/' },
-		{ label: 'Blog', key: 'blog', href: '/blog' },
-		{ label: 'Gallery', key: 'gallery', href: '/gallery' },
-		{ label: 'Contact', key: 'contact', href: '/contact' },
+		{ label: 'Головна', key: 'home', href: '/' },
+		{ label: 'Про нас', key: 'about', href: '/team', pages: [
+			{ label: 'Команда', key: 'team', href: '/team' },
+			{ label: 'Місія', key: 'mission', href: '/misson' },
+			{ label: 'Презентації', key: 'presentations', href: '/presentations' },
+			{ label: 'Партнери', key: 'partners', href: '/partners' },
+			{ label: 'Відгуки', key: 'feedback', href: '/feedback' },
+			{ label: 'FAQ', key: 'faq', href: '/faq' },
+		]},
+		{ label: 'Курси', key: 'courses', href: 'courses', pages: [
+			{ label: 'Lego Mindstorm', key: 'course', href: '/course' },
+		]},
+		{ label: 'Новини', key: 'news', href: '/news'},
+		{ label: 'Галерея', key: 'gallery', href: '/gallery'},
+		{ label: 'Контакти', key: '', href: '#'},
 	];
 	res.locals.user = req.user;
 	next();

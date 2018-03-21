@@ -4,34 +4,14 @@ header.row.header.inner
       a.logo__link(href='/')
   nav.col-sm-9.col-md-7.hidden-xs.main-nav
     ul.main-menu
-      li.main-menu__item(class= section === 'index' ? 'active' : '')
-        a.main-menu__link(href='/') Головна
-      li.main-menu__item.has-sub(class= section === 'about' ? 'active' : '')
-        a.main-menu__link(href='/team.html') Про нас
-        ul.sub-menu
-          li.sub-menu__item
-            a.sub-menu__link(href='/team.html') Команда
-          li.sub-menu__item
-            a.sub-menu__link(href='/mission.html') Місія
-          li.sub-menu__item
-            a.sub-menu__link(href='/presentations.html') Презентації
-          li.sub-menu__item
-            a.sub-menu__link(href='/partners.html') Партнери
-          li.sub-menu__item
-            a.sub-menu__link(href='/feedback.html') Відгуки
-          li.sub-menu__item
-            a.sub-menu__link(href='/faq.html') FAQ
-      li.main-menu__item.has-sub(class= section === 'courses' ? 'active' : '')
-        a.main-menu__link(href='/courses.html') Курси
-        ul.sub-menu
-          li.sub-menu__item
-            a.sub-menu__link(href='/course.html') Lego Mindstorm
-      li.main-menu__item(class= section === 'news' ? 'active' : '')
-        a.main-menu__link(href='/news.html') Новини
-      li.main-menu__item(class= section === 'gallery' ? 'active' : '')
-        a.main-menu__link(href='/gallery.html') Галерея
-      li.main-menu__item(class= section === 'contacts' ? 'active' : '')
-        a(href='#').main-menu__link.goto-contacts Контакти
+      each link in navLinks
+        li.main-menu__item(class=(section == link.key ? 'active' : null), class=(link.pages ? 'has-sub' : null), data-navlink-key=link.key)
+          a.main-menu__link(href=link.href)= link.label
+          if(link.pages)
+            ul.sub-menu
+              each sublink in link.pages
+                li.sub-menu__item
+                  a.sub-menu__link(href=sublink.href)= sublink.label
     ul.main-socials
       li.main-socials__item
         a.main-socials__link(href='https://www.facebook.com/RoboclubIF/')
@@ -39,36 +19,16 @@ header.row.header.inner
       li.main-socials__item
         a.main-socials__link(href='https://www.instagram.com/roboclubif/')
           i.fa.fa-instagram(aria-hidden='true')
+
 .fat-nav
   ul
-    li.fat-nav-item(class= section === 'index' ? 'active' : '')
-      a(href='/') Головна
-    li.fat-nav-item(class= section === 'about' ? 'active' : '')
-      a(href='/') Про нас
-      ul
-        li
-          a(href='/team.html') Команда
-        li
-          a(href='/mission.html') Місія
-        li
-          a(href='/presentations.html') Презентації
-        li
-          a(href='/partners.html') Партнери
-        li
-          a(href='/feedback.html') Відгуки
-        li
-          a(href='/faq.html') FAQ
-    li.fat-nav-item(class= section === 'courses' ? 'active' : '')
-      a(href='/courses.html') Курси
-      ul
-        li
-          a(href='/course.html') Lego Mindstorm
-    li.fat-nav-item(class= section === 'news' ? 'active' : '')
-      a(href='/news.html') Новини
-    li.fat-nav-item(class= section === 'gallery' ? 'active' : '')
-      a(href='/gallery.html') Галерея
-    li.fat-nav-item(class= section === 'contacts' ? 'active' : '')
-      a.goto-contacts Контакти
+    each link in navLinks
+      li.fat-nav-item(class=(section == link.key ? 'active' : null))
+        a(href=link.href)= link.label
+        if(link.pages)
+          ul
+            each sublink in link.pages
+              li: a(href=sublink.href)= sublink.label
   ul
     li.social-icons-wrapper
       a.social-icon(href='https://www.facebook.com/RoboclubIF/')
