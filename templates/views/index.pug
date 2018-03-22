@@ -1,7 +1,12 @@
 extends ../layouts/default
 
+mixin quote(author, text, avatar)
+  blockquote.quotes-slider__slide!= text
+    cite.quotes-slider__author=author
+    img.quotes-slider__photo(src='/images/quoteAuthors/'+avatar.filename, height='46', width='46', alt='', title='')
+
 block content
-  .preloader
+  //- .preloader
     .preloader__inner
       .preloader__gear
       .preloader__logo
@@ -27,35 +32,12 @@ block content
             p
               | Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
           .col-xs-offset-4.col-xs-4.robo-wrapper
-            img(src='./images/icons/robo.svg', alt='RoboClub IF')
+            img(src='/images/icons/robo.svg', alt='RoboClub IF')
     section.section.quotes-section
       .container
         .quotes-slider
-          blockquote.quotes-slider__slide
-            p.quotes-slider__text
-              | Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-            cite.quotes-slider__author John Doe
-            img.quotes-slider__photo(src='./images/faces_1.png', height='46', width='46', alt='', title='')
-          blockquote.quotes-slider__slide
-            p.quotes-slider__text
-              | 2/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-            cite.quotes-slider__author John Doe
-            img.quotes-slider__photo(src='./images/faces_2.png', height='46', width='46', alt='', title='')
-          blockquote.quotes-slider__slide
-            p.quotes-slider__text
-              | 3/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-            cite.quotes-slider__author John Doe
-            img.quotes-slider__photo(src='./images/faces_3.png', height='46', width='46', alt='', title='')
-          blockquote.quotes-slider__slide
-            p.quotes-slider__text
-              | 4/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-            cite.quotes-slider__author John Doe
-            img.quotes-slider__photo(src='./images/faces_4.png', height='46', width='46', alt='', title='')
-          blockquote.quotes-slider__slide
-            p.quotes-slider__text
-              | 5/Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-            cite.quotes-slider__author John Doe
-            img.quotes-slider__photo(src='./images/faces_5.png', height='46', width='46', alt='', title='')
+          each quote in quotes
+            +quote(quote.author, quote.text, quote.authorAvatar)
     section.section
       .container
         h2.section__title Останні новини

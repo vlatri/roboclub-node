@@ -9,6 +9,8 @@ exports = module.exports = function (req, res) {
 	// item in the header navigation.
 	locals.section = 'home';
 
+  view.query('quotes', keystone.list('Quote').model.find());
+
 	// Render the view
 	view.render('index');
 };
