@@ -3,7 +3,7 @@ extends ../layouts/default
 mixin quote(author, text, avatar)
   blockquote.quotes-slider__slide!= text
     cite.quotes-slider__author=author
-    img.quotes-slider__photo(src='/images/quoteAuthors/'+avatar.filename, height='46', width='46', alt='', title='')
+    img.quotes-slider__photo(src=avatar.url, height='46', width='46', alt='', title='')
 
 block content
   //- .preloader
