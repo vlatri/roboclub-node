@@ -31,7 +31,7 @@ exports.initLocals = function (req, res, next) {
 		{ label: 'Курси', key: 'courses', href: 'courses', pages: [
 			{ label: 'Lego Mindstorm', key: 'course', href: '/course' },
 		]},
-		{ label: 'Новини', key: 'news', href: '/news'},
+		{ label: 'Новини', key: 'posts', href: '/posts'},
 		{ label: 'Галерея', key: 'gallery', href: '/gallery'},
 		{ label: 'Контакти', key: '', href: '#'},
 	];

@@ -33,7 +33,7 @@ section.section.contacts-section.dark.row
             textarea.basic-textarea(placeholder='Повідомлення')
           .row
             .col-xs-6.captcha-wrapper
-              img(src='images/reCaptcha.png')
+              img(src='/images/reCaptcha.png')
             .col-xs-6.submit-button-wrapper
               button.basic-form__submit.basic-btn.yellow(type='submit') Надіслати
   .col-sm-6.map-wrapper
@@ -51,7 +51,7 @@ section.section.contacts-section.dark.row
           position: new google.maps.LatLng(48.9228708, 24.701702100000034),
           map: map,
           title: 'Робоклуб',
-          icon: './images/icons/marker.svg'
+          icon: '/images/icons/marker.svg'
         });
       }
     script(async='', defer, src='https://maps.googleapis.com/maps/api/js?key=AIzaSyA-ZEocFpuybFyJZg92LhWsvIJdo56S34s&callback=initMap&language=uk&region=UA"')

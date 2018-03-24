@@ -1,21 +1,13 @@
 import keystone from 'keystone'
 import gm from 'gm'
 
+import { configStorage } from '../utils/'
+
 
 const { Types } = keystone.Field
 const im = gm.subClass({imageMagick: true})
 
-const storage = new keystone.Storage({
-  adapter: keystone.Storage.Adapters.FS,
-  fs: {
-    path: 'public/images/quotesAuthors/',
-    publicPath: '/images/quotesAuthors/',
-  },
-  schema: {
-    path: true,
-    url: true,
-  }
-})
+const storage = configStorage('/images/quotesAuthors/')
 
 const Quote = new keystone.List('Quote', {
   map: {name: 'author'},
@@ -27,8 +19,8 @@ Quote.add({
   author: {type: String, required: true},
   text: {type: Types.Html, wysiwyg: true, height: 300},
   authorAvatar: {
-    // For some reason it can't be required in Schema naturally.
-    // For further details: https://github.com/keystonejs/keystone/issues/4575
+    // For some reason it can't be required in Schema.
+    // For further details see https://github.com/keystonejs/keystone/issues/4575
     type: Types.File,
     storage,
     note: 'Will be resized to 64x64',
@@ -38,7 +30,7 @@ Quote.add({
 Quote.schema.pre('validate', function(next) {
   const { path, filename } = this.authorAvatar
 
-  const url = path+filename
+  const url = path + filename
   if(!url) {
     // Either new Quote is being created or no image was specified,
     // set the fallback one and omit it's resizing.
@@ -51,7 +43,9 @@ Quote.schema.pre('validate', function(next) {
 })
 
 // TODO: Check for obsolete files and delete those.
-
+Quote.schema.pre('remove', function(next) {
+  storage.removeFile(this.authorAvatar, next)
+})
 
 Quote.defaultColumns = 'author|20%, text'
 
