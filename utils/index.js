@@ -18,5 +18,4 @@ export const validateMimeType = (file, desiredType, cb) => {
     storage.removeFile(file, err => err && cb(err))
     return cb(new Error(`File #${i} is not an image!`))
   }
-  cb()
 }

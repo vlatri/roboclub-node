@@ -10200,9 +10200,19 @@ input[type="reset"]:focus {
   color: white;
   margin: 0 0 30px 0; }
   .team .team-member-wrapper .team-member-photo {
-    width: 100%; }
+    width: 100%;
+    min-height: 100%;
+    position: absolute; }
   .team .team-member-wrapper .person-desc-wrapper {
-    position: relative; }
+    position: relative;
+    width: 100%;
+    float: left; }
+    .team .team-member-wrapper .person-desc-wrapper .member-photo-wrapper {
+      overflow-y: hidden; }
+      .team .team-member-wrapper .person-desc-wrapper .member-photo-wrapper:before {
+        content: '';
+        display: inline-block;
+        padding-top: 100%; }
     .team .team-member-wrapper .person-desc-wrapper .person-full-desc {
       width: 100%;
       height: 100%;
@@ -10212,7 +10222,7 @@ input[type="reset"]:focus {
       transition: all 0.3s ease;
       display: block;
       overflow: hidden;
-      font-size: 0.75em;
+      font-size: 0.8em;
       background: rgba(0, 184, 213, 0.75);
       overflow: hidden; }
       .team .team-member-wrapper .person-desc-wrapper .person-full-desc span {
@@ -10225,16 +10235,25 @@ input[type="reset"]:focus {
       opacity: 1; }
   .team .team-member-wrapper .person-short-desc {
     background: #00B8D5;
-    padding: 0 15px; }
+    position: relative;
+    padding: 0 15px;
+    display: inline-block;
+    width: 100%; }
     .team .team-member-wrapper .person-short-desc h3 {
+      display: inline-block;
       margin: -5px 0 0 0;
       padding: 10px 0; }
     .team .team-member-wrapper .person-short-desc .person-socials .fa,
     .team .team-member-wrapper .person-short-desc .person-socials .fa:link,
     .team .team-member-wrapper .person-short-desc .person-socials .fa:visited {
+      text-align: center;
+      padding: 5px 5px;
+      border-radius: 3px;
       cursor: pointer;
       color: white;
       margin: 0 15px 10px 0; }
+    .team .team-member-wrapper .person-short-desc .person-socials .fa:hover {
+      background: #f89f4f; }
 
 .team .button-wrapper {
   text-align: center;
@@ -10293,6 +10312,11 @@ input[type="reset"]:focus {
     height: 100%;
     border-radius: 5px;
     overflow: hidden; }
+    .preview .preview-wrapper:before {
+      content: '';
+      float: left;
+      display: block;
+      padding-top: 100%; }
     .preview .preview-wrapper .preview-img {
       margin: 0 50%;
       transform: translate(-50%, 0);

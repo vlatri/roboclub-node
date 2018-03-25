@@ -1,6 +1,10 @@
 extends ../../layouts/default
 
 block content
-	.container
-		h1 Error (500)
-		p.lead Sorry, the site has encountered an error.
+  section.row.section-404
+    .col-sm-12
+      h2.section-404__title 500
+      p.section-404__info Вибачте, на сервері сталася помилка :(
+      a.section-404__back.basic-btn.red.large(href='/')
+        i.fa.fa-angle-left(aria-hidden='true')
+        |  Повернутися на головну

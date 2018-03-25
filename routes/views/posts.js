@@ -11,9 +11,6 @@ exports = module.exports = function (req, res) {
 
   // Set locals
   locals.section = 'posts'
-  locals.filters = {
-    post: req.params.post,
-  }
   locals.data = {
     posts: [],
   }
@@ -22,34 +19,21 @@ exports = module.exports = function (req, res) {
     publishedDate: moment(post.publishedDate).format(format)
   })
 
-  // Load the current post
+  // Load posts
   view.on('init', function (next) {
-    const q = keystone.list('Post').model.findOne({
-      state: 'published',
-      slug: locals.filters.post,
-    })
-
-    q.exec(function (err, result) {
-      locals.data.post = result ? getFormattedPublishedDate(result, 'DD/MM/YYYY') : res.redirect('/404')
-      next(err)
-    })
-
-  })
-
-  // Load other posts
-  view.on('init', function (next) {
-
-    const q = keystone.list('Post').model.find({slug: {$ne: req.params.post}}).where('state', 'published').select({
+    // *** ATTENTION! ***
+    // No pagination is used here, template uses lazyload provided by slick.js.
+    const q = keystone.list('Post').model.find().where('state', 'published').select({
       heading: 1,
       briefDescription: 1,
       heroImage: 1,
       publishedDate: 1,
       slug: 1,
-    }).sort('-publishedDate').limit(4)
+    }).sort('-publishedDate')
 
     q.exec(function (err, results) {
       results.map((post, i) =>
-        locals.data.posts[i] = results ? getFormattedPublishedDate(post, 'DD/MM/YYYY') : null
+        locals.data.posts[i] = getFormattedPublishedDate(post, 'DD/MM/YYYY')
       )
       next(err)
     })
@@ -57,5 +41,5 @@ exports = module.exports = function (req, res) {
   })
 
   // Render the view
-  view.render('post')
+  view.render('posts')
 }

@@ -1,14 +1,12 @@
 extends ../layouts/default
 
 block content
-  script.
-    console.log(!{JSON.stringify(data)})
   main.content
     h2.content-title= data.post.heading
     .container
       .article-container
         article.article
-          if data.post.coverImage.url
+          if data.post.coverImage && data.post.coverImage.url
             img(src=data.post.coverImage.url, alt='cover')
           -const { content } = data.post
           -for(let i=0; i<=content.sectionsCount; i++) {
@@ -30,7 +28,7 @@ block content
         each post in data.posts
           +preview({
             title: post.briefDescription,
-            bgSRC: post.coverImage && post.coverImage.url,
+            bgSRC: post.heroImage && post.heroImage.url,
             date: post.publishedDate,
             link: `/post/${post.slug}`,
             stripy: 'orange',

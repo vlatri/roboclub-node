@@ -111,6 +111,7 @@ $(document).ready(function() {
   $('.slick-news-slider').slick({
     lazyLoad: 'progressive',
     draggable: false,
+    infinite: true,
     prevArrow: '.slick-news-slider-prev',
     nextArrow: '.slick-news-slider-next',
   })

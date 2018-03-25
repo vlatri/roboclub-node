@@ -51,22 +51,21 @@ const validateBriefDescLength = (text, max, cb) =>
 
 
 Post.schema.pre('validate', function(next) {
-  if(!this.heroImage) {
-    // Either new Post is being created or no hero image was specified,
-    // set the fallback one.
-    this.heroImage = {url: '/images/fallbacks/heroNews.png', mimetype: 'image/png'}
-  }
+  const { coverImage, content, briefDescription } = this
+  let { heroImage } = this
 
-  validateBriefDescLength(this.briefDescription, this.const, next)
-  getSpecificFields(this.content, 'image')
-    .map(field => validateMimeType(field, 'image', next))
+  const imageFields = [ heroImage, coverImage, getSpecificFields(content, 'image')]
+  heroImage = heroImage || {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'}
+
+  validateBriefDescLength(briefDescription, maxBriefDescriptionLength, next)
+  imageFields.map(field => validateMimeType(field, 'image', next))
+
+  next()
 })
 
 Post.schema.pre('remove', function(next) {
-  const removeFileByField = field => field && storage.removeFile(field, next)
-
-  getSpecificFields(this.content, 'image').map(removeFileByField)
-  [this.heroImage, this.coverImage].map(removeFileByField)
+  const imageFields = [this.heroImage, this.coverImage, getSpecificFields(this.content, 'image')]
+  imageFields.map(field => field && storage.removeFile(field, next))
 })
 
 Post.defaultColumns = 'heading, author|10%, state|10%, publishedDate|15%'

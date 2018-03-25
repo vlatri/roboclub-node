@@ -1,0 +1,13 @@
+mixin teamMember(name, desc, photoSRC, socials)
+  .col-xs-6.col-sm-4.col-md-3.team-member-wrapper
+    .person-desc-wrapper
+      .member-photo-wrapper
+        img.team-member-photo(src=photoSRC, alt=name)
+      .person-full-desc
+        span!=desc
+    .person-short-desc
+      h3= name
+      .person-socials
+        each social in socials
+          if social.link
+            a.fa(href=social.link,class='fa-'+social.name)

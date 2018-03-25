@@ -1,0 +1,17 @@
+extends ../layouts/default
+
+
+block content
+  script.
+    console.log(!{JSON.stringify(team)})
+  main.content.team
+    h2.content-title Наша команда
+    .container
+      .row
+        each member in team
+          +teamMember(member.person, member.bio, member.avatar.url, [
+            {name: 'facebook', link: member.facebookLink},
+            {name: 'instagram', link: member.instagram}
+          ])
+    .row.button-wrapper
+      a(href='https://www.facebook.com/RoboclubIF/').basic-btn.yellow Стати членом команди
