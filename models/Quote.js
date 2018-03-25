@@ -34,7 +34,7 @@ Quote.schema.pre('validate', function(next) {
   if(!url) {
     // Either new Quote is being created or no image was specified,
     // set the fallback one and omit it's resizing.
-    this.authorAvatar = {url: '/images/fallbacks/quotesAuthors.png'}
+    this.authorAvatar = {url: '/images/fallbacks/quotesAuthors.png', mimetype: 'image/png'}
     return next()
   }
   im(url)

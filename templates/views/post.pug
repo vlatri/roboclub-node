@@ -1,7 +1,38 @@
 extends ../layouts/default
 
 block content
+  script.
+    console.log(!{JSON.stringify(data)})
   main.content
-    =data
-    script.
-      console.log(!{JSON.stringify(data)})
+    h2.content-title= data.post.heading
+    .container
+      .article-container
+        article.article
+          if data.post.coverImage.url
+            img(src=data.post.coverImage.url, alt='cover')
+          -const { content } = data.post
+          -for(let i=0; i<=content.sectionsCount; i++) {
+            if content[`${i}_subtitle`]
+              h3!=content[`${i}_subtitle`]
+            if content[`${i}_text`]
+              p!=content[`${i}_text`]
+            if content[`${i}_image`] && content[`${i}_image`].url
+              img(src=content[`${i}_image`].url, alt='Image')
+          -}
+        footer.article-footer
+          .article-footer__share
+          .article-footer__info
+            if(data.post.publishedDate)
+              p.article-footer__date= data.post.publishedDate
+            p.article-footer__author= data.post.author
+      h3.long-title Читайте також
+      .see-also-container
+        each post in data.posts
+          +preview({
+            title: post.briefDescription,
+            bgSRC: post.coverImage && post.coverImage.url,
+            date: post.publishedDate,
+            link: `/post/${post.slug}`,
+            stripy: 'orange',
+          })
+        .clearfix

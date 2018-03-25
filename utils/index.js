@@ -11,3 +11,12 @@ export const configStorage = path => new keystone.Storage({
     url: true,
   }
 })
+
+export const validateMimeType = (file, desiredType, cb) => {
+  const { mimetype } = file
+  if(mimetype && !~mimetype.indexOf(desiredType)) {
+    storage.removeFile(file, err => err && cb(err))
+    return cb(new Error(`File #${i} is not an image!`))
+  }
+  cb()
+}

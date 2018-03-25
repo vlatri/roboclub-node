@@ -1,46 +1,61 @@
-var keystone = require('keystone')
+import keystone from 'keystone'
+import moment from 'moment'
+
+
+moment.locale('uk')
 
 exports = module.exports = function (req, res) {
 
-	var view = new keystone.View(req, res)
-	var locals = res.locals
+  const view = new keystone.View(req, res)
+  const locals = res.locals
 
-	// Set locals
-	locals.section = 'post'
-	locals.filters = {
-		post: req.params.post,
-	}
-	locals.data = {
-		posts: [],
-	}
+  // Set locals
+  locals.section = 'post'
+  locals.filters = {
+    post: req.params.post,
+  }
+  locals.data = {
+    posts: [],
+  }
 
-	// Load the current post
-	view.on('init', function (next) {
+  const getFormattedPublishedDate = (post, format) => Object.assign({}, post.toObject(), {
+    publishedDate: moment(post.publishedDate).format(format)
+  })
 
-		var q = keystone.list('Post').model.findOne({
-			state: 'published',
-			slug: locals.filters.post,
-		}).populate('author categories')
+  // Load the current post
+  view.on('init', function (next) {
+    const q = keystone.list('Post').model.findOne({
+      state: 'published',
+      slug: locals.filters.post,
+    })
 
-		q.exec(function (err, result) {
-			locals.data.post = result
-			next(err)
-		})
+    q.exec(function (err, result) {
+      locals.data.post = getFormattedPublishedDate(result, 'DD/MM/YYYY')
+      next(err)
+    })
 
-	})
+  })
 
-	// Load other posts
-	view.on('init', function (next) {
+  // Load other posts
+  view.on('init', function (next) {
 
-		var q = keystone.list('Post').model.find().where('state', 'published').sort('-publishedDate').populate('author').limit('4')
+    const q = keystone.list('Post').model.find({slug: {$ne: req.params.post}}).where('state', 'published').select({
+      heading: 1,
+      briefDescription: 1,
+      coverImage: 1,
+      publishedDate: 1,
+      slug: 1,
+    }).sort('-publishedDate').limit(4)
 
-		q.exec(function (err, results) {
-			locals.data.posts = results
-			next(err)
-		})
+    q.exec(function (err, results) {
+      results.map((post, i) =>
+        locals.data.posts[i] = getFormattedPublishedDate(post, 'DD/MM/YYYY')
+      )
+      next(err)
+    })
 
-	})
+  })
 
-	// Render the view
-	view.render('post')
+  // Render the view
+  view.render('post')
 }

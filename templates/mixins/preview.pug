@@ -3,11 +3,6 @@
 mixin preview(config)
   -config.sizes = config.sizes || {xs: 6, sm: 4, md: 3};
 
-  if config.gallery
-    if stripeConfig.index >= stripeConfig.resetStripesEvery
-      -stripeConfig.index = (stripeConfig.rowIndex++ % 2) ? 1 : 0;
-    -config.blue = (stripeConfig.index++ % 2) ? true : false;
-
   if config.attrs && config.attrs['data-type'] == 'photo'
     -config.icon = 'fa fa-camera';
 
@@ -16,9 +11,20 @@ mixin preview(config)
 
   -var buttonAttrs = {};
   if config.gallery
+    -config.stripy = 'blue'
     -buttonAttrs.class = 'swipebox'
     -buttonAttrs.rel = 'gallery'
 
+  if config.stripy
+    if stripeConfig.index >= stripeConfig.resetStripesEvery
+      -stripeConfig.index = (stripeConfig.rowIndex++ % 2) ? 1 : 0;
+    -config.blue = (stripeConfig.index++ % 2) ? true : false;
+    if config.stripy === 'orange'
+      -config.blue = !config.blue
+
+
+  if !config.bgSRC
+    -config.bgSRC = '/images/fallbacks/newsCover.jpg'
 
   .preview(
     class=config.sizes.xs ? 'col-xs-' + config.sizes.xs : '',

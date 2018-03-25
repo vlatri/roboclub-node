@@ -9831,6 +9831,10 @@ input[type="reset"]:focus {
 .article-footer__author {
   margin: 0; }
 
+.see-also-container {
+  display: flex;
+  justify-content: center; }
+
 .basic-list, .article ul {
   padding: 0;
   margin: 0;
@@ -10286,10 +10290,14 @@ input[type="reset"]:focus {
   margin: 0 0 30px 0; }
   .preview .preview-wrapper {
     position: relative;
+    height: 100%;
     border-radius: 5px;
     overflow: hidden; }
     .preview .preview-wrapper .preview-img {
-      width: 100%;
+      margin: 0 50%;
+      transform: translate(-50%, 0);
+      height: 100%;
+      min-width: 100%;
       vertical-align: top; }
     .preview .preview-wrapper .overlay {
       color: white;
