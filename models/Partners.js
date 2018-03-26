@@ -17,6 +17,7 @@ Partner.add({
   title: {type: String},
   text: {type: Types.Html, wysiwyg: true},
   image: {type: Types.File, storage},
+  link: {type: Types.Url},
 })
 
 

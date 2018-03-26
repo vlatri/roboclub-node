@@ -20,12 +20,12 @@ exports = module.exports = function (req, res) {
         })
       )
 
-      keystone.list('Donation').model.find().limit(1).exec(function(err, result) {
-        locals.donation = result[0]
-        next(err)
-      })
+      next(err)
     })
   })
+
+  view.query('donation', keystone.list('Donation').model.findOne())
+
 
   // Render the view
   view.render('mission')
