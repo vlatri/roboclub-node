@@ -1011,6 +1011,10 @@
         .subtitle {
           margin: 0 0 20px 0;
           color: #f79f50;
+          &.unselectable:before {
+            display: inline-block;
+            content: '';
+          }
         }
         span {
           display: inline-block;

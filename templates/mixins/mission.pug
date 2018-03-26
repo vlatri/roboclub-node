@@ -1,18 +1,24 @@
+mixin imageContainer(config)
+  .col-md-4.column-wrapper
+    .column
+      img(class= config.imagePosition ? 'image-right' : 'image-left', src= config.image && config.image.url, alt='Cover image')
+
 mixin mission(config)
-  .container-fluid
+  if config.showTitle
     .title-line-wrapper
-      .title-line.title-right.title-blue
-        img(src='./images/icons/logo-gear.svg', alt='')
-        h2 Соціальне навантаження
-    .row.articles-row
-      .col-md-4.column-wrapper
-        .column.right-column
-          h3.subtitle Codeclub
-          span Proident incididunt incididunt ex anim quis deserunt consectetur consequat laboris minim sunt amet cillum qui nisi id amet tempor culpa excepteur id dolore dolore nulla pariatur qui veniam officia consequat labore tempor amet ea duis dolore nulla dolor amet irure qui deserunt ut tempor elit ullamco deserunt elit irure non aliquip magna proident culpa quis nulla magna est esse ad deserunt adipisicing aliqua proident eu ut dolor anim aute eu esse in do officia ex adipisicing adipisicing consequat sed veniam non incididunt qui consequat sunt laboris culpa culpa irure eiusmod culpa nostrud ut voluptate qui elit consequat sit est laborum est sun.
-      .col-md-4.column-wrapper
-        .column
-          h3.subtitle &nbsp;
-          span Ad quis aliqua fugiat quis officia minim do commodo in ut cillum quis dolore velit sint ad incididunt dolor eu deserunt duis in nulla aute ullamco laborum commodo fugiat et labore occaecat nulla sunt tempor sunt ut sint culpa ut ad exercitation nostrud adipisicing est exercitation irure fugiat ut ut esse do eiusmod dolore culpa consequat ex in qui commodo commodo pariatur veniam anim nisi in nisi laborum laboris adipisicing cillum in ad nulla sed elit in excepteur pariatur fugiat in dolor dolore sunt cupidatat velit consectetur aute minim consequat enim laboris culpa sunt id magna esse consequat voluptate mollit incididunt tempor ea dolor excepteur mollit reprehenderit dolore irure dolore ut mollit anim elit cupidatat consequat esse occaecat et quis in eu pariatur nisi et in irure quis anim aute minim cillum tempor ut magna reprehenderit labore sit occaecat elit culpa ex cupidatat mollit ut quis dolor sed exercitation ad qui nostrud.
-      .col-md-4.column-wrapper
-        .column
-          img.image-right(src='./images/intro-bg.jpg', alt='Image')
+      .title-line(class= config.titlePosition ? 'title-right title-blue' : 'title-left title-orange')
+        img(src= config.titlePosition ? '/images/icons/logo-gear.svg' : '/images/icons/blue-gear.svg', alt='')
+        h2!=config.title
+  .row.articles-row
+    if !config.imagePosition
+      +imageContainer(config)
+    .col-md-4.column-wrapper
+      .column(class= config.imagePosition && 'right-column')
+        h3.subtitle!= config.subtitle
+        span!= config.leftColumn
+    .col-md-4.column-wrapper
+      .column(class= !config.imagePosition && 'left-column')
+        h3.subtitle.unselectable
+        span!= config.rightColumn
+    if config.imagePosition
+      +imageContainer(config)

@@ -1,0 +1,15 @@
+mixin donation(config)
+  .container
+    .row.donation-wrapper
+      .col-sm-6.donation-text-wrapper
+        h2= config.title
+        span!=config.text
+      .col-sm-6.donation-form-wrapper
+        form.basic-form
+          .basic-form__line
+            .basic-form__col
+              input.basic-input(placeholder='Ім\'я', type='text')
+            .basic-form__col
+              input.basic-input(placeholder='Сума', type='number')
+            .basic-form__col
+              button.basic-btn.yellow Пожертвувати

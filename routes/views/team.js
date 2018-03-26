@@ -1,5 +1,8 @@
 import keystone from 'keystone'
 
+import { ensureImageHasUrl } from '../../utils/'
+
+
 exports = module.exports = function (req, res) {
 
   const view = new keystone.View(req, res)
@@ -13,7 +16,11 @@ exports = module.exports = function (req, res) {
     const q = keystone.list('Participant').model.find()
 
     q.exec(function (err, results) {
-      locals.team = results
+      locals.team = results.map(result => ensureImageHasUrl(result.toObject(), 'avatar', {
+          url: '/images/fallbacks/teamMember.png', mimetype: 'image/png',
+        })
+      )
+
       next(err)
     })
 

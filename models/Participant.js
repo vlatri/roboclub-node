@@ -25,11 +25,7 @@ Participant.add({
 })
 
 Participant.schema.pre('validate', function(next) {
-  let { avatar } = this
-
-  avatar = avatar || {url: '/images/fallbacks/teamMember.png', mimetype: 'image/png'}
-  validateMimeType(avatar, 'image', next)
-
+  if(this.avatar.url) validateMimeType(this.avatar, 'image', next)
   next()
 })
 

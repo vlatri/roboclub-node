@@ -16,24 +16,42 @@ const Mission = new keystone.List('Mission', {
 Mission.add({
   title: {type: String},
   showTitle: {type: Boolean},
+  titlePosition: {
+    type: Types.Select,
+    numeric: true,
+    required: true,
+    default: 0,
+    dependsOn: {showTitle: true},
+    emptyOption: false,
+    options: [
+      {value: 0, label: 'Left'},
+      {value: 1, label: 'Right'}
+    ],
+  },
   subtitle: {type: String},
   image: {type: Types.File, storage},
+  imagePosition: {
+    type: Types.Select,
+    numeric: true,
+    default: 0,
+    emptyOption: false,
+    options: [
+      {value: 0, label: 'Left'},
+      {value: 1, label: 'Right'}
+    ],
+  },
   leftColumn: {type: Types.Html, wysiwyg: true},
   rightColumn: {type: Types.Html, wysiwyg: true},
 })
 
 Mission.schema.pre('validate', function(next) {
-  let { image } = this
-
-  image = image || {url: '/images/fallbacks/mission.jpg', mimetype: 'image/jpeg'}
-  validateMimeType(image, 'image', next)
-
+  if(this.image.url) validateMimeType(this.image, 'image', next)
   next()
 })
 
 // TODO: Check for obsolete files and delete those.
 Mission.schema.pre('remove', function(next) {
-  storage.removeFile(this.authorAvatar, next)
+  storage.removeFile(this.image, next)
 })
 
 Mission.defaultColumns = 'title, subtitle'

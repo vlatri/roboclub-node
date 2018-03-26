@@ -8649,6 +8649,9 @@ h1, h2, h3, h4, h5, h6 {
   100% {
     transform: rotate(360deg); } }
 
+.unselectable {
+  user-select: none; }
+
 /*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Change the default font family in all browsers (opinionated).
@@ -10138,6 +10141,9 @@ input[type="reset"]:focus {
     .mission .articles-row .column-wrapper .column .subtitle {
       margin: 0 0 20px 0;
       color: #f79f50; }
+      .mission .articles-row .column-wrapper .column .subtitle.unselectable:before {
+        display: inline-block;
+        content: ''; }
     .mission .articles-row .column-wrapper .column span {
       display: inline-block;
       text-indent: 30px; }

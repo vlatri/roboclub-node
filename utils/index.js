@@ -19,3 +19,8 @@ export const validateMimeType = (file, desiredType, cb) => {
     return cb(new Error(`File #${i} is not an image!`))
   }
 }
+
+export const ensureImageHasUrl = (doc, fieldName, fallback) =>
+  Object.assign(doc, {
+    [fieldName]: (doc[fieldName] && doc[fieldName].url) ? doc[fieldName] : fallback
+  })
