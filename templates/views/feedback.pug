@@ -1,0 +1,15 @@
+extends ../layouts/default
+
+block content
+  main.content.feedback
+    h2.content-title Відгуки
+    .container
+      #google_comments
+      script(src='https://apis.google.com/js/plusone.js')
+      script.
+        gapi.comments.render('google_comments', {
+            href: window.location,
+            width: '650',
+            first_party_property: 'BLOGGER',
+            view_type: 'FILTERED_POSTMOD'
+        })
