@@ -1067,6 +1067,9 @@
     border-radius: 5px;
     border-left: solid 10px #f79f50;
     position: relative;
+    height: 100px; // I'm sorry, okay?
+    text-overflow: ellipsis;
+    overflow: hidden;
     .partner-logo-wrapper {
       padding: 0;
       background: white;

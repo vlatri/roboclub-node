@@ -41,6 +41,7 @@ exports = module.exports = function (app) {
   app.get('/gallery', routes.views.gallery)
   app.get('/mission', routes.views.mission)
   app.get('/presentations', routes.views.presentations)
+  app.get('/partners', routes.views.partners)
   app.all('/contact', routes.views.contact)
   app.all('*', routes.views.errors[404])
 

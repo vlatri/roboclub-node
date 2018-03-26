@@ -1,0 +1,8 @@
+mixin partner(config)
+  .col-sm-6
+    .row.partner-wrapper
+        .col-xs-4.partner-logo-wrapper
+          img.partner-logo(src=config.image.url, alt=config.title)
+        .col-xs-8.partner-desc-wrapper
+          h3.partner-name= config.title
+          span.partner-desc!= config.text
