@@ -27,23 +27,14 @@ Layout.add({
 })
 
 
+Layout.schema.post('save', function(doc, next) {
+  linkValidate(Layout.model, doc, 'registerLink', next)
 
-Layout.schema.pre('validate', function(next) {
-  // const { coverImage, content, briefDescription } = this
-  // let { heroImage } = this
-
-  // const imageFields = [ heroImage, coverImage, getSpecificFields(content, 'image')]
-  // heroImage = heroImage || {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'}
-
-  // validateBriefDescLength(briefDescription, maxBriefDescriptionLength, next)
-  // imageFields.map(field => validateMimeType(field, 'image', next))
-
-  next()
+  fileValidate(Layout.model, storage, doc, 'coverImage', {url: '/fallbacks/homeCover.jpg', mimetype: 'image/jpeg'}, next)
 })
 
 Layout.schema.pre('remove', function(next) {
-  const imageFields = [this.heroImage, this.coverImage, getSpecificFields(this.content, 'image')]
-  imageFields.map(field => field && storage.removeFile(field, next))
+  removeFile(storage, this.coverImage, next)
 })
 
 Layout.defaultColumns = 'mainTitle, mainSubtitle'

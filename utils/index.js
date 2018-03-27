@@ -20,6 +20,10 @@ export const configStorage = path => new keystone.Storage({
   }
 })
 
+export const fixPublishedDate = (post, format) => {
+  return {...post.toObject(), publishedDate: moment(post.publishedDate).format(format) }
+}
+
 export const isFileReachable = file => !!(file && file.url)
 
 export const setFallback = (model, doc, fileField, fallback, next) =>
