@@ -6,16 +6,17 @@ mixin quote(author, text, avatar)
     img.quotes-slider__photo(src=avatar.url, height='46', width='46', alt='', title='')
 
 block content
-  .preloader
+
+  //- .preloader
     .preloader__inner
       .preloader__gear
       .preloader__logo
   .intro
     .container
       .col-md-6
-        h1.intro__title Lorem Ipsum is simply
-        p.intro__p Lorem Ipsum
-        a.basic-btn.red.intro__btn(href='https://docs.google.com/forms/d/e/1FAIpQLSfrSVaZQDWh3WFHDEAX_49ysAvfU5comCSM-XBJP-QZt1XWzQ/viewform') Зареєструватись
+        h1.intro__title= layout.mainTitle
+        p.intro__p=layout.mainSubtitle
+        a.basic-btn.red.intro__btn(href=layout.registerLink) Зареєструватись
         //- button.intro__btn-video(type='button')
         //-   i.fa.fa-play-circle(aria-hidden='true')
         //-   |  Дивитись відео
@@ -42,61 +43,26 @@ block content
       .container
         h2.section__title Останні новини
         br
-        .row
-          +preview({
-            title: 'Lorem ipsum dolor sit amet',
-            date: '20 січня 2017',
-            link: './article.html',
-            bgSRC: './images/news_1.jpg',
-          })
-          +preview({
-            title: 'Lorem ipsum dolor sit amet',
-            date: '20 січня 2017',
-            link: './article.html',
-            bgSRC: './images/news_2.jpg',
-            blue: true,
-          })
-          +preview({
-            title: 'Lorem ipsum dolor sit amet',
-            date: '20 січня 2017',
-            link: './article.html',
-            bgSRC: './images/news_3.jpg',
-          })
-          +preview({
-            title: 'Lorem ipsum dolor sit amet',
-            date: '20 січня 2017',
-            link: './article.html',
-            bgSRC: './images/news_4.jpg',
-            blue: true,
-          })
+        .row.news-container
+          each post, index in posts
+            +preview({
+              title: post.briefDescription,
+              date: post.publishedDate,
+              link: `/post/${post.slug}`,
+              bgSRC: post.heroImage.url,
+              blue: index % 2,
+            })
         a(href='/posts')
           button.basic-btn.yellow.centered(type='button') Всі новини
     section.section.ready.dark
       .container
         h2.section__title Готові розпочати?
         h3.section__subtitle Lorem Ipsum is simply dummy text of the printing and typesetting industry
-        a.basic-btn.yellow.centered(href='https://docs.google.com/forms/d/e/1FAIpQLSfrSVaZQDWh3WFHDEAX_49ysAvfU5comCSM-XBJP-QZt1XWzQ/viewform') Зареєструватись
+        a.basic-btn.yellow.centered(href=layout.registerLink) Зареєструватись
     section.section.partners.container
       h2.section__title Наші партнери
       .partners-list
-        .item
-          a(href='#')
-            img(src='./images/icons/partners_1.jpg')
-        .item
-          a(href='#')
-            img(src='./images/icons/partners_2.jpg')
-        .item
-          a(href='#')
-            img(src='./images/icons/partners_3.jpg')
-        .item
-          a(href='#')
-            img(src='./images/icons/partners_4.jpg')
-        .item
-          a(href='#')
-            img(src='./images/icons/partners_5.jpg')
-        .item
-          a(href='#')
-            img(src='./images/icons/partners_6.jpg')
-        .item
-          a(href='#')
-            img(src='./images/icons/partners_7.jpg')
+        each partner in partners
+          .item
+            a(href=partner.link)
+              img(src=partner.image.url, alt=partner.title)

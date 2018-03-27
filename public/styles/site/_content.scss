@@ -397,6 +397,12 @@
   }
 }
 
+.news-container,
+.partners-list {
+  display: flex;
+  justify-content: center;
+}
+
 .ready{
   min-height: 248px;
   margin: 12px 0 0;

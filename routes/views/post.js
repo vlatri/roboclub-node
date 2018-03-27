@@ -1,8 +1,7 @@
 import keystone from 'keystone'
-import moment from 'moment'
 
+import { fixPublishedDate} from '../../utils'
 
-moment.locale('uk')
 
 exports = module.exports = function (req, res) {
 
@@ -18,10 +17,6 @@ exports = module.exports = function (req, res) {
     posts: [],
   }
 
-  const getFormattedPublishedDate = (post, format) => Object.assign({}, post.toObject(), {
-    publishedDate: moment(post.publishedDate).format(format)
-  })
-
   // Load the current post
   view.on('init', function (next) {
     const q = keystone.list('Post').model.findOne({
@@ -30,7 +25,7 @@ exports = module.exports = function (req, res) {
     })
 
     q.exec(function (err, result) {
-      locals.data.post = result ? getFormattedPublishedDate(result, 'DD/MM/YYYY') : res.redirect('/404')
+      locals.data.post = result ? fixPublishedDate(result, 'DD/MM/YYYY') : res.redirect('/404')
       next(err)
     })
 
@@ -49,7 +44,7 @@ exports = module.exports = function (req, res) {
 
     q.exec(function (err, results) {
       results.map((post, i) =>
-        locals.data.posts[i] = results ? getFormattedPublishedDate(post, 'DD/MM/YYYY') : null
+        locals.data.posts[i] = results ? fixPublishedDate(post, 'DD/MM/YYYY') : null
       )
       next(err)
     })

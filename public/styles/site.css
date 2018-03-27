@@ -9699,6 +9699,11 @@ input[type="reset"]:focus {
     color: #00b8d4;
     background: #fff; }
 
+.news-container,
+.partners-list {
+  display: flex;
+  justify-content: center; }
+
 .ready {
   min-height: 248px;
   margin: 12px 0 0;
