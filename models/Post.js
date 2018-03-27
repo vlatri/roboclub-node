@@ -1,6 +1,6 @@
 import keystone from 'keystone'
 
-import { configStorage, validateMimeType } from '../utils/'
+import { configStorage, fileValidate, resizeImage, removeFile } from '../utils/'
 
 const maxBriefDescriptionLength = 50
 const { Types } = keystone.Field
@@ -21,7 +21,7 @@ const generateContentFields = n => {
     result = Object.assign(result, {
       [`${i}_subtitle`]: {type: String, collapse: true, label: `Subtitle ${i}`},
       [`${i}_text`]: {type: Types.Html, wysiwyg: true, height: 300, collapse: true, label: `Text ${i}`},
-      [`${i}_image`]: {type: Types.File, storage, collapse: true, label: `Image ${i}`},
+      [`${i}_image`]: {type: Types.File, storage, collapse: true, label: `Image ${i}`, note: 'Will be resized to 240x240'},
     })
   }
   return result
@@ -41,31 +41,31 @@ Post.add({
 })
 
 
-const getSpecificFields = (obj, containedPattern) =>
+const getSpecificFieldNames = (obj, containedPattern) =>
   Object.keys(obj)
     .filter(key => ~key.indexOf(containedPattern))
-    .map(key => obj[key])
 
-const validateBriefDescLength = (text, max, cb) =>
-  text.length > max && cb(new Error(`Brief description is ${text.length - maxBriefDescriptionLength} characters too long.`))
+const validateBriefDescLength = (text, max, next) =>
+  text && (text.length > max) && next(new Error(`Brief description is ${text.length - maxBriefDescriptionLength} characters too long.`))
 
 
 Post.schema.pre('validate', function(next) {
-  const { coverImage, content, briefDescription } = this
-  let { heroImage } = this
+  const { content, briefDescription, heroImage } = this
 
-  const imageFields = [ heroImage, coverImage, getSpecificFields(content, 'image')]
-  heroImage = heroImage || {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'}
+  validateBriefDescLength(briefDescription, maxBriefDescriptionLength, next);
 
-  validateBriefDescLength(briefDescription, maxBriefDescriptionLength, next)
-  imageFields.map(field => validateMimeType(field, 'image', next))
+  getSpecificFieldNames(content, 'image')
+    .map(fieldName => fileValidate(Post.model, storage, this, fieldName, {}, next))
 
-  next()
+  fileValidate(Post.model, storage, this, 'heroImage', {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'}, next,
+    (doc, fieldName, next) => resizeImage(doc[fieldName], 240, 240, next)
+  )
+
 })
 
 Post.schema.pre('remove', function(next) {
-  const imageFields = [this.heroImage, this.coverImage, getSpecificFields(this.content, 'image')]
-  imageFields.map(field => field && storage.removeFile(field, next))
+  [...getSpecificFieldNames(this, 'image'), ...getSpecificFieldNames(this.content, 'image')]
+    .map(field => removeFile(storage, this[field], next))
 })
 
 Post.defaultColumns = 'heading, author|10%, state|10%, publishedDate|15%'
