@@ -1,6 +1,6 @@
 import keystone from 'keystone'
 
-import { configStorage, validateMimeType } from '../utils/'
+import { configStorage, fileValidate, removeFile } from '../utils/'
 
 
 const { Types } = keystone.Field
@@ -44,15 +44,15 @@ Mission.add({
   rightColumn: {type: Types.Html, wysiwyg: true},
 })
 
-Mission.schema.pre('validate', function(next) {
-  if(this.image.url) validateMimeType(this.image, 'image', next)
-  next()
+Mission.schema.post('save', function(doc, next) {
+  fileValidate(Mission.model, storage, doc, 'image', {url: '/fallbacks/mission.jpg', mimetype: 'image/jpeg'}, next)
 })
 
-// TODO: Check for obsolete files and delete those.
+
 Mission.schema.pre('remove', function(next) {
-  storage.removeFile(this.image, next)
+  removeFile(storage, this.image, next)
 })
+
 
 Mission.defaultColumns = 'title, subtitle'
 

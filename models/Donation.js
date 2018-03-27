@@ -14,7 +14,7 @@ const Donation = new keystone.List('Donation', {
 
 
 Donation.add({
-  title: {type: String},
+  title: {type: String, required: true},
   text: {type: Types.Html, wysiwyg: true},
   putAfterMission: {type: Number, default: 1, required: true},
 })

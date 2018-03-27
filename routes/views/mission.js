@@ -14,12 +14,7 @@ exports = module.exports = function (req, res) {
   view.on('init', function (next) {
     keystone.list('Mission').model.find().exec(function (err, results) {
 
-      locals.missions = results.map(result =>
-        ensureImageHasUrl(result.toObject(), 'image', {
-          url: '/images/fallbacks/mission.jpg', mimetype: 'image/jpeg',
-        })
-      )
-
+      locals.missions = results
       next(err)
     })
   })

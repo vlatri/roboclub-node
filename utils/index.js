@@ -44,7 +44,7 @@ export const resizeImage = (file, width, height, next) =>
 export const fileValidate = (model, storage, doc, fieldName, fallback, next, cb) =>
   isFileReachable(doc[fieldName]) ? (
     isMimetypeValid(doc[fieldName], fallback.mimetype.split('/')[0]) ?
-      (cb && cb(doc, fieldName, next)) : removeFile(storage, doc[fieldName], next)
+      (cb && cb(doc, fieldName, next) || next()) : removeFile(storage, doc[fieldName], next)
     ) :
     setFallback(model, doc, fieldName, fallback, next)
 
