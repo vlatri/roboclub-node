@@ -1,0 +1,17 @@
+mixin faq(items)
+  each item, itemIndex in items
+    .item-wrapper.row(id='item-'+itemIndex)
+      .title-wrapper.row
+        .col-xs-12.title-inner-wrapper
+          .title(id='item-title-'+itemIndex)
+            span= item.title
+      -for(let i=0; i<item.content.sectionsCount; i++)
+        if(item.content[`${i}_subtitle`])
+          .subtitle-wrapper.row(id=`item-subtitle-${itemIndex}-${i}`, class=`item-${itemIndex}-content`)
+            .col-xs-12
+              .subtitle
+                span= item.content[`${i}_subtitle`]
+          .text-wrapper.row(id=`item-text-${itemIndex}-${i}`, class=`item-${itemIndex}-content`)
+            .col-xs-12
+              .text
+                span!= item.content[`${i}_text`]

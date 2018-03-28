@@ -37,7 +37,7 @@ Post.add({
   heroImage: {type: Types.File, storage, note: 'Small square image used on previews.'},
   briefDescription: {type: String, note: `${maxBriefDescriptionLength} characters max.`},
   maxBriefDescriptionLength: {type: Number, hidden: true, default: maxBriefDescriptionLength, required: true},
-  content: generateContentFields(8),
+  content: generateContentFields(12),
 })
 
 

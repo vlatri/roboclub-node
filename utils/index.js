@@ -24,12 +24,16 @@ export const fixPublishedDate = (post, format) => {
   return {...post.toObject(), publishedDate: moment(post.publishedDate).format(format) }
 }
 
+
 export const isFileReachable = file => !!(file && file.url)
+
 
 export const setFallback = (model, doc, fileField, fallback, next) =>
   model.update({_id: doc._id}, {$set: {[fileField]: fallback}}, next)
 
+
 export const isMimetypeValid = (file, desiredMimetype) => file && (~file.mimetype.indexOf(desiredMimetype))
+
 
 export const removeFile = (storage, file, next) =>
   (file && file.path && file.filename) ?
@@ -38,6 +42,7 @@ export const removeFile = (storage, file, next) =>
     ) :
   next()
 
+
 export const resizeImage = (file, width, height, next) =>
   (file.path && file.filename) ?
     im(file.path + file.filename)
@@ -45,12 +50,14 @@ export const resizeImage = (file, width, height, next) =>
       .write(file.path + file.filename, next) :
     next()
 
+
 export const fileValidate = (model, storage, doc, fieldName, fallback, next, cb) =>
   isFileReachable(doc[fieldName]) ? (
     isMimetypeValid(doc[fieldName], fallback.mimetype.split('/')[0]) ?
       (cb && cb(doc, fieldName, next) || next()) : removeFile(storage, doc[fieldName], next)
     ) :
     setFallback(model, doc, fieldName, fallback, next)
+
 
 export const linkValidate = (model, doc, fieldName, next) => doc[fieldName].slice(0, 4).toLowerCase() === 'http' ?
     next() :

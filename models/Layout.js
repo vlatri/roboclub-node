@@ -1,6 +1,6 @@
 import keystone from 'keystone'
 
-import { configStorage, validateMimeType } from '../utils/'
+import { configStorage, linkValidate, fileValidate } from '../utils/'
 
 const { Types } = keystone.Field
 const storage = configStorage('/images/home/')

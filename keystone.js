@@ -59,7 +59,7 @@ keystone.set('routes', require('./routes'));
 keystone.set('nav', {
   home: ['layouts', 'quotes'],
   posts: ['posts'],
-  about: ['participants', 'missions', 'donations', 'presentations', 'partners'],
+  about: ['participants', 'missions', 'donations', 'presentations', 'partners', 'faqs'],
   galleries: 'galleries',
   enquiries: 'enquiries',
   users: 'users',

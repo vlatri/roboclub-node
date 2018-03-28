@@ -43,6 +43,7 @@ exports = module.exports = function (app) {
   app.get('/presentations', routes.views.presentations)
   app.get('/partners', routes.views.partners)
   app.get('/feedback', routes.views.feedback)
+  app.get('/faq', routes.views.faq)
   app.all('/contact', routes.views.contact)
   app.all('*', routes.views.errors[404])
 
