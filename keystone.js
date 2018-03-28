@@ -30,7 +30,6 @@ keystone.init({
     + ' directionality, emoticons, hr, pagebreak,'
     + ' paste, preview, searchreplace, textcolor,'
     + ' visualblocks, visualchars, wordcount',
-
   'auto update': true,
   'session': true,
   'auth': true,
@@ -58,8 +57,9 @@ keystone.set('routes', require('./routes'));
 // Configure the navigation bar in Keystone's Admin UI
 keystone.set('nav', {
   home: ['layouts', 'quotes'],
-  posts: ['posts'],
-  about: ['participants', 'missions', 'donations', 'presentations', 'partners', 'faqs'],
+  about: ['participants', 'missions', 'donations', 'presentations', 'partners'],
+  faq: ['faqs', 'faqsections'],
+  posts: ['posts', 'postsections'],
   galleries: 'galleries',
   enquiries: 'enquiries',
   users: 'users',

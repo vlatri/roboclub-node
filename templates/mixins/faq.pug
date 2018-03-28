@@ -1,17 +1,16 @@
-mixin faq(items)
-  each item, itemIndex in items
-    .item-wrapper.row(id='item-'+itemIndex)
+mixin faq(faqs)
+  each faq, faqIndex in faqs
+    .item-wrapper.row(id=`item-${faqIndex}`)
       .title-wrapper.row
         .col-xs-12.title-inner-wrapper
-          .title(id='item-title-'+itemIndex)
-            span= item.title
-      -for(let i=0; i<item.content.sectionsCount; i++)
-        if(item.content[`${i}_subtitle`])
-          .subtitle-wrapper.row(id=`item-subtitle-${itemIndex}-${i}`, class=`item-${itemIndex}-content`)
-            .col-xs-12
-              .subtitle
-                span= item.content[`${i}_subtitle`]
-          .text-wrapper.row(id=`item-text-${itemIndex}-${i}`, class=`item-${itemIndex}-content`)
-            .col-xs-12
-              .text
-                span!= item.content[`${i}_text`]
+          .title(id=`item-title-${faqIndex}`)
+            span= faq.title
+      each section, sectionIndex in faq.sections
+        .subtitle-wrapper.row(id=`item-subtitle-${faqIndex}-${sectionIndex}`, class=`item-${itemIndex}-content`)
+          .col-xs-12
+            .subtitle
+              span= section.subtitle
+        .text-wrapper.row(id=`item-text-${itemIndex}-${sectionIndex}`, class=`item-${itemIndex}-content`)
+          .col-xs-12
+            .text
+              span!= section.text
