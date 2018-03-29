@@ -62,3 +62,12 @@ export const fileValidate = (model, storage, doc, fieldName, fallback, next, cb)
 export const linkValidate = (model, doc, fieldName, next) => doc[fieldName].slice(0, 4).toLowerCase() === 'http' ?
     next() :
     model.update({_id: doc._id}, {[fieldName]: `http://${doc[fieldName]}`}, next)
+
+
+export const ensureSequenceNumberIsUnique = (model, currentSection, sequenceNumber, next) =>
+  model.find({ sequenceNumber, relatedPost: currentSection.relatedPost, _id: {$ne: currentSection._id} }, {subtitle: true, relatedPost: true, relatedPostHeading: true, sequenceNumber: true}).exec((err, res) =>{
+    console.log(res);
+    res.length && sequenceNumber ?
+      next(err || new Error(`Section "${res[0].subtitle}" already has sequence number of ${sequenceNumber}.`))
+      : next()
+  })

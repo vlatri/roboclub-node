@@ -19,10 +19,13 @@ exports = module.exports = function (req, res) {
 
   // Load the current post
   view.on('init', function (next) {
-    const q = keystone.list('Post').model.findOne({
-      state: 'published',
-      slug: locals.filters.post,
-    })
+    const q = keystone.list('Post').model
+      .findOne({
+        state: 'published',
+        slug: locals.filters.post,
+      })
+      .populate({path: 'sections', options: { sort: {sequenceNumber: 1} } })
+
 
     q.exec(function (err, result) {
       locals.data.post = result ? fixPublishedDate(result, 'DD/MM/YYYY') : res.redirect('/404')

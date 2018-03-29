@@ -16,6 +16,6 @@ Faq.add({
 })
 
 
-Faq.defaultColumns = 'title, sequenceNumber|25%'
+Faq.defaultColumns = 'title, sections, sequenceNumber|25%'
 
 Faq.register()

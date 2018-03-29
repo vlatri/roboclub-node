@@ -19,7 +19,6 @@ const Post = new keystone.List('Post', {
 Post.add({
   heading: {type: String, required: true},
   author: {type: String},
-  // author: { type: Types.Relationship, ref: 'User', index: true, required: true, initial: false, },
   state: { type: Types.Select, options: 'draft, published, archived', default: 'draft', index: true },
   publishedDate: { type: Types.Date, index: true, dependsOn: { state: 'published' } },
   coverImage: {type: Types.File, storage},
@@ -33,7 +32,6 @@ Post.add({
 const validateBriefDescLength = (text, max, next) =>
   text && (text.length > max) && next(new Error(`Brief description is ${text.length - maxBriefDescriptionLength} characters too long.`))
 
-
 Post.schema.pre('validate', function(next) {
   validateBriefDescLength(this.briefDescription, maxBriefDescriptionLength, next)
 
@@ -46,6 +44,7 @@ Post.schema.pre('remove', function(next) {
   removeFile(storage, this.heroImage, next)
 })
 
-Post.defaultColumns = 'heading, author|10%, state|10%, publishedDate|15%'
+
+Post.defaultColumns = 'heading, sections, author|10%, state|10%, publishedDate|15%'
 
 Post.register()
