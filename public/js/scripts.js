@@ -11,12 +11,6 @@ window.onload = function () {
   }
 }
 
-$.fn.filterData = function(key, value) {
-  return this.filter(function() {
-    return $(this).data(key) == value
-  })
-}
-
 $(function() {
   $('.quotes-slider__photo').hide()
   $('.quotes-slider').slick({
@@ -43,14 +37,24 @@ $(function() {
     if (!filterType) return 0
     if(filterVal === 'all') return $filteredItems.show()
 
-    $filteredItems.hide().filterData(filterType, filterVal).show()
+    const filterFunc = filterType === 'age' ?
+      ((i, el) => $(el).data(filterType) <= filterVal) :
+      ((i, el) => $(el).data(filterType) == filterVal)
+
+    $filteredItems.hide().filter(filterFunc).show()
+
   })
 
   /*---------------------------------------------------*/
 
   $('input[placeholder], textarea[placeholder]').placeholder()
 
+})
 
+$(document).ready(function() { // Course share buttons
+  // Doesn't work for localhost at all.
+  $('.fb-share').attr('href', 'https://www.facebook.com/sharer/sharer.php?u='+window.location)
+  $('.twitter-share').attr('href', 'https://twitter.com/intent/tweet?url='+window.location)
 })
 
 $(document).ready(function() { // FAQ Sliding

@@ -37,6 +37,7 @@ exports = module.exports = function (app) {
   app.get('/', routes.views.index)
   app.get('/posts', routes.views.posts)
   app.get('/post/:post', routes.views.post)
+  app.get('/course/:course', routes.views.course)
   app.get('/team', routes.views.team)
   app.get('/gallery', routes.views.gallery)
   app.get('/mission', routes.views.mission)
@@ -44,6 +45,7 @@ exports = module.exports = function (app) {
   app.get('/partners', routes.views.partners)
   app.get('/feedback', routes.views.feedback)
   app.get('/faq', routes.views.faq)
+  app.get('/courses', routes.views.courses)
   app.all('/contact', routes.views.contact)
   app.all('*', routes.views.errors[404])
 

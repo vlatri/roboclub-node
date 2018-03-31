@@ -1,4 +1,4 @@
--var stripeConfig = {rowIndex: 0, index: 1, resetStripesEvery: 4 };
+-var stripeConfig = {index: 0, resetStripesEvery: 4, currentColor: false };
 
 mixin preview(config)
   -config.sizes = config.sizes || {xs: 6, sm: 4, md: 3};
@@ -16,12 +16,13 @@ mixin preview(config)
     -buttonAttrs.rel = 'gallery'
 
   if config.stripy
-    if stripeConfig.index >= stripeConfig.resetStripesEvery
-      -stripeConfig.index = (stripeConfig.rowIndex++ % 2) ? 1 : 0;
-    -config.blue = (stripeConfig.index++ % 2) ? true : false;
-    if config.stripy === 'orange'
-      -config.blue = !config.blue
+    if stripeConfig.index++ % stripeConfig.resetStripesEvery != 0
+      -stripeConfig.currentColor = !stripeConfig.currentColor
 
+    if config.stripy === 'blue'
+      -config.blue = !stripeConfig.currentColor
+    else
+      -config.blue = stripeConfig.currentColor
 
   if !config.bgSRC
     -config.bgSRC = '/images/fallbacks/heroNews.jpg'
@@ -45,6 +46,6 @@ mixin preview(config)
               if config.icon === 'age'
                 span.age-icon= config.attrs['data-age'] + '+'
           .button-wrapper
-            a(href=config.link ? config.link : config.bgSRC)&attributes(buttonAttrs).basic-btn.yellow
+            a(href=config.link ? config.link : config.bgSRC, class=config.blue ? 'yellow' : 'blue')&attributes(buttonAttrs).basic-btn
               span.fa.fa-link
               = (config.buttonText || 'Дивитись')

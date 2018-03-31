@@ -825,17 +825,14 @@
 }
 
 .course {
+  font-size: 16px;
   .short-desc {
-    .subtitle,
-    .lesson-duration {
+    .subtitle {
       color: #f79f50;
-    }
-    .lesson-number {
-      color: #00b8d5;
     }
     .plan-wrapper {
       display: block;
-      margin: 5px 0;
+      line-height: 1.75em;
     }
     .signinButton {
       margin: 15px 0;
@@ -885,27 +882,15 @@
         }
       }
       .lesson-tasks {
-        .task-wrapper {
-          line-height: 1.5em;
-          display: block;
-          font-size: 0.75em;
-          .task-estimate {
-            color: #f79f50;
-          }
-          .task-subtitle {
-            font-size: 1.3em;
-            display: block;
-            color: #f79f50;
-            font-weight: bold;
-            margin: 15px 0 5px 0;
-          }
-        }
-      }
-      .additional-info {
-        color: #f79f50;
-        font-size: 0.75em;
-        margin: 15px 0;
         line-height: 1.5em;
+        display: block;
+        font-size: 0.75em;
+      }
+      .task-subtitle {
+        display: block;
+        color: #f79f50;
+        font-weight: bold;
+        margin: 15px 0 5px 0;
       }
     }
     .course-actions {
@@ -918,7 +903,7 @@
       }
       .socials-wrapper {
         text-align: right;
-        span {
+        a {
           border-radius: 5px;
           margin: 0 2px;
         }

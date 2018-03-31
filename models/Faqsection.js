@@ -16,16 +16,20 @@ Faqsection.add({
   subtitle: {type: String, required: true},
   sequenceNumber: {type: Types.Number, default: 0 },
   text: {type: Types.Html, wysiwyg: true},
-  relatedParent: {type: String, hidden: true, label: 'Related FAQ'},
+  relatedParent: {
+    _id: {type: String, hidden: true},
+    title: {type: String, hidden: true, label: 'Related FAQ'},
+  },
 })
 
 Faqsection.schema.pre('validate', function(next) {
-  saveRelatedParent(keystone.list('Faq').model, Faqsection.model, this._id, next)
+  updateChildWithRelatedParent(keystone.list('Faq').model, Faqsection.model, this._id)
+    .then(next)
 })
 
 
 Faqsection.relationship({ ref: 'Faq', refPath: 'sections' })
 
-Faqsection.defaultColumns = 'subtitle, relatedParent sequenceNumber|25%'
+Faqsection.defaultColumns = 'subtitle, relatedParent.title sequenceNumber|25%'
 
 Faqsection.register()

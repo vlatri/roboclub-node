@@ -15,6 +15,10 @@ Faq.add({
   sections: { type: Types.Relationship, ref: 'Faqsection', many: true },
 })
 
+Faq.schema.pre('validate', function(next) {
+  updateChildrenWithRelatedParent(Faq.model, keystone.list('Faqection').model, this).catch(next)
+})
+
 
 Faq.defaultColumns = 'title, sections, sequenceNumber|25%'
 

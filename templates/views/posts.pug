@@ -20,6 +20,14 @@ block content
                     forceBgLazyLoad: true,
                     stripy: 'blue',
                   })
+                  +preview({
+                    title: post.briefDescription,
+                    date: post.publishedDate,
+                    bgSRC: post.heroImage && post.heroImage.url,
+                    link: `/post/${post.slug}`,
+                    forceBgLazyLoad: true,
+                    stripy: 'blue',
+                  })
                 -else break
       ul.pager-list
         li.pager-list__item

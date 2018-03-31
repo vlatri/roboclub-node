@@ -39,6 +39,18 @@
 		}
 	}
 
+	&.blue{
+		background: $clr-blue;
+		color: #fff;
+		box-shadow: 0 3px 0 0 #d38d46;
+
+		&:hover{
+			box-shadow: 0 1px 0 0 #d38d46;
+			top: 2px;
+			color: #fff;
+		}
+	}
+
 	&.centered{
 		text-align: center;
 		margin: 0 auto;

@@ -1,0 +1,33 @@
+extends ../layouts/default
+
+block content
+   main.content
+    h2.content-title Курси
+    .container
+      form.courses-filter.row
+        h4.courses-filter__title.col-sm-3 Фільтрувати
+        .courses-filter__form-line.col-sm-3
+          select.basic-select(data-filter='cat')
+            option(value='all') Напрям
+            each field in courseFields
+              option(value=field._id)= field.title
+        .courses-filter__form-line.age.col-sm-3
+          select.basic-select(data-filter='age')
+            option(value='all') Вік
+            each age in courseAges
+              option(value=age)= `${age}+`
+        .courses-filter__form-line.col-sm-3
+          select.basic-select(data-filter='price')
+            option(value='all') Вартість
+            option(value='0') Безкоштовно
+            option(value='premium') Платно
+      .courses.row
+        each course in courses
+          +preview({
+            title: course.briefDescription,
+            attrs: { 'data-cat': course.field, 'data-age': course.age, 'data-price': course.price && 'premium' },
+            icon: 'age',
+            link: `/course/${course.slug}`,
+            bgSRC: course.heroImage.url,
+            stripy: 'orange'
+          })

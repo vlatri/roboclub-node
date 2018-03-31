@@ -1,37 +1,69 @@
 import keystone from 'keystone'
 
-import { linkValidate, updateChildrenWithRelatedParent } from '../utils'
+import {
+  linkValidate,
+  fileValidate,
+  updateChildrenWithRelatedParent,
+  validateBriefDescLength,
+  removeFile,
+  resizeImage,
+  configStorage
+} from '../utils'
 
+
+const storage = configStorage('/images/courses/')
+const maxBriefDescriptionLength = 50
 const { Types } = keystone.Field
 
 const Course = new keystone.List('Course', {
   map: {name: 'title'},
+  autokey: { path: 'slug', from: 'title', unique: true },
   singular: 'Course',
   plural: 'Courses',
 })
 
 Course.add({
   title: {type: String, required: true},
-  field: {type: Types.Relationship, ref: 'Coursefield', many: false},
-  age: {type: Number, default: 9, required: true},
-  price: {type: Number, note: '0 means for free', default: 0, required: true},
-  coursePlan: {type: Types.Html, wysiwyg: true},
+  active: {
+    type: Boolean,
+    required: true,
+    index: true,
+    initial: true,
+    default: true,
+    note: 'Defines whether this course should be listed among the other, or should it be temporarily disabled.'
+  },
+  field: {type: Types.Relationship, index: true, initial: true, ref: 'Coursefield', many: false},
+  age: {type: Number, required: true, initial: true, index: true, default: 0},
+  price: {type: Number, note: '0 means for free', required: true, initial: true, index: true, default: 0},
+  heroImage: {type: Types.File, storage, note: 'Small square image used on previews. Will be resized to 240x240.'},
+  briefDescription: {type: String, note: `${maxBriefDescriptionLength} characters max.`, required: true, initial: true, index: true},
+  plan: {type: Types.Html, wysiwyg: true, label: 'Course plan'},
   leftColumnSubtitle: {type: String},
   leftColumnText: {type: Types.Html, wysiwyg: true},
   rightColumnSubtitle: {type: String},
   rightColumnText: {type: Types.Html, wysiwyg: true},
+  maxBriefDescriptionLength: {type: Number, hidden: true, default: maxBriefDescriptionLength, required: true},
   applyToCourseLink: {type: Types.Url},
   sections: { type: Types.Relationship, ref: 'Coursesection', many: true },
 })
 
-Course.schema.pre('validate', function(next) {
-  linkValidate(Course.model, this, 'applyToCourseLink', next)
+Course.schema.pre('validate', async function(next) {
+  await updateChildrenWithRelatedParent(Course.model, keystone.list('Coursesection').model, this).catch(next)
+
+  Promise.all([
+    validateBriefDescLength(this.briefDescription || '', maxBriefDescriptionLength),
+    linkValidate(Course.model, this, 'applyToCourseLink'),
+    fileValidate(Course.model, storage, this, 'heroImage', {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
+      .then(resizeImage(this.heroImage, 240, 240))
+  ])
+  .then(next)
+  .catch(next)
 })
 
-Course.schema.post('validate', function(doc, next) {
-  updateChildrenWithRelatedParent(Course.model, keystone.list('Coursesection').model, doc, next)
+Course.schema.pre('remove', function(next) {
+  removeFile(storage, this.heroImage).then(next)
 })
 
-Course.defaultColumns = 'title, field, age'
+Course.defaultColumns = 'title, field, age, active'
 
 Course.register()

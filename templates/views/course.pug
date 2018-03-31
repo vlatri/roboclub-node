@@ -1,0 +1,60 @@
+extends ../layouts/default
+
+block content
+  script.
+    console.log(!{JSON.stringify(course)})
+  main.content.course
+    h2.content-title=course.title
+    .container
+      .row.short-desc
+        .row
+          .col-xs-12
+            h3.subtitle План занять
+        .row
+          .course-plan.col-xs-12
+            span.plan-wrapper!=course.plan
+        .row.course-tasks
+          .col-sm-6
+            h3.subtitle=course.leftColumnSubtitle
+            span.desc!=course.leftColumnText
+            a.basic-btn.red.signinButton(href=course.applyToCourseLink) Записатись на курс
+          .col-sm-6
+            h3.subtitle=course.rightColumnSubtitle
+            span.desc!=course.rightColumnText
+    .container-fluid.gallery-preview-wrapper
+      .container
+        .row.gallery-preview
+          h3 Галерея
+          .gallery-preview-slider
+            .slide
+              img(src='images/news_1.jpg', alt='Slide')
+    .container.lessons-desc
+      .row.lesson-desc
+        each section in course.sections
+          if section.fancyTitlebar
+            .lesson-title
+              h2= section.title
+              img(src='/images/icons/logo-gear.svg', alt='')
+          else
+            span.task-subtitle= section.title
+          .lesson-tasks!= section.text
+      .row.course-actions
+        .col-xs-4.signin-button-wrapper
+          a.basic-btn.red.signin-button(href=course.applyToCourseLink) Записатись на курс
+        .socials-wrapper.col-md-3.col-sm-6.col-xs-8.pull-right
+          a(target='_blank').fa.fa-facebook.fb-share
+          a(target='_blank').fa.fa-twitter.twitter-share
+    .container-fluid.see-also-header-wrapper
+      h2.see-also-header Дивіться також
+    .container.courses-preview-wrapper
+      each course in courses
+        script.
+          console.log(!{JSON.stringify(course)})
+        +preview({
+          title: course.briefDescription,
+          attrs: { 'data-cat': course.field, 'data-age': course.age, 'data-price': course.price && 'premium' },
+          icon: 'age',
+          link: `/course/${course.slug}`,
+          bgSRC: course.heroImage.url,
+          stripy: 'orange'
+        })

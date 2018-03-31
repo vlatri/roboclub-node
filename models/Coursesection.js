@@ -15,7 +15,8 @@ const Coursesection = new keystone.List('Coursesection', {
 
 Coursesection.add({
   title: {type: String, required: true},
-  fancyTitle: {type: Boolean, default: true, note: 'Whether or not display large blue strip with the title on it or a simple subtitle.'},
+  sequenceNumber: {type: Types.Number, default: 0 },
+  fancyTitlebar: {type: Boolean, default: true, note: 'Whether or not display large blue strip with the title on it or a simple subtitle.'},
   text: {type: Types.Html, wysiwyg: true},
   relatedParent: {
     _id: {type: String, hidden: true},
@@ -24,11 +25,11 @@ Coursesection.add({
 })
 
 Coursesection.schema.pre('validate', function(next) {
-  updateChildWithRelatedParent(keystone.list('Course').model, Coursesection.model, this._id, next)
+  updateChildWithRelatedParent(keystone.list('Course').model, Coursesection.model, this._id).then(next)
 })
 
 Coursesection.relationship({ ref: 'Course', refPath: 'sections' })
 
-Coursesection.defaultColumns = 'title, relatedParent.title'
+Coursesection.defaultColumns = 'title, relatedParent.title, sequenceNumber|25%'
 
 Coursesection.register()

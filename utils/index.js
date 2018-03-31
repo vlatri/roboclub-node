@@ -27,66 +27,83 @@ export const fixPublishedDate = (post, format) => {
 
 export const isFileReachable = file => !!(file && file.url)
 
+export const fileExists = file => file.path && file.filename
 
-export const setFallback = (model, doc, fileField, fallback, next) =>
-  model.update({_id: doc._id}, {$set: {[fileField]: fallback}}, next)
+export const setFallback = (model, doc, fileField, fallback) =>
+  model.update({_id: doc._id}, {$set: {[fileField]: fallback}}).exec()
 
 
 export const isMimetypeValid = (file, desiredMimetype) => file && (~file.mimetype.indexOf(desiredMimetype))
 
 
-export const removeFile = (storage, file, next) =>
-  (file && file.path && file.filename) ?
-    storage.removeFile(file, err =>
-      next(err || new Error(`File ${file.originalname} was supposed to be an image.`))
-    ) :
-  next()
-
-
-export const resizeImage = (file, width, height, next) =>
-  (file.path && file.filename) ?
-    im(file.path + file.filename)
-      .resizeExact(width, height)
-      .write(file.path + file.filename, next) :
-    next()
-
-
-export const fileValidate = (model, storage, doc, fieldName, fallback, next, cb) =>
-  isFileReachable(doc[fieldName]) ? (
-    isMimetypeValid(doc[fieldName], fallback.mimetype.split('/')[0]) ?
-      (cb && cb(doc, fieldName, next) || next()) : removeFile(storage, doc[fieldName], next)
-    ) :
-    setFallback(model, doc, fieldName, fallback, next)
-
-
-export const linkValidate = (model, doc, fieldName, next) =>
-  doc[fieldName].slice(0, 4).toLowerCase() === 'http' ?
-    next() :
-    model.update({_id: doc._id}, {[fieldName]: `http://${doc[fieldName]}`}, next)
-
-
-export const updateChildWithRelatedParent = (parentModel, childModel, childId, next) =>
-  parentModel.findOne({sections: childId}, {title: true}).exec((err, res) =>
-      err ?
-        next(err) :
-        childModel.update({_id: childId}, {
-          relatedParent: {
-            _id: (res && res._id) || null,
-            title: (res && res.title) || null,
-          }
-        }).exec(next)
+export const resizeImage = (file, width, height) =>
+  new Promise((resolve, reject) =>
+    (file.path && file.filename) ?
+      im(file.path + file.filename)
+        .resizeExact(width, height)
+        .write(file.path + file.filename, err => err ? reject(err) : resolve()) :
+      resolve()
   )
 
-export const updateChildrenWithRelatedParent = (parentModel, childModel, parent, next) => {
+export const removeFile = (storage, file, cb) => storage.removeFile(file, cb)
+
+
+export const fileValidate = (model, storage, doc, fieldName, fallback) =>
+  new Promise((resolve, reject) =>
+    isFileReachable(doc[fieldName]) ? (
+      isMimetypeValid(doc[fieldName], fallback.mimetype.split('/')[0]) ?
+        resolve() :
+        fileExists(doc[fieldName]) ?
+          removeFile(storage, doc[fieldName], err =>
+            reject(err || new Error(`File ${doc[fieldName].originalname} was supposed to be an image.`))
+          )
+        : resolve()
+      )
+    : resolve(setFallback(model, doc, fieldName, fallback))
+  )
+
+
+export const linkValidate = (model, doc, fieldName) =>
+  new Promise((resolve, reject) =>
+    doc[fieldName] ?
+      (doc[fieldName].slice(0, 4).toLowerCase() === 'http' ?
+        resolve() :
+        model.update({_id: doc._id}, {[fieldName]: `http://${doc[fieldName]}`}).exec(err => err ? reject(err) : resolve())
+      ) :
+      resolve()
+    )
+
+
+export const updateChildWithRelatedParent = (parentModel, childModel, childId) =>
+  parentModel.findOne({sections: childId}, {title: true}).exec((err, res) => {
+    if(err) return new Error(err)
+    if(!res) res = {_id: null, title: null}
+
+    return childModel.update({_id: childId}, {
+      relatedParent: {
+        _id: res._id,
+        title: res.title,
+      }
+    }).exec(next)
+  })
+
+export const updateChildrenWithRelatedParent = (parentModel, childModel, parent) =>
   // Reset parent for all children which think current parent is related to them
   childModel.update({'relatedParent._id': parent._id},
     {relatedParent: {_id: null, title: null}},
     {multi: true}
-  ).exec((err, res) =>
+  ).exec()
+  .then((err, res) =>
     // Set relation for only selected children
     childModel.update({_id: {$in: parent.sections}}, {
       relatedParent: {_id: parent._id, title: parent.title}
     }, {multi: true}
-    ).exec(next)
+    ).exec()
   )
-}
+
+export const validateBriefDescLength = (text, max) =>
+  new Promise((resolve, reject) =>
+    (text.length < max) ?
+      resolve() :
+      reject(new Error(`Brief description is ${text.length - max} characters too long.`))
+  )

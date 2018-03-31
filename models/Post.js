@@ -1,6 +1,13 @@
 import keystone from 'keystone'
 
-import { configStorage, fileValidate, resizeImage, removeFile, updateChildrenWithRelatedParent } from '../utils/'
+import {
+  configStorage,
+  fileValidate,
+  resizeImage,
+  removeFile,
+  updateChildrenWithRelatedParent,
+  validateBriefDescLength,
+} from '../utils/'
 
 
 const storage = configStorage('/images/posts/')
@@ -29,36 +36,22 @@ Post.add({
 })
 
 
-const validateBriefDescLength = (text, max) =>
-  new Promise((resolve, reject) =>
-    text && (text.length < max) ?
-      resolve() :
-      reject(new Error(`Brief description is ${text.length - maxBriefDescriptionLength} characters too long.`))
-  )
 
-Post.schema.pre('validate', function(next) {
+Post.schema.pre('validate', async function(next) {
+  await updateChildrenWithRelatedParent(Post.model, keystone.list('Postsection').model, this).catch(next)
+
   Promise.all([
-    updateChildrenWithRelatedParent(Post.model, keystone.list('Postsection').model, this, () => {}),
-    validateBriefDescLength(this.briefDescription, maxBriefDescriptionLength)
-    // fileValidate(Post.model, storage, this, 'heroImage', {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'}, () => {},
-    //   (doc, fieldName, next) => resizeImage(doc[fieldName], 240, 240, next)
-    // ),
-  ]).then(next).catch(next)
-
-
-  // validateBriefDescLength(this.briefDescription, maxBriefDescriptionLength, err => {
-  //   if(err) return next(err)
-  //   updateChildrenWithRelatedParent(Post.model, keystone.list('Postsection').model, doc, err => {
-  //     if(err) return next(err)
-  //     fileValidate(Post.model, storage, this, 'heroImage', {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'}, next,
-  //       (doc, fieldName, next) => resizeImage(doc[fieldName], 240, 240, next)
-  //     )
-  //   })
-  // })
+    validateBriefDescLength(this.briefDescription || '', maxBriefDescriptionLength),
+    fileValidate(Post.model, storage, this, 'coverImage', {url: '/images/fallbacks/homeCover.jpg', mimetype: 'image/jpeg'}),
+    fileValidate(Post.model, storage, this, 'heroImage', {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
+      .then(resizeImage(this.heroImage, 240, 240))
+  ])
+  .then(next)
+  .catch(next)
 })
 
 Post.schema.pre('remove', function(next) {
-  removeFile(storage, this.heroImage, next)
+  removeFile(storage, this.heroImage).then(next)
 })
 
 
