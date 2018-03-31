@@ -24,12 +24,23 @@ keystone.init({
   'wysiwyg images': true,
   'wysiwyg additional buttons': 'searchreplace visualchars,'
     + ' charmap ltr rtl pagebreak paste, forecolor backcolor,'
-    +' emoticons media, preview print ',
+    +' preview print',
   'wysiwyg additional plugins': 'example, table, advlist, anchor,'
-    + ' autolink, autosave, charmap, contextmenu, '
-    + ' directionality, emoticons, hr, pagebreak,'
+    + ' autolink, autosave, charmap, contextmenu,'
+    + ' directionality, hr, pagebreak,'
     + ' paste, preview, searchreplace, textcolor,'
     + ' visualblocks, visualchars, wordcount',
+  'wysiwyg additional options': {
+    paste_as_text: true,
+    textcolor_map: [
+      "000000", "Black",
+      "FFFFFF", "White",
+      "ECECEC", "Gray",
+      "F89F4F", "Orange",
+      "D86761", "Red",
+      "00A5B6", "Blue",
+    ]
+  },
   'auto update': true,
   'session': true,
   'auth': true,
@@ -60,6 +71,7 @@ keystone.set('nav', {
   about: ['participants', 'missions', 'donations', 'presentations', 'partners'],
   faq: ['faqs', 'faqsections'],
   posts: ['posts', 'postsections'],
+  courses: ['courses', 'coursefields', 'coursesections'],
   galleries: 'galleries',
   enquiries: 'enquiries',
   users: 'users',

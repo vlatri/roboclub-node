@@ -1,6 +1,6 @@
 import keystone from 'keystone'
 
-import { configStorage, fileValidate, resizeImage, removeFile } from '../utils/'
+import { configStorage, fileValidate, resizeImage, removeFile, updateChildrenWithRelatedParent } from '../utils/'
 
 
 const storage = configStorage('/images/posts/')
@@ -9,15 +9,15 @@ const { Types } = keystone.Field
 
 
 const Post = new keystone.List('Post', {
-  map: {name: 'heading'},
-  autokey: { path: 'slug', from: 'heading', unique: true },
+  map: {name: 'title'},
+  autokey: { path: 'slug', from: 'title', unique: true },
   singular: 'Post',
   plural: 'Posts',
 })
 
 
 Post.add({
-  heading: {type: String, required: true},
+  title: {type: String, required: true},
   author: {type: String},
   state: { type: Types.Select, options: 'draft, published, archived', default: 'draft', index: true },
   publishedDate: { type: Types.Date, index: true, dependsOn: { state: 'published' } },
@@ -29,15 +29,32 @@ Post.add({
 })
 
 
-const validateBriefDescLength = (text, max, next) =>
-  text && (text.length > max) && next(new Error(`Brief description is ${text.length - maxBriefDescriptionLength} characters too long.`))
+const validateBriefDescLength = (text, max) =>
+  new Promise((resolve, reject) =>
+    text && (text.length < max) ?
+      resolve() :
+      reject(new Error(`Brief description is ${text.length - maxBriefDescriptionLength} characters too long.`))
+  )
 
 Post.schema.pre('validate', function(next) {
-  validateBriefDescLength(this.briefDescription, maxBriefDescriptionLength, next)
+  Promise.all([
+    updateChildrenWithRelatedParent(Post.model, keystone.list('Postsection').model, this, () => {}),
+    validateBriefDescLength(this.briefDescription, maxBriefDescriptionLength)
+    // fileValidate(Post.model, storage, this, 'heroImage', {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'}, () => {},
+    //   (doc, fieldName, next) => resizeImage(doc[fieldName], 240, 240, next)
+    // ),
+  ]).then(next).catch(next)
 
-  fileValidate(Post.model, storage, this, 'heroImage', {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'}, next,
-    (doc, fieldName, next) => resizeImage(doc[fieldName], 240, 240, next)
-  )
+
+  // validateBriefDescLength(this.briefDescription, maxBriefDescriptionLength, err => {
+  //   if(err) return next(err)
+  //   updateChildrenWithRelatedParent(Post.model, keystone.list('Postsection').model, doc, err => {
+  //     if(err) return next(err)
+  //     fileValidate(Post.model, storage, this, 'heroImage', {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'}, next,
+  //       (doc, fieldName, next) => resizeImage(doc[fieldName], 240, 240, next)
+  //     )
+  //   })
+  // })
 })
 
 Post.schema.pre('remove', function(next) {
@@ -45,6 +62,6 @@ Post.schema.pre('remove', function(next) {
 })
 
 
-Post.defaultColumns = 'heading, sections, author|10%, state|10%, publishedDate|15%'
+Post.defaultColumns = 'title, sections, author|10%, state|10%, publishedDate|15%'
 
 Post.register()

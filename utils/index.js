@@ -59,15 +59,34 @@ export const fileValidate = (model, storage, doc, fieldName, fallback, next, cb)
     setFallback(model, doc, fieldName, fallback, next)
 
 
-export const linkValidate = (model, doc, fieldName, next) => doc[fieldName].slice(0, 4).toLowerCase() === 'http' ?
+export const linkValidate = (model, doc, fieldName, next) =>
+  doc[fieldName].slice(0, 4).toLowerCase() === 'http' ?
     next() :
     model.update({_id: doc._id}, {[fieldName]: `http://${doc[fieldName]}`}, next)
 
 
-export const ensureSequenceNumberIsUnique = (model, currentSection, sequenceNumber, next) =>
-  model.find({ sequenceNumber, relatedPost: currentSection.relatedPost, _id: {$ne: currentSection._id} }, {subtitle: true, relatedPost: true, relatedPostHeading: true, sequenceNumber: true}).exec((err, res) =>{
-    console.log(res);
-    res.length && sequenceNumber ?
-      next(err || new Error(`Section "${res[0].subtitle}" already has sequence number of ${sequenceNumber}.`))
-      : next()
-  })
+export const updateChildWithRelatedParent = (parentModel, childModel, childId, next) =>
+  parentModel.findOne({sections: childId}, {title: true}).exec((err, res) =>
+      err ?
+        next(err) :
+        childModel.update({_id: childId}, {
+          relatedParent: {
+            _id: (res && res._id) || null,
+            title: (res && res.title) || null,
+          }
+        }).exec(next)
+  )
+
+export const updateChildrenWithRelatedParent = (parentModel, childModel, parent, next) => {
+  // Reset parent for all children which think current parent is related to them
+  childModel.update({'relatedParent._id': parent._id},
+    {relatedParent: {_id: null, title: null}},
+    {multi: true}
+  ).exec((err, res) =>
+    // Set relation for only selected children
+    childModel.update({_id: {$in: parent.sections}}, {
+      relatedParent: {_id: parent._id, title: parent.title}
+    }, {multi: true}
+    ).exec(next)
+  )
+}

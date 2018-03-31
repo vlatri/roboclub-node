@@ -1,5 +1,7 @@
 import keystone from 'keystone'
 
+import { saveRelatedParent } from '../utils'
+
 
 const { Types } = keystone.Field
 
@@ -14,20 +16,16 @@ Faqsection.add({
   subtitle: {type: String, required: true},
   sequenceNumber: {type: Types.Number, default: 0 },
   text: {type: Types.Html, wysiwyg: true},
-  relatedFaq: {type: String, hidden: true},
+  relatedParent: {type: String, hidden: true, label: 'Related FAQ'},
 })
 
 Faqsection.schema.pre('validate', function(next) {
-  keystone.list('Faq').model.findOne({sections: this._id}, {title: true}).exec((err, res) => {
-    if(err) return next(err)
-    if(!res) return next()
-    Faqsection.model.update({_id: this._id}, {relatedFaq: res.title}).exec(next)
-  })
+  saveRelatedParent(keystone.list('Faq').model, Faqsection.model, this._id, next)
 })
 
 
 Faqsection.relationship({ ref: 'Faq', refPath: 'sections' })
 
-Faqsection.defaultColumns = 'subtitle, relatedFaq sequenceNumber|25%'
+Faqsection.defaultColumns = 'subtitle, relatedParent sequenceNumber|25%'
 
 Faqsection.register()
