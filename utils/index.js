@@ -45,33 +45,37 @@ export const resizeImage = (file, width, height) =>
       resolve()
   )
 
+
 export const removeFile = (storage, file, cb) => storage.removeFile(file, cb)
 
 
-export const fileValidate = (model, storage, doc, fieldName, fallback) =>
+export const removeFileAsync = (storage, file) =>
   new Promise((resolve, reject) =>
-    isFileReachable(doc[fieldName]) ? (
-      isMimetypeValid(doc[fieldName], fallback.mimetype.split('/')[0]) ?
-        resolve() :
-        fileExists(doc[fieldName]) ?
-          removeFile(storage, doc[fieldName], err =>
-            reject(err || new Error(`File ${doc[fieldName].originalname} was supposed to be an image.`))
-          )
-        : resolve()
-      )
-    : resolve(setFallback(model, doc, fieldName, fallback))
+    removeFile(storage, file, err =>
+      err ? reject(err) : resolve()
+    )
   )
 
 
-export const linkValidate = (model, doc, fieldName) =>
+export const fileValidate = (storage, file, fallback) =>
   new Promise((resolve, reject) =>
-    doc[fieldName] ?
-      (doc[fieldName].slice(0, 4).toLowerCase() === 'http' ?
-        resolve() :
-        model.update({_id: doc._id}, {[fieldName]: `http://${doc[fieldName]}`}).exec(err => err ? reject(err) : resolve())
-      ) :
-      resolve()
-    )
+    isFileReachable(file) ? (
+      isMimetypeValid(file, fallback.mimetype.split('/')[0]) ?
+        resolve(file) :
+        fileExists(file) ?
+          removeFile(storage, file, err =>
+            reject(err || new Error(`File ${file.originalname} was supposed to be an image.`))
+          )
+        : resolve(fallback)
+      )
+    : resolve(fallback)
+  )
+
+
+export const linkValidate = link => link ?
+  link.slice(0, 4).toLowerCase() === 'http' ?
+    link : `https://${link}`
+  : link
 
 
 export const updateChildWithRelatedParent = (parentModel, childModel, childId) =>
@@ -84,8 +88,9 @@ export const updateChildWithRelatedParent = (parentModel, childModel, childId) =
         _id: res._id,
         title: res.title,
       }
-    }).exec(next)
+    }).exec()
   })
+
 
 export const updateChildrenWithRelatedParent = (parentModel, childModel, parent) =>
   // Reset parent for all children which think current parent is related to them

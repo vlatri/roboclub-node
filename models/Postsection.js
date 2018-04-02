@@ -1,6 +1,11 @@
 import keystone from 'keystone'
 
-import { configStorage, removeFile, ensureSequenceNumberIsUnique } from '../utils/'
+import {
+  configStorage,
+  removeFile,
+  updateChildWithRelatedParent,
+  fileValidate,
+} from '../utils/'
 
 
 const storage = configStorage('/images/posts/')
@@ -18,16 +23,17 @@ Postsection.add({
   showSubtitle: {type: Boolean, default: true},
   sequenceNumber: {type: Types.Number, default: 0 },
   text: {type: Types.Html, wysiwyg: true, height: 300},
-  image: {type: Types.File, storage},
+  image: {type: Types.File, storage, thumb: true},
   relatedPost: {type: String, hidden: true},
 })
 
-Postsection.schema.pre('validate', function(next) {
-  keystone.list('Post').model.findOne({sections: this._id}, {heading: true}).exec((err, res) => {
-    if(err) return next(err)
-    if(!res) return next()
-    Postsection.model.update({_id: this._id}, {relatedPost: res.heading}).exec(next)
-  })
+Postsection.schema.pre('save', async function(next) {
+  const {image, _id} = this
+
+  await updateChildWithRelatedParent(keystone.list('Post').model, Postsection.model, _id).catch(next)
+  this.image = image.filename ? await fileValidate(storage, image, {mimetype: 'image/jpeg'}).catch(next) : {}
+
+  next()
 })
 
 

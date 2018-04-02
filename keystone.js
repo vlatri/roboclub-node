@@ -72,7 +72,7 @@ keystone.set('nav', {
   faq: ['faqs', 'faqsections'],
   posts: ['posts', 'postsections'],
   courses: ['courses', 'coursefields', 'coursesections'],
-  galleries: 'galleries',
+  albums: ['albums', 'albumitems'],
   enquiries: 'enquiries',
   users: 'users',
 });

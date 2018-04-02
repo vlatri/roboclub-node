@@ -1,6 +1,12 @@
 import keystone from 'keystone'
 
-import { configStorage, fileValidate, resizeImage, removeFile, linkValidate } from '../utils/'
+import {
+  configStorage,
+  fileValidate,
+  resizeImage,
+  removeFile,
+  linkValidate
+} from '../utils/'
 
 const storage = configStorage('/images/partners/')
 const { Types } = keystone.Field
@@ -15,17 +21,18 @@ const Partner = new keystone.List('Partner', {
 Partner.add({
   title: {type: String, required: true},
   text: {type: Types.Html, wysiwyg: true },
-  image: {type: Types.File, storage, note: 'Will be resized to 150x75' },
+  image: {type: Types.File, storage, note: 'Will be resized to 150x75', thumb: true},
   link: {type: Types.Url},
 })
 
 
-Partner.schema.post('save', function(doc, next) {
-  linkValidate(Partner.model, doc, 'link', next)
+Partner.schema.pre('save', async function(next) {
+  this.link = linkValidate(this.link)
+  this.image =
+    await fileValidate(storage, this.image, {url: '/images/fallbacks/partner.jpg', mimetype: 'image/jpeg'})
+      .then(resizeImage(this.image, 150, 75))
 
-  fileValidate(Partner.model, storage, doc, 'image', {url: '/fallbacks/partner.jpg', mimetype: 'image/jpeg'}, next,
-    (doc, fieldName, next) => resizeImage(doc[fieldName], 150, 75, next)
-  )
+  next()
 })
 
 Partner.schema.pre('remove', function(next) {

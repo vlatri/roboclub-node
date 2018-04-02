@@ -1,6 +1,11 @@
 import keystone from 'keystone'
 
-import { configStorage, validateMimeType } from '../utils/'
+import {
+  configStorage,
+  validateMimeType,
+  linkValidate,
+  fileValidate,
+} from '../utils/'
 
 
 const { Types } = keystone.Field
@@ -15,17 +20,24 @@ const Participant = new keystone.List('Participant', {
 
 Participant.add({
   person: {type: String, required: true, index: true},
-  bio: {type: Types.Html, wysiwyg: true, height: 300},
+  bio: {type: Types.Html, wysiwyg: true, height: 300, required: true, initial: true, index: true,},
   facebookLink: {type: Types.Url},
   instagramLink: {type: Types.Url},
   avatar: {
+    index: true,
     type: Types.File,
     storage,
+    thumb: true,
   },
 })
 
-Participant.schema.pre('validate', function(next) {
-  if(this.avatar.url) validateMimeType(this.avatar, 'image', next)
+Participant.schema.pre('validate', async function(next) {
+  this.facebookLink = linkValidate(this.facebookLink)
+  this.instagramLink = linkValidate(this.instagramLink)
+  this.avatar =
+    await fileValidate(storage, this.avatar, {url: '/images/fallbacks/participant.png', mimetype: 'image/png'})
+      .catch(next)
+
   next()
 })
 

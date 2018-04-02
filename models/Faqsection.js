@@ -1,6 +1,6 @@
 import keystone from 'keystone'
 
-import { saveRelatedParent } from '../utils'
+import { updateChildWithRelatedParent } from '../utils'
 
 
 const { Types } = keystone.Field
@@ -25,6 +25,7 @@ Faqsection.add({
 Faqsection.schema.pre('validate', function(next) {
   updateChildWithRelatedParent(keystone.list('Faq').model, Faqsection.model, this._id)
     .then(next)
+    .catch(next)
 })
 
 

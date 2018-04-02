@@ -25,7 +25,8 @@ Coursesection.add({
 })
 
 Coursesection.schema.pre('validate', function(next) {
-  updateChildWithRelatedParent(keystone.list('Course').model, Coursesection.model, this._id).then(next)
+  updateChildWithRelatedParent(keystone.list('Course').model, Coursesection.model, this._id)
+    .then(next).catch(next)
 })
 
 Coursesection.relationship({ ref: 'Course', refPath: 'sections' })

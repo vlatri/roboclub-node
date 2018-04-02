@@ -1,12 +1,14 @@
 import keystone from 'keystone'
-import gm from 'gm'
 
-import { configStorage } from '../utils/'
+import {
+  configStorage,
+  fileValidate,
+  removeFile,
+  resizeImage,
+} from '../utils/'
 
 
 const { Types } = keystone.Field
-const im = gm.subClass({imageMagick: true})
-
 const storage = configStorage('/images/quotesAuthors/')
 
 const Quote = new keystone.List('Quote', {
@@ -24,27 +26,22 @@ Quote.add({
     type: Types.File,
     storage,
     note: 'Will be resized to 64x64',
+    thumb: true,
   },
 })
 
-Quote.schema.pre('validate', function(next) {
-  const { path, filename } = this.authorAvatar
+Quote.schema.pre('validate', async function(next) {
+  this.authorAvatar =
+    await fileValidate(storage, this.authorAvatar, {url: '/images/fallbacks/quotesAuthors.png', mimetype: 'image/png'})
+      .then(resizeImage(this.authorAvatar, 64, 64))
+      .catch(next)
 
-  const url = path + filename
-  if(!url) {
-    // Either new Quote is being created or no image was specified,
-    // set the fallback one and omit it's resizing.
-    this.authorAvatar = {url: '/images/fallbacks/quotesAuthors.png', mimetype: 'image/png'}
-    return next()
-  }
-  im(url)
-  .resizeExact(64, 64)
-  .write(url, next)
+  next()
 })
 
 // TODO: Check for obsolete files and delete those.
 Quote.schema.pre('remove', function(next) {
-  storage.removeFile(this.authorAvatar, next)
+  removeFile(storage, this.coverImage, next)
 })
 
 Quote.defaultColumns = 'author|20%, text'

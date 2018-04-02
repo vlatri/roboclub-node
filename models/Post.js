@@ -28,8 +28,8 @@ Post.add({
   author: {type: String},
   state: { type: Types.Select, options: 'draft, published, archived', default: 'draft', index: true },
   publishedDate: { type: Types.Date, index: true, dependsOn: { state: 'published' } },
-  coverImage: {type: Types.File, storage},
-  heroImage: {type: Types.File, storage, note: 'Small square image used on previews. Will be resized to 240x240.'},
+  coverImage: {type: Types.File, storage, thumb: true},
+  heroImage: {type: Types.File, storage, note: 'Small square image used on previews. Will be resized to 240x240.', thumb: true},
   briefDescription: {type: String, note: `${maxBriefDescriptionLength} characters max.`},
   maxBriefDescriptionLength: {type: Number, hidden: true, default: maxBriefDescriptionLength, required: true},
   sections: { type: Types.Relationship, ref: 'Postsection', many: true },
@@ -40,14 +40,16 @@ Post.add({
 Post.schema.pre('validate', async function(next) {
   await updateChildrenWithRelatedParent(Post.model, keystone.list('Postsection').model, this).catch(next)
 
-  Promise.all([
-    validateBriefDescLength(this.briefDescription || '', maxBriefDescriptionLength),
-    fileValidate(Post.model, storage, this, 'coverImage', {url: '/images/fallbacks/homeCover.jpg', mimetype: 'image/jpeg'}),
-    fileValidate(Post.model, storage, this, 'heroImage', {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
-      .then(resizeImage(this.heroImage, 240, 240))
-  ])
-  .then(next)
-  .catch(next)
+  this.coverImage =
+    await fileValidate(storage, this.coverImage, {url: '/images/fallbacks/homeCover.jpg', mimetype: 'image/jpeg'})
+      .catch(next)
+  this.heroImage =
+    await fileValidate(storage, this.heroImage, {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
+      .then(resizeImage(this.heroImage, 240, 240)).catch(next)
+
+  await validateBriefDescLength(this.briefDescription || '', maxBriefDescriptionLength).catch(next)
+
+  next()
 })
 
 Post.schema.pre('remove', function(next) {

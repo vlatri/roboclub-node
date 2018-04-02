@@ -35,7 +35,7 @@ Course.add({
   field: {type: Types.Relationship, index: true, initial: true, ref: 'Coursefield', many: false},
   age: {type: Number, required: true, initial: true, index: true, default: 0},
   price: {type: Number, note: '0 means for free', required: true, initial: true, index: true, default: 0},
-  heroImage: {type: Types.File, storage, note: 'Small square image used on previews. Will be resized to 240x240.'},
+  heroImage: {type: Types.File, storage, note: 'Small square image used on previews. Will be resized to 240x240.', thumb: true},
   briefDescription: {type: String, note: `${maxBriefDescriptionLength} characters max.`, required: true, initial: true, index: true},
   plan: {type: Types.Html, wysiwyg: true, label: 'Course plan'},
   leftColumnSubtitle: {type: String},
@@ -48,16 +48,17 @@ Course.add({
 })
 
 Course.schema.pre('validate', async function(next) {
-  await updateChildrenWithRelatedParent(Course.model, keystone.list('Coursesection').model, this).catch(next)
+  const {applyToCourseLink, heroImage} = this
 
-  Promise.all([
-    validateBriefDescLength(this.briefDescription || '', maxBriefDescriptionLength),
-    linkValidate(Course.model, this, 'applyToCourseLink'),
-    fileValidate(Course.model, storage, this, 'heroImage', {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
-      .then(resizeImage(this.heroImage, 240, 240))
-  ])
-  .then(next)
-  .catch(next)
+  await updateChildrenWithRelatedParent(Course.model, keystone.list('Coursesection').model, this).catch(next)
+  await validateBriefDescLength(this.briefDescription || '', maxBriefDescriptionLength).catch(next)
+
+  this.applyToCourseLink = linkValidate(applyToCourseLink)
+  this.heroImage =
+    await fileValidate(storage, heroImage, {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
+    .then(resizeImage(heroImage, 240, 240)).catch(next)
+
+  next()
 })
 
 Course.schema.pre('remove', function(next) {

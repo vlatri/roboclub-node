@@ -17,7 +17,7 @@ const Layout = new keystone.List('Layout', {
 Layout.add({
   mainTitle: {type: String, required: true},
   mainSubtitle: {type: String},
-  coverImage: {type: Types.File, storage},
+  coverImage: {type: Types.File, storage, thumb: true},
   articleTitle: {type: String},
   articleLeftColumn: {type: Types.Html, wysiwyg: true},
   articleRightColumn: {type: Types.Html, wysiwyg: true},
@@ -27,14 +27,22 @@ Layout.add({
 })
 
 
-Layout.schema.post('save', function(doc, next) {
-  linkValidate(Layout.model, doc, 'registerLink', next)
+Layout.schema.pre('save', async function(next) {
+  const { registerLink, coverImage } = this
 
-  fileValidate(Layout.model, storage, doc, 'coverImage', {url: '/fallbacks/homeCover.jpg', mimetype: 'image/jpeg'}, next)
+  this.registerLink = linkValidate(registerLink)
+  this.coverImage =
+    await fileValidate(storage, coverImage, {
+      url: '/images/fallbacks/homeCover.jpg',
+      mimetype: 'image/jpeg'
+    }).catch(next)
+
+  next()
 })
 
 Layout.schema.pre('remove', function(next) {
-  removeFile(storage, this.coverImage, next)
+  removeFile(storage, this.coverImage)
+  .then(next).catch(next)
 })
 
 Layout.defaultColumns = 'mainTitle, mainSubtitle'

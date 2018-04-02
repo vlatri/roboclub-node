@@ -1,5 +1,6 @@
 import keystone from 'keystone'
 
+import { linkValidate } from '../utils/'
 
 const { Types } = keystone.Field
 
@@ -17,6 +18,12 @@ Presentation.add({
   downloadLink: {type: Types.Url},
 })
 
+Presentation.schema.pre('save', function(next) {
+  this.viewLink = linkValidate(this.viewLink)
+  this.downloadLink = linkValidate(this.downloadLink)
+
+  next()
+})
 
 Presentation.defaultColumns = 'title, text'
 

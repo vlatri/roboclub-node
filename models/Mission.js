@@ -29,7 +29,7 @@ Mission.add({
     ],
   },
   subtitle: {type: String},
-  image: {type: Types.File, storage},
+  image: {type: Types.File, storage, thumb: true},
   imagePosition: {
     type: Types.Select,
     numeric: true,
@@ -44,8 +44,12 @@ Mission.add({
   rightColumn: {type: Types.Html, wysiwyg: true},
 })
 
-Mission.schema.post('save', function(doc, next) {
-  fileValidate(Mission.model, storage, doc, 'image', {url: '/fallbacks/mission.jpg', mimetype: 'image/jpeg'}, next)
+Mission.schema.pre('validate', async function(next) {
+  this.image =
+    await fileValidate(storage, this.image, {url: '/images/fallbacks/mission.jpg', mimetype: 'image/jpeg'})
+      .catch(next)
+
+  next()
 })
 
 
