@@ -9096,17 +9096,17 @@ template {
   .basic-btn.yellow, .pager-list__link {
     background: #f89f4f;
     color: #fff;
-    box-shadow: 0 3px 0 0 #d38d46; }
+    box-shadow: 0 3px 0 0 #f6841e; }
     .basic-btn.yellow:hover, .pager-list__link:hover {
-      box-shadow: 0 1px 0 0 #d38d46;
+      box-shadow: 0 1px 0 0 #f6841e;
       top: 2px;
       color: #fff; }
   .basic-btn.blue, .blue.pager-list__link {
     background: #00A5B6;
     color: #fff;
-    box-shadow: 0 3px 0 0 #d38d46; }
+    box-shadow: 0 3px 0 0 #007783; }
     .basic-btn.blue:hover, .blue.pager-list__link:hover {
-      box-shadow: 0 1px 0 0 #d38d46;
+      box-shadow: 0 1px 0 0 #007783;
       top: 2px;
       color: #fff; }
   .basic-btn.centered, .centered.pager-list__link {
@@ -9255,6 +9255,7 @@ input[type="reset"]:focus {
         .header.inner .main-menu__item.has-sub .main-menu__link:hover {
           color: #fff; }
       .header.inner .main-menu__link {
+        cursor: pointer;
         height: 54px;
         display: flex;
         padding: 0 9px 2px;
@@ -9444,7 +9445,7 @@ input[type="reset"]:focus {
   margin: 0 0 36px;
   font-size: 21px;
   letter-spacing: 0.01em;
-  background: url(../images/icons/gears-white.svg) center center no-repeat;
+  background: url(/images/icons/gears-white.svg) center center no-repeat;
   background-size: 1300px auto;
   background-color: #eba351; }
 
@@ -9487,13 +9488,7 @@ input[type="reset"]:focus {
   margin: 0 0 -42px;
   min-height: 622px;
   position: relative;
-  /*background: url(/svg/intro-bottom.svg) no-repeat bottom center
-    ,linear-gradient(
-    rgba(67, 65, 74, 0.6),
-    rgba(67, 65, 74, 0.6)
-    ), url(../img/intro-bg.jpg) no-repeat center;
-  background-size: 100% 150px, auto, cover;*/
-  background: linear-gradient(rgba(67, 65, 74, 0.6), rgba(67, 65, 74, 0.6)), url(/images/intro-bg.jpg) no-repeat center;
+  background: linear-gradient(rgba(67, 65, 74, 0.6), rgba(67, 65, 74, 0.6)), url(/images/fallbacks/homeCover.jpg) no-repeat center;
   background-size: auto, cover; }
   .intro:before {
     content: '';
@@ -9504,7 +9499,7 @@ input[type="reset"]:focus {
     width: 100%;
     height: 180px;
     min-width: 1280px;
-    background: url(../images/icons/intro-bottom.svg) no-repeat bottom center;
+    background: url(/images/icons/intro-bottom.svg) no-repeat bottom center;
     background-size: 100%; }
   .intro__inner {
     max-width: 500px; }
@@ -9561,7 +9556,7 @@ input[type="reset"]:focus {
 
 .quotes-section {
   min-height: 302px;
-  background: url(../images/icons/gears.svg) center center no-repeat;
+  background: url(/images/icons/gears.svg) center center no-repeat;
   background-color: #00b8d4;
   background-size: 1300px auto; }
   .quotes-section:before {
@@ -9571,7 +9566,7 @@ input[type="reset"]:focus {
     display: block;
     display: block;
     margin: 0 auto 5px;
-    background: url(../images/icons/quotes.svg) no-repeat; }
+    background: url(/images/icons/quotes.svg) no-repeat; }
 
 .quotes-slider__slide {
   margin: 0; }
@@ -9717,7 +9712,7 @@ input[type="reset"]:focus {
   margin: 12px 0 0;
   display: flex;
   align-items: center;
-  background: url(../images/ready_bg.jpg) center center no-repeat;
+  background: url(/images/ready_bg.jpg) center center no-repeat;
   background-size: cover; }
 
 .partners-list {
@@ -9969,9 +9964,9 @@ input[type="reset"]:focus {
       position: absolute;
       display: inline-block; }
   .faq-wrapper .item-wrapper .title-wrapper span:before {
-    background: url("../images/icons/plus-white.svg") 0 0/100% 100% no-repeat; }
+    background: url("/images/icons/plus-white.svg") 0 0/100% 100% no-repeat; }
   .faq-wrapper .item-wrapper .subtitle-wrapper span:before {
-    background: url("../images/icons/plus.svg") 0 0/100% 100% no-repeat; }
+    background: url("/images/icons/plus.svg") 0 0/100% 100% no-repeat; }
   .faq-wrapper .item-wrapper .title-wrapper .title-inner-wrapper {
     padding: 0; }
   .faq-wrapper .item-wrapper .title-wrapper .title {
@@ -10184,7 +10179,7 @@ input[type="reset"]:focus {
   border-radius: 5px;
   border-left: solid 10px #f79f50;
   position: relative;
-  height: 100px;
+  min-height: 100px;
   text-overflow: ellipsis;
   overflow: hidden; }
   .partners .partner-wrapper .partner-logo-wrapper {

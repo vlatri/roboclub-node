@@ -1,0 +1,20 @@
+extends ../layouts/default
+
+
+block content
+  main.content.gallery
+    h2.content-title= album.title
+    .container
+      .row.filter-wrapper
+        .basic-btn.yellow.filter-button.active(data-filter='all') Все
+        .basic-btn.yellow.filter-button(data-filter='photo') Фото
+        .basic-btn.yellow.filter-button(data-filter='video') Відео
+      .row
+        each item in album.sections
+          +preview({
+            title: item.title,
+            attrs: {'data-type': item.type},
+            date: album.publishedDate,
+            bgSRC: album.heroImage.url,
+            gallery: true,
+          })

@@ -74,6 +74,7 @@ keystone.set('nav', {
   courses: ['courses', 'coursefields', 'coursesections'],
   albums: ['albums', 'albumitems'],
   enquiries: 'enquiries',
+  common: 'commons',
   users: 'users',
 });
 

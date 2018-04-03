@@ -6,11 +6,11 @@ mixin faq(faqs)
           .title(id=`item-title-${faqIndex}`)
             span= faq.title
       each section, sectionIndex in faq.sections
-        .subtitle-wrapper.row(id=`item-subtitle-${faqIndex}-${sectionIndex}`, class=`item-${itemIndex}-content`)
+        .subtitle-wrapper.row(id=`item-subtitle-${faqIndex}-${sectionIndex}`, class=`item-${faqIndex}-content`)
           .col-xs-12
             .subtitle
               span= section.subtitle
-        .text-wrapper.row(id=`item-text-${itemIndex}-${sectionIndex}`, class=`item-${itemIndex}-content`)
+        .text-wrapper.row(id=`item-text-${faqIndex}-${sectionIndex}`, class=`item-${faqIndex}-content`)
           .col-xs-12
             .text
               span!= section.text

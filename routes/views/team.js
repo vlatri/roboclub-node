@@ -16,10 +16,7 @@ exports = module.exports = function (req, res) {
     const q = keystone.list('Participant').model.find()
 
     q.exec(function (err, results) {
-      locals.team = results.map(result => ensureImageHasUrl(result.toObject(), 'avatar', {
-          url: '/images/fallbacks/teamMember.png', mimetype: 'image/png',
-        })
-      )
+      locals.team = results
 
       next(err)
     })

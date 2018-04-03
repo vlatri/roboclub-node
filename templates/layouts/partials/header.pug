@@ -6,7 +6,10 @@ header.row.header.inner
     ul.main-menu
       each link in navLinks
         li.main-menu__item(class=(section == link.key ? 'active' : null), class=(link.pages ? 'has-sub' : null), data-navlink-key=link.key)
-          a.main-menu__link(href=link.href)= link.label
+          if link.key == 'contacts'
+            span.main-menu__link= link.label
+          else
+            a.main-menu__link(href=link.href)= link.label
           if(link.pages)
             ul.sub-menu
               each sublink in link.pages

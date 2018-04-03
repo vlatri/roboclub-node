@@ -44,6 +44,7 @@ Course.add({
   rightColumnText: {type: Types.Html, wysiwyg: true},
   maxBriefDescriptionLength: {type: Number, hidden: true, default: maxBriefDescriptionLength, required: true},
   applyToCourseLink: {type: Types.Url},
+  relatedAlbum: {type: Types.Relationship, ref: 'Album', many: false},
   sections: { type: Types.Relationship, ref: 'Coursesection', many: true },
 })
 

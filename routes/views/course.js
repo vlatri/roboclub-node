@@ -22,10 +22,13 @@ exports = module.exports = function (req, res) {
         active: true,
         slug: locals.filters.course,
       })
+      .populate({path: 'relatedAlbum', populate: {path: 'sections'}})
       .populate({path: 'sections', options: { sort: {sequenceNumber: 1} } })
 
 
     q.exec(function (err, result) {
+      // result.relatedAlbum.sections
+      // keystone.list('Album').model.populate(result, {path: 'sections'})
       locals.course = result
       next(err)
     })

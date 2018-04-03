@@ -30,10 +30,10 @@
 	&.yellow{
 		background: $clr-yellow;
 		color: #fff;
-		box-shadow: 0 3px 0 0 #d38d46;
+		box-shadow: 0 3px 0 0 darken($clr-yellow, 10);
 
 		&:hover{
-			box-shadow: 0 1px 0 0 #d38d46;
+			box-shadow: 0 1px 0 0 darken($clr-yellow, 10);
 			top: 2px;
 			color: #fff;
 		}
@@ -42,10 +42,10 @@
 	&.blue{
 		background: $clr-blue;
 		color: #fff;
-		box-shadow: 0 3px 0 0 #d38d46;
+		box-shadow: 0 3px 0 0 darken($clr-blue, 10);
 
 		&:hover{
-			box-shadow: 0 1px 0 0 #d38d46;
+			box-shadow: 0 1px 0 0 darken($clr-blue, 10);
 			top: 2px;
 			color: #fff;
 		}

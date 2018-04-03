@@ -5,9 +5,18 @@ mixin quote(author, text, avatar)
     cite.quotes-slider__author=author
     img.quotes-slider__photo(src=avatar.url, height='46', width='46', alt='', title='')
 
-block content
+block css
+  style.
+    .intro {
+      background:
+        linear-gradient(
+          rgba(67, 65, 74, 0.6),
+          rgba(67, 65, 74, 0.6)
+        ), url(!{layout.coverImage.url}) no-repeat center;
+    }
 
-  //- .preloader
+block content
+  .preloader
     .preloader__inner
       .preloader__gear
       .preloader__logo
@@ -17,6 +26,7 @@ block content
         h1.intro__title= layout.mainTitle
         p.intro__p=layout.mainSubtitle
         a.basic-btn.red.intro__btn(href=layout.registerLink) Зареєструватись
+        //- Maybe one day...
         //- button.intro__btn-video(type='button')
         //-   i.fa.fa-play-circle(aria-hidden='true')
         //-   |  Дивитись відео
@@ -24,14 +34,10 @@ block content
     section.section.mission-section
       .container
         .row
-          h3.mission-section__title Місія
+          h3.mission-section__title= layout.articleTitle
         .row.cols-wrapper
-          .col-xs-6.col-sm-4
-            p
-              | Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-          .col-xs-6.col-sm-4
-            p
-              | Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+          .col-xs-6.col-sm-4!=layout.articleLeftColumn
+          .col-xs-6.col-sm-4!=layout.articleRightColumn
           .col-xs-offset-4.col-xs-4.robo-wrapper
             img(src='/images/icons/robo.svg', alt='RoboClub IF')
     section.section.quotes-section
@@ -56,8 +62,8 @@ block content
           button.basic-btn.yellow.centered(type='button') Всі новини
     section.section.ready.dark
       .container
-        h2.section__title Готові розпочати?
-        h3.section__subtitle Lorem Ipsum is simply dummy text of the printing and typesetting industry
+        h2.section__title= layout.introSubtitle
+        h3.section__subtitle!= layout.introText
         a.basic-btn.yellow.centered(href=layout.registerLink) Зареєструватись
     section.section.partners.container
       h2.section__title Наші партнери

@@ -1,8 +1,6 @@
 extends ../layouts/default
 
 block content
-  script.
-    console.log(!{JSON.stringify(course)})
   main.content.course
     h2.content-title=course.title
     .container
@@ -23,11 +21,16 @@ block content
             span.desc!=course.rightColumnText
     .container-fluid.gallery-preview-wrapper
       .container
+        script.
+          console.log(!{JSON.stringify(course.relatedAlbum)})
         .row.gallery-preview
           h3 Галерея
           .gallery-preview-slider
-            .slide
-              img(src='images/news_1.jpg', alt='Slide')
+            each item in course.relatedAlbum.sections
+              if item.type == 'photo'
+                .slide
+                  a(href=item.photo.url).swipebox(title=item.title)
+                    img(src=item.photo.url, alt=item.title)
     .container.lessons-desc
       .row.lesson-desc
         each section in course.sections
@@ -48,8 +51,6 @@ block content
       h2.see-also-header Дивіться також
     .container.courses-preview-wrapper
       each course in courses
-        script.
-          console.log(!{JSON.stringify(course)})
         +preview({
           title: course.briefDescription,
           attrs: { 'data-cat': course.field, 'data-age': course.age, 'data-price': course.price && 'premium' },

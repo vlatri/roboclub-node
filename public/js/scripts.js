@@ -35,13 +35,17 @@ $(function() {
       $filteredItems = $('.courses .preview')
 
     if (!filterType) return 0
-    if(filterVal === 'all') return $filteredItems.show()
+    if(filterVal === 'all') return $filteredItems.show(300)
 
     const filterFunc = filterType === 'age' ?
       ((i, el) => $(el).data(filterType) <= filterVal) :
       ((i, el) => $(el).data(filterType) == filterVal)
 
-    $filteredItems.hide().filter(filterFunc).show()
+    const $itemsToShow = $filteredItems.filter(filterFunc)
+    const $itemsToHide = $filteredItems.filter((i, el) => !filterFunc(i, el))
+
+    $itemsToHide.hide(300)
+    $itemsToShow.show(300)
 
   })
 
@@ -121,25 +125,41 @@ $(document).ready(function() {
   })
 })
 
+
+$.fn.filterData = function(key, value, equality) {
+  return this.filter(function() {
+    return equality ?
+      $(this).data(key) == value :
+      $(this).data(key) != value
+  })
+}
+
 $(document).ready(function() { // Gallery filter
   $('.filter-button').on('click', function() {
     $('.filter-button.active').removeClass('active')
     $(this).addClass('active')
 
-    var filterType = 'type',
-      filterVal = $(this).data('filter'),
-      $filteredItems = $('.preview')
+    const filterType = 'type'
+    const filterVal = $(this).data('filter')
+    const $filteredItems = $('.preview')
 
     if (!filterType) return 0
-    if(filterVal === 'all') return $filteredItems.show()
+    if(filterVal === 'all') return $filteredItems.show(300).addClass('swipebox')
 
-    $filteredItems.hide().removeClass('swipebox').filterData(filterType, filterVal).show().addClass('swipebox')
+    const filterFunc = (i, el) => $(el).data(filterType) == filterVal
+
+    const $itemsToShow = $filteredItems.filter(filterFunc)
+    const $itemsToHide = $filteredItems.filter((i, el) => !filterFunc(i, el))
+
+    $itemsToHide.hide(300).removeClass('swipebox')
+    $itemsToShow.show(300).addClass('swipebox')
+
   })
 })
 
 $(document).ready(function (){
   $.fatNav()
-  $('.goto-contacts').click(function() {
+  $('[data-navlink-key="contacts"]').click(function() {
     $("html, body").animate({ scrollTop: $('.contacts-section').offset().top }, 1000);
   })
 })

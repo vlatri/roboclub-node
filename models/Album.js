@@ -36,7 +36,7 @@ Album.schema.pre('validate', async function(next) {
 
   await updateChildrenWithRelatedParent(Album.model, keystone.list('Albumitem').model, this).catch(next)
 
-  this.heroImage = await fileValidate(storage, heroImage, {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
+  this.heroImage = awaitfileValidate(storage, heroImage, {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
     .then(resizeImage(this.heroImage, 240, 240)).catch(next)
 
   next()
@@ -46,6 +46,7 @@ Album.schema.pre('remove', function(next) {
   removeFile(storage, this.heroImage).then(next)
 })
 
+Album.relationship({ ref: 'Course', refPath: 'relatedAlbum' })
 
 Album.defaultColumns = 'title, sections, publishedDate|15%'
 

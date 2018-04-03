@@ -1,0 +1,16 @@
+extends ../layouts/default
+
+
+block content
+  main.content.gallery
+    h2.content-title Галерея
+    .container
+      .row.gallery-wrapper
+        each album in albums
+          +preview({
+            title: album.title,
+            date: album.publishedDate,
+            bgSRC: album.heroImage.url,
+            stripy: 'blue',
+            link: `/album/${album.slug}`,
+          })
