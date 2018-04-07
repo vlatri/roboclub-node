@@ -1,24 +1,20 @@
 import keystone from 'keystone'
 
 
-exports = module.exports = function (req, res) {
-
+exports = module.exports = (req, res) => {
   const view = new keystone.View(req, res)
   const locals = res.locals
 
-  // Set locals
+  locals.title = 'Презентації'
   locals.section = 'about'
 
-  // Load team
   view.on('init', function (next) {
-    keystone.list('Presentation').model.find().exec(function (err, results) {
-
+    keystone.list('Presentation').model
+    .find()
+    .exec((err, results) => {
       locals.presentations = results
-
       next()
     })
   })
-
-  // Render the view
   view.render('presentations')
 }

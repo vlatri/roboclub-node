@@ -1,5 +1,5 @@
 mixin imageContainer(config)
-  .col-md-4.column-wrapper
+  .col-xs-10.col-xs-offset-1.col-md-offset-0.col-md-4.column-wrapper
     .column
       img(class= config.imagePosition ? 'image-right' : 'image-left', src= config.image && config.image.url, alt='Cover image')
 
@@ -12,11 +12,11 @@ mixin mission(config)
   .row.articles-row
     if !config.imagePosition
       +imageContainer(config)
-    .col-md-4.column-wrapper
+    .col-md-offset-0.col-xs-10.col-xs-offset-1.col-md-4.column-wrapper
       .column(class= config.imagePosition && 'right-column')
         h3.subtitle!= config.subtitle
         span!= config.leftColumn
-    .col-md-4.column-wrapper
+    .col-md-offset-0.col-xs-10.col-xs-offset-1.col-md-4.column-wrapper
       .column(class= !config.imagePosition && 'left-column')
         h3.subtitle.unselectable
         span!= config.rightColumn

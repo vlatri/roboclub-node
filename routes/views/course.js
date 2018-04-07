@@ -3,42 +3,38 @@ import keystone from 'keystone'
 import { fixPublishedDate} from '../../utils'
 
 
-exports = module.exports = function (req, res) {
+exports = module.exports = (req, res) => {
 
   const view = new keystone.View(req, res)
-  const locals = res.locals
+  const { locals } = res
 
   // Set locals
   locals.section = 'courses'
   locals.filters = {
     course: req.params.course,
   }
-  locals.courses = []
 
-  // Load the current post
+  // Load the current course
   view.on('init', function (next) {
-    const q = keystone.list('Course').model
-      .findOne({
-        active: true,
-        slug: locals.filters.course,
-      })
-      .populate({path: 'relatedAlbum', populate: {path: 'sections'}})
-      .populate({path: 'sections', options: { sort: {sequenceNumber: 1} } })
-
-
-    q.exec(function (err, result) {
-      // result.relatedAlbum.sections
-      // keystone.list('Album').model.populate(result, {path: 'sections'})
+    keystone.list('Course').model
+    .findOne({
+      active: true,
+      slug: locals.filters.course,
+    })
+    .populate({path: 'relatedAlbum', populate: {path: 'sections'}})
+    .populate({path: 'sections', options: { sort: {sequenceNumber: 1} } })
+    .exec(function (err, result) {
       locals.course = result
       next(err)
     })
-
   })
 
-  // Load other posts
+  // Load other courses
   view.on('init', function (next) {
 
-    keystone.list('Course').model.find({slug: {$ne: req.params.post}, active: true}).select({
+    keystone.list('Course').model
+    .find({slug: {$ne: req.params.post}, active: true})
+    .select({
       title: 1,
       briefDescription: 1,
       heroImage: 1,
@@ -46,13 +42,11 @@ exports = module.exports = function (req, res) {
       age: 1,
     })
     .limit(4)
-    .exec()
-    .then(res => {
+    .exec((err, res) => {
+      locals.title = res.title
       locals.courses = res
-      next()
+      next(err)
     })
-    .catch(next)
-
   })
 
   // Render the view

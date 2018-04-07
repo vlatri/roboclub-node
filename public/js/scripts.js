@@ -112,8 +112,15 @@ $(document).ready(function() {
     autoplay: true,
     autoplaySpeed: 5000,
     arrows: false,
-    slidesToShow: 6,
+    slidesToShow: 4,
     swipeToSlide: true,
+    responsive: [{
+      breakpoint: 992,
+      settings: {
+        slidesToShow: 2,
+        arrows: false
+      }
+    }],
   })
   $('.swipebox').swipebox({ loopAtEnd: true })
   $('.slick-news-slider').slick({

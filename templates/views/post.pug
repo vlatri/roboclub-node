@@ -1,14 +1,14 @@
 extends ../layouts/default
 
 block content
-  main.content
-    h2.content-title= data.post.title
+  main.content.post
+    h2.content-title= post.title
     .container
       .article-container
         article.article
-          if data.post.coverImage
-            img(src=data.post.coverImage.url, alt=data.post.title)
-          each section in data.post.sections
+          if post.coverImage
+            img(src=post.coverImage.url, alt=post.title)
+          each section in post.sections
             if section.subtitle && section.showSubtitle
               h3=section.subtitle
             if section.text
@@ -18,12 +18,12 @@ block content
         footer.article-footer
           .article-footer__share
           .article-footer__info
-            if(data.post.publishedDate)
-              p.article-footer__date= data.post.publishedDate
-            p.article-footer__author= data.post.author
+            if(post.publishedDate)
+              p.article-footer__date= post.publishedDate
+            p.article-footer__author= post.author
       h3.long-title Читайте також
-      .see-also-container
-        each post in data.posts
+      .see-also-container.centered-items
+        each post in posts
           +preview({
             title: post.briefDescription,
             bgSRC: post.heroImage && post.heroImage.url,

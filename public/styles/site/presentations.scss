@@ -1,0 +1,60 @@
+.presentations {
+  position: relative;
+  .presentation-wrapper {
+    margin-bottom: 30px;
+    padding: 15px;
+    background: #00B8D5;
+    border-radius: 5px;
+    border-left: 10px solid #f79f50;
+    .presentation-desc-wrapper {
+      color: white;
+      .presentation-name {
+        margin: 0 0 10px 0;
+      }
+      .presentation-desc {
+        font-size: 0.75em;
+      }
+    }
+    .presentation-links-wrapper {
+      padding: 0;
+      display: flex;
+      height: 100%;
+      align-items: center;
+      text-align: center;
+      .button-wrapper {
+        text-align: center;
+        display: inline-block;
+        .basic-btn {
+          text-align: center;
+          .fa {
+            margin-right: 1em;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $screen-md) {
+  .presentations {
+    .presentation-desc-wrapper {
+      text-align: center;
+    }
+    .presentation-links-wrapper {
+      margin: 15px 0 0 0;
+      .button-wrapper {
+        margin: 5px 0;
+      }
+    }
+  }
+}
+
+@media (min-width: $screen-md) {
+  .presentations {
+    .presentation-links-wrapper {
+      .button-wrapper {
+        margin: 10px 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,149 @@
+.course {
+  font-size: 16px;
+  .short-desc {
+    .subtitle {
+      color: #f79f50;
+    }
+    .plan-wrapper {
+      display: block;
+      line-height: 1.75em;
+    }
+    .signinButton {
+      margin: 15px 0;
+      text-align: center;
+    }
+  }
+  .gallery-preview-wrapper {
+    background: #f79f50;
+    margin: 50px 0 0 0;
+    .gallery-preview {
+      h3 {
+        color: white;
+      }
+      .gallery-preview-slider {
+        margin: 0 -5px 30px -5px;
+        .slide {
+          margin: 0 5px;
+          img {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+  .lessons-desc {
+    margin: 20px auto 30px auto;
+    .lesson-desc {
+      .lesson-title {
+        margin: 30px 0;
+        color: white;
+        background: #00b8d5;
+        border-radius: 0 30px 30px 0;
+        position: relative;
+        display: inline-block;
+        h2 {
+          margin: 15px 0;
+          padding: 0 70px 0 30px;
+          display: inline-block;
+        }
+        img {
+          position: absolute;
+          right: 0.5%;
+          top: 50%;
+          transform: translateY(-50%);
+          height: 80%;
+          max-height: 60px;
+        }
+      }
+      .lesson-tasks {
+        line-height: 1.5em;
+        display: block;
+        font-size: 0.75em;
+      }
+      .task-subtitle {
+        display: block;
+        color: #f79f50;
+        font-weight: bold;
+        margin: 15px 0 5px 0;
+      }
+    }
+    .course-actions {
+      margin-top: 30px;
+      .signin-button-wrapper {
+        padding: 0;
+        .signin-button {
+          text-align: center;
+        }
+      }
+      .socials-wrapper {
+        text-align: right;
+        a {
+          border-radius: 5px;
+          margin: 0 2px;
+        }
+        .fa {
+          padding: 5px;
+          color: white;
+        }
+        .fa-facebook {
+          padding: 5px 9px;
+          background: #3e649e;
+        }
+        .fa-vk {background: #47749b}
+        .fa-twitter {background: #00baeb}
+        .fa-ellipsis-h {
+          background: #a7a7a7;
+          padding: 5px 6px;
+        }
+        .share-count {
+          border-radius: 5px;
+          border: 1px solid #e0e0e0;
+          padding: 3px;
+        }
+      }
+    }
+  }
+  .see-also-header-wrapper {
+    background: #00b9d4;
+    margin: 30px 0;
+    padding: 0;
+    .see-also-header {
+      color: white;
+      margin: 0;
+      padding: 15px 0;
+      text-align: center;
+    }
+  }
+}
+
+@media (max-width: $screen-md) {
+  .short-desc {
+    .course-tasks {
+      text-align: center;
+      .desc {
+        text-align: justify;
+      }
+    }
+    .subtitle {
+      margin-top: 30px;
+      text-align: center;
+    }
+    .plan-wrapper {
+      text-align: justify;
+    }
+  }
+  .lessons-desc {
+    .lesson-desc {
+      .lesson-title {
+        width: 100%;
+        text-align: center;
+      }
+    }
+    .task-subtitle {
+      text-align: center;
+    }
+  }
+  .signin-button-wrapper {
+    margin-left: 15px;
+  }
+}

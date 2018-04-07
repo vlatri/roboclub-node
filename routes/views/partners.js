@@ -1,24 +1,21 @@
 import keystone from 'keystone'
 
-import { ensureImageHasUrl } from '../../utils/'
 
 exports = module.exports = function (req, res) {
-
   const view = new keystone.View(req, res)
-  const locals = res.locals
+  const { locals } = res
 
-  // Set locals
+  locals.title = 'Партнери'
   locals.section = 'about'
 
-  // Load team
   view.on('init', function (next) {
-    keystone.list('Partner').model.find().exec(function (err, results) {
-
+    keystone.list('Partner').model
+    .find()
+    .exec((err, results) => {
       locals.partners = results
       next(err)
     })
   })
 
-  // Render the view
   view.render('partners')
 }

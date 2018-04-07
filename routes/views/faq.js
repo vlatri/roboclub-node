@@ -1,17 +1,22 @@
-var keystone = require('keystone');
+import keystone from 'keystone'
 
-exports = module.exports = function (req, res) {
 
-  var view = new keystone.View(req, res);
+exports = module.exports = (req, res) => {
+  const view = new keystone.View(req, res)
+  const { locals } = res
 
-  // Render the view
+  locals.title = 'FAQ'
+  locals.sections = 'about'
 
   view.query('faqs',
     keystone.list('Faq').model
-      .find().populate({
-        path: 'sections', options: {
-          sort: { sequenceNumber: 1 }
-        }
-      }).sort({sequenceNumber: 1}))
-  view.render('faq');
-};
+    .find()
+    .populate({
+      path: 'sections', options: {
+        sort: { sequenceNumber: 1 }
+      }
+    })
+    .sort({sequenceNumber: 1})
+  )
+  view.render('faq')
+}

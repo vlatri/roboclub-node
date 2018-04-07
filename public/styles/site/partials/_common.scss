@@ -1,0 +1,100 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  width: 100%;
+  background: #fff;
+  color: $clr-black;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+a {
+  color: #0680ba;
+  transition: all linear .2s;
+  &,
+  &:link,
+  &:visited {
+    text-decoration: none;
+  }
+
+  &:hover{
+    color: #00cae9;
+  };
+}
+
+::placeholder{
+  color: #fff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.clearfix {
+  zoom: 1;
+  &:after {
+    clear: both;
+    display: block;
+    visibility: hidden;
+    height: 0;
+    content: ".";
+    font-size: 0;
+  }
+}
+
+.wrapper {
+  position: relative;
+  overflow: hidden;
+  min-height: 100%;
+  min-width: 300px;
+  // min-width: 800px;
+}
+
+.ir {
+  font: 0/0 a;
+  text-shadow: none;
+  color: transparent;
+}
+
+.unselectable {
+  user-select: none;
+}
+
+span p {
+  margin: 0; // WYSIWG editor tends to wrap its content into a P tag
+}
+
+.content-title{
+  text-align: center;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 222px;
+  color: #fff;
+  justify-content: center;
+  padding: 44px 0 0;
+  margin: 0 0 36px;
+  font-size: 21px;
+  letter-spacing: 0.01em;
+  background: url(/images/icons/gears-white.svg) center center no-repeat;
+  background-size: 1300px auto;
+  background-color: #eba351;
+}
+
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+}
+
+.container-fluid {
+  padding: 0;
+}

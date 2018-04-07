@@ -8,8 +8,8 @@ exports = module.exports = (req, res) => {
 
   // locals.section is used to set the currently selected
   // item in the header navigation.
-  locals.section = '404'
-  res.status(404)
+  locals.section = '500'
+  res.status(500)
   // Render the view
-  view.render('errors/404')
+  view.render('errors/500')
 }

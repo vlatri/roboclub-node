@@ -16,21 +16,21 @@ block css
     }
 
 block content
-  .preloader
+  //- .preloader
     .preloader__inner
       .preloader__gear
       .preloader__logo
-  .intro
-    .container
-      .col-md-6
-        h1.intro__title= layout.mainTitle
-        p.intro__p=layout.mainSubtitle
-        a.basic-btn.red.intro__btn(href=layout.registerLink) Зареєструватись
-        //- Maybe one day...
-        //- button.intro__btn-video(type='button')
-        //-   i.fa.fa-play-circle(aria-hidden='true')
-        //-   |  Дивитись відео
-  main.content
+  main.content.home
+    .intro
+      .container
+        .col-md-6
+          h1.intro__title= layout.mainTitle
+          p.intro__p=layout.mainSubtitle
+          a.basic-btn.red.intro__btn(href=layout.registerLink) Зареєструватись
+          //- Maybe one day...
+          //- button.intro__btn-video(type='button')
+          //-   i.fa.fa-play-circle(aria-hidden='true')
+          //-   |  Дивитись відео
     section.section.mission-section
       .container
         .row

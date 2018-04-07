@@ -9,12 +9,13 @@ block content
         .basic-btn.yellow.filter-button.active(data-filter='all') Все
         .basic-btn.yellow.filter-button(data-filter='photo') Фото
         .basic-btn.yellow.filter-button(data-filter='video') Відео
-      .row
+      .row.centered-items
         each item in album.sections
           +preview({
             title: item.title,
             attrs: {'data-type': item.type},
             date: album.publishedDate,
-            bgSRC: album.heroImage.url,
+            bgSRC: item.type === 'photo' ? item.photo.url : album.heroImage.url,
+            link: item.type === 'video' ? item.video : null,
             gallery: true,
           })

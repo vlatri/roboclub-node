@@ -5,7 +5,7 @@ block content
   main.content.gallery
     h2.content-title Галерея
     .container
-      .row.gallery-wrapper
+      .row.gallery-wrapper.centered-items
         each album in albums
           +preview({
             title: album.title,

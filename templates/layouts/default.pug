@@ -16,7 +16,7 @@ html
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     meta(http-equiv="X-UA-Compatible" content="IE=edge")
 
-    title= title || 'RoboClubIF'
+    title= title ? `${title} - RoboClubIF` : 'RoboClubIF'
     link(rel="shortcut icon", href="/favicon.ico", type="image/x-icon")
 
     //- Customise the stylesheet for your site by editing /public/styles/site.sass
@@ -47,12 +47,6 @@ html
   body
     .wrapper
       include ./partials/header
-      //- NOTE:
-      //- There is no .container wrapping class around body blocks to allow more flexibility in design.
-      //- Remember to include it in your templates when you override the intro and content blocks!
-
-      //- The Intro block appears above flash messages (used for temporary information display)
-      block intro
 
       //- Flash messages allow you to display once-off status messages to users, e.g. form
       //- validation errors, success messages, etc.

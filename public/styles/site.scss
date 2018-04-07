@@ -6,16 +6,24 @@
 @import "vendor/fatNav/index";
 
 
-@import "site/_variables";
+@import "site/partials/_variables";
+@import "site/partials/_common";
 
-@import "site/_common";
-@import "site/_functions";
-@import "site/_normalize";
-@import "site/_fonts";
-@import "site/_buttons";
-@import "site/_forms";
+@import "site/partials/_header";
+@import "site/partials/_footer";
+@import "site/partials/_buttons";
+@import "site/partials/_normalize";
+@import "site/partials/_forms";
+@import "site/partials/_preview";
 
-@import "site/_header";
-@import "site/_content";
-@import "site/_footer";
-
+@import "site/home";
+@import "site/team";
+@import "site/faq";
+@import "site/post";
+@import "site/feedback";
+@import "site/gallery";
+@import "site/partners";
+@import "site/presentations";
+@import "site/error";
+@import "site/course";
+@import "site/mission";
