@@ -6,6 +6,10 @@ import {
   removeFileAsync,
   fileValidate,
   linkValidate,
+  compressImage,
+  isFileReachable,
+  fileExists,
+  removeObsoleteFile,
 } from '../utils'
 
 
@@ -25,6 +29,7 @@ Albumitem.add({
   title: {type: String, required: true},
   type: {type: Types.Select, options: ['photo', 'video'], required: true, initial: true, index: true, default: 'photo'},
   photo: {type: Types.File, storage, thumb: true, dependsOn: {type: 'photo'}},
+  oldPhoto: {type: Types.File, storage, hidden: true},
   video: {type: Types.Url, label: 'YouTube link to a video', dependsOn: {type: 'video'}},
   relatedParent: {
     _id: {type: String, hidden: true},
@@ -32,25 +37,37 @@ Albumitem.add({
   },
 })
 
+
 Albumitem.schema.pre('save', async function(next) {
-  const {_id, type, photo, video} = this
+  const {_id, type, photo, oldPhoto, video} = this
 
   await updateChildWithRelatedParent(keystone.list('Album').model, Albumitem.model, _id).catch(next)
 
   if(type === 'photo') {
     this.video = null
+
     this.photo =
-      await fileValidate(storage, photo, {url: '/images/fallbacks/mission.jpg', mimetype: 'image/jpeg'}).catch(next)
+      await fileValidate(storage, photo, { url: '/images/fallbacks/mission.jpg', mimetype: 'image/jpeg' })
+      .then(compressImage)
+      .catch(next)
+
+    await removeObsoleteFile(storage, oldPhoto, photo).catch(next)
+    this.oldPhoto = photo
+
   } else {
-    if(this.photo.filename) await removeFileAsync(storage, photo).catch(next)
     this.video = linkValidate(video)
+
+    fileExists(photo) && await removeFileAsync(storage, photo).catch(next)
   }
 
   next()
 })
 
 Albumitem.schema.pre('remove', async function(next) {
-  this.type === 'photo' && await removeFileAsync(storage, this.photo).catch(next)
+  const { type, photo } = this
+  type === 'photo' &&
+    await removeFileAsync(storage, photo)
+    .catch(next)
 
   next()
 })

@@ -1,6 +1,11 @@
 import keystone from 'keystone'
 
-import { configStorage, linkValidate, fileValidate } from '../utils/'
+import {
+  configStorage,
+  linkValidate,
+  fileValidate,
+  removeObsoleteFile,
+} from '../utils/'
 
 const { Types } = keystone.Field
 const storage = configStorage('/images/home/')
@@ -18,6 +23,7 @@ Layout.add({
   mainTitle: {type: String, required: true},
   mainSubtitle: {type: String},
   coverImage: {type: Types.File, storage, thumb: true},
+  oldCoverImage: {type: Types.File, storage, hidden: true},
   articleTitle: {type: String},
   articleLeftColumn: {type: Types.Html, wysiwyg: true},
   articleRightColumn: {type: Types.Html, wysiwyg: true},
@@ -28,7 +34,7 @@ Layout.add({
 
 
 Layout.schema.pre('save', async function(next) {
-  const { registerLink, coverImage } = this
+  const { registerLink, coverImage, oldCoverImage } = this
 
   this.registerLink = linkValidate(registerLink)
   this.coverImage =
@@ -36,6 +42,9 @@ Layout.schema.pre('save', async function(next) {
       url: '/images/fallbacks/homeCover.jpg',
       mimetype: 'image/jpeg'
     }).catch(next)
+
+    await removeObsoleteFile(storage, oldCoverImage, coverImage).catch(next)
+    this.oldCoverImage = coverImage
 
   next()
 })

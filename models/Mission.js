@@ -1,6 +1,11 @@
 import keystone from 'keystone'
 
-import { configStorage, fileValidate, removeFile } from '../utils/'
+import {
+  configStorage,
+  fileValidate,
+  removeFile,
+  removeObsoleteFile,
+} from '../utils/'
 
 
 const { Types } = keystone.Field
@@ -30,6 +35,7 @@ Mission.add({
   },
   subtitle: {type: String},
   image: {type: Types.File, storage, thumb: true},
+  oldImage: {type: Types.File, storage, hidden: true},
   imagePosition: {
     type: Types.Select,
     numeric: true,
@@ -44,10 +50,16 @@ Mission.add({
   rightColumn: {type: Types.Html, wysiwyg: true},
 })
 
+
 Mission.schema.pre('validate', async function(next) {
+  const { image, oldImage } = this
+
   this.image =
-    await fileValidate(storage, this.image, {url: '/images/fallbacks/mission.jpg', mimetype: 'image/jpeg'})
+    await fileValidate(storage, image, {url: '/images/fallbacks/mission.jpg', mimetype: 'image/jpeg'})
       .catch(next)
+
+  await removeObsoleteFile(storage, oldImage, image)
+  this.oldImage = image
 
   next()
 })

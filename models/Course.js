@@ -7,7 +7,9 @@ import {
   validateBriefDescLength,
   removeFile,
   resizeImage,
-  configStorage
+  compressImage,
+  configStorage,
+  removeObsoleteFile,
 } from '../utils'
 
 
@@ -36,6 +38,7 @@ Course.add({
   age: {type: Number, required: true, initial: true, index: true, default: 0},
   price: {type: Number, note: '0 means for free', required: true, initial: true, index: true, default: 0},
   heroImage: {type: Types.File, storage, note: 'Small square image used on previews. Will be resized to 240x240.', thumb: true},
+  oldHeroImage: {type: Types.File, storage, hidden: true},
   briefDescription: {type: String, note: `${maxBriefDescriptionLength} characters max.`, required: true, initial: true, index: true},
   plan: {type: Types.Html, wysiwyg: true, label: 'Course plan'},
   leftColumnSubtitle: {type: String},
@@ -49,15 +52,20 @@ Course.add({
 })
 
 Course.schema.pre('validate', async function(next) {
-  const {applyToCourseLink, heroImage} = this
+  const {applyToCourseLink, heroImage, oldHeroImage, briefDescription} = this
 
   await updateChildrenWithRelatedParent(Course.model, keystone.list('Coursesection').model, this).catch(next)
-  await validateBriefDescLength(this.briefDescription || '', maxBriefDescriptionLength).catch(next)
+  await validateBriefDescLength(briefDescription || '', maxBriefDescriptionLength).catch(next)
 
   this.applyToCourseLink = linkValidate(applyToCourseLink)
   this.heroImage =
     await fileValidate(storage, heroImage, {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
-    .then(resizeImage(heroImage, 240, 240)).catch(next)
+    .then(resizeImage(heroImage, 240, 240))
+    .then(compressImage)
+    .catch(next)
+
+    await removeObsoleteFile(storage, oldHeroImage, heroImage)
+    this.oldHeroImage = heroImage
 
   next()
 })

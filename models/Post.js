@@ -7,6 +7,7 @@ import {
   removeFile,
   updateChildrenWithRelatedParent,
   validateBriefDescLength,
+  removeObsoleteFile,
 } from '../utils/'
 
 
@@ -29,7 +30,9 @@ Post.add({
   state: { type: Types.Select, options: 'draft, published, archived', default: 'draft', index: true },
   publishedDate: { type: Types.Date, index: true, dependsOn: { state: 'published' } },
   coverImage: {type: Types.File, storage, thumb: true},
+  oldCoverImage: {type: Types.File, storage, hidden: true},
   heroImage: {type: Types.File, storage, note: 'Small square image used on previews. Will be resized to 240x240.', thumb: true},
+  oldHeroImage: {type: Types.File, storage, hidden: true},
   briefDescription: {type: String, note: `${maxBriefDescriptionLength} characters max.`},
   maxBriefDescriptionLength: {type: Number, hidden: true, default: maxBriefDescriptionLength, required: true},
   sections: { type: Types.Relationship, ref: 'Postsection', many: true },
@@ -38,16 +41,29 @@ Post.add({
 
 
 Post.schema.pre('validate', async function(next) {
+  const { heroImage, coverImage, oldCoverImage, oldHeroImage, briefDescription } = this
+
   await updateChildrenWithRelatedParent(Post.model, keystone.list('Postsection').model, this).catch(next)
 
   this.coverImage =
-    await fileValidate(storage, this.coverImage, {url: '/images/fallbacks/homeCover.jpg', mimetype: 'image/jpeg'})
+    await fileValidate(storage, coverImage, {url: '/images/fallbacks/homeCover.jpg', mimetype: 'image/jpeg'})
       .catch(next)
   this.heroImage =
-    await fileValidate(storage, this.heroImage, {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
-      .then(resizeImage(this.heroImage, 240, 240)).catch(next)
+    await fileValidate(storage, heroImage, {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
+      .then(resizeImage(heroImage, 240, 240))
+      .catch(next)
 
-  await validateBriefDescLength(this.briefDescription || '', maxBriefDescriptionLength).catch(next)
+  Promise.all([
+    removeObsoleteFile(storage, oldCoverImage, coverImage),
+    removeObsoleteFile(storage, oldHeroImage, heroImage)
+  ])
+  .then(() => {
+    this.oldCoverImage = coverImage
+    this.oldHeroImage = heroImage
+  })
+  .catch(next)
+
+  await validateBriefDescLength(briefDescription || '', maxBriefDescriptionLength).catch(next)
 
   next()
 })

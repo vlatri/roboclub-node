@@ -5,6 +5,7 @@ import {
   removeFile,
   updateChildWithRelatedParent,
   fileValidate,
+  removeObsoleteFile,
 } from '../utils/'
 
 
@@ -24,14 +25,18 @@ Postsection.add({
   sequenceNumber: {type: Types.Number, default: 0 },
   text: {type: Types.Html, wysiwyg: true, height: 300},
   image: {type: Types.File, storage, thumb: true},
+  oldImage: {type: Types.File, storage, hidden: true},
   relatedPost: {type: String, hidden: true},
 })
 
 Postsection.schema.pre('save', async function(next) {
-  const {image, _id} = this
+  const {image, oldImage, _id} = this
 
   await updateChildWithRelatedParent(keystone.list('Post').model, Postsection.model, _id).catch(next)
   this.image = image.filename ? await fileValidate(storage, image, {mimetype: 'image/jpeg'}).catch(next) : {}
+
+  await removeObsoleteFile(storage, oldImage, image)
+  this.oldImage = image
 
   next()
 })

@@ -5,11 +5,11 @@ import {
   validateMimeType,
   linkValidate,
   fileValidate,
+  removeObsoleteFile,
 } from '../utils/'
 
 
 const { Types } = keystone.Field
-
 const storage = configStorage('/images/team/')
 
 const Participant = new keystone.List('Participant', {
@@ -29,14 +29,20 @@ Participant.add({
     storage,
     thumb: true,
   },
+  oldAvatar: {type: Types.File, storage, hidden: true},
 })
 
 Participant.schema.pre('validate', async function(next) {
-  this.facebookLink = linkValidate(this.facebookLink)
-  this.instagramLink = linkValidate(this.instagramLink)
+  const { facebookLink, instagramLink, avatar, oldAvatar } = this
+
+  this.facebookLink = linkValidate(facebookLink)
+  this.instagramLink = linkValidate(instagramLink)
   this.avatar =
-    await fileValidate(storage, this.avatar, {url: '/images/fallbacks/participant.png', mimetype: 'image/png'})
+    await fileValidate(storage, avatar, {url: '/images/fallbacks/participant.png', mimetype: 'image/png'})
       .catch(next)
+
+  await removeObsoleteFile(storage, oldAvatar, avatar)
+  this.oldAvatar = avatar
 
   next()
 })

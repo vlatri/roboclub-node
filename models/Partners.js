@@ -5,7 +5,8 @@ import {
   fileValidate,
   resizeImage,
   removeFile,
-  linkValidate
+  linkValidate,
+  removeObsoleteFile,
 } from '../utils/'
 
 const storage = configStorage('/images/partners/')
@@ -22,15 +23,21 @@ Partner.add({
   title: {type: String, required: true},
   text: {type: Types.Html, wysiwyg: true },
   image: {type: Types.File, storage, note: 'Will be resized to 150x75', thumb: true},
+  oldImage: {type: Types.File, storage, hidden: true},
   link: {type: Types.Url},
 })
 
 
 Partner.schema.pre('save', async function(next) {
-  this.link = linkValidate(this.link)
+  const { link, image, oldImage } = this
+
+  this.link = linkValidate(link)
   this.image =
-    await fileValidate(storage, this.image, {url: '/images/fallbacks/partner.jpg', mimetype: 'image/jpeg'})
-      .then(resizeImage(this.image, 150, 75))
+    await fileValidate(storage, image, {url: '/images/fallbacks/partner.jpg', mimetype: 'image/jpeg'})
+      .then(resizeImage(image, 150, 75))
+
+  await removeObsoleteFile(storage, oldImage, image)
+  this.oldImage = image
 
   next()
 })

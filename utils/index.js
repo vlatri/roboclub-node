@@ -20,6 +20,7 @@ export const configStorage = path => new keystone.Storage({
   }
 })
 
+
 export const fixPublishedDate = (post, format) => {
   return {...post.toObject(), publishedDate: moment(post.publishedDate).format(format) }
 }
@@ -27,7 +28,10 @@ export const fixPublishedDate = (post, format) => {
 
 export const isFileReachable = file => !!(file && file.url)
 
+
+// Will not fire on fallbacks as long as they only have url.
 export const fileExists = file => file.path && file.filename
+
 
 export const setFallback = (model, doc, fileField, fallback) =>
   model.update({_id: doc._id}, {$set: {[fileField]: fallback}}).exec()
@@ -36,12 +40,15 @@ export const setFallback = (model, doc, fileField, fallback) =>
 export const isMimetypeValid = (file, desiredMimetype) => file && (~file.mimetype.indexOf(desiredMimetype))
 
 
-export const resizeImage = (file, width, height) =>
+export const resizeImage = (image, width, height) =>
   new Promise((resolve, reject) =>
-    (file.path && file.filename) ?
-      im(file.path + file.filename)
+    fileExists(image) ?
+      im(image.path + image.filename)
+        .strip()
         .resizeExact(width, height)
-        .write(file.path + file.filename, err => err ? reject(err) : resolve()) :
+        .quality(50)
+        .colorspace('RGB')
+        .write(image.path + image.filename, err => err ? reject(err) : resolve()) :
       resolve()
   )
 
@@ -106,9 +113,36 @@ export const updateChildrenWithRelatedParent = (parentModel, childModel, parent)
     ).exec()
   )
 
+
 export const validateBriefDescLength = (text, max) =>
   new Promise((resolve, reject) =>
     (text.length < max) ?
       resolve() :
       reject(new Error(`Brief description is ${text.length - max} characters too long.`))
+  )
+
+
+export const compressImage = image =>
+  new Promise((resolve, reject) =>
+    fileExists(image) ?
+      im(image.path + image.filename).size((err, size) =>
+        (err ?
+          reject(err) :
+          im(image.path + image.filename)
+            .strip() // Remove all meta data (EXIF, commnents, etc)
+            .resize(size.width > 1366 ? 1366 : null) // Force resize to 1366*N if the image is wider than 1336px
+            .quality(50)
+            .colorspace('RGB')
+            .write(image.path + image.filename, err => err ? reject(err) : resolve(image))
+        )
+      ) :
+      resolve(image)
+  )
+
+
+export const removeObsoleteFile = (storage, oldFile, newFile) =>
+  new Promise((resolve, reject) =>
+    fileExists(oldFile) && fileExists(newFile) ?
+      newFile.filename !== oldFile.filename && removeFileAsync(storage, oldFile).then(resolve) :
+      resolve()
   )
