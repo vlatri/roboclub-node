@@ -20,19 +20,25 @@
 
 import keystone from 'keystone'
 const middleware = require('./middleware')
-const importRoutes = keystone.importer(__dirname)
+const requireDir = require('webpack-requiredir')
+
+
+const views = keystone.get('env') === 'production' ?
+  requireDir(require.context('./views', true, /\.js$/)) :
+  keystone.importer(__dirname)('./views')
+
 
 // Common Middleware
 keystone.pre('routes', middleware.initLocals)
 keystone.pre('render', middleware.flashMessages)
 
 // Import Route Controllers
-const routes = { views: importRoutes('./views') }
+const routes = { views }
 
 // Setup Route Bindings
 exports = module.exports = app => {
   // Views
-  app.get('/', routes.views.index)
+  app.get('/', routes.views.home)
   app.get('/posts', routes.views.posts)
   app.get('/post/:post', routes.views.post)
   app.get('/team', routes.views.team)

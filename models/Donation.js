@@ -3,7 +3,6 @@ import keystone from 'keystone'
 
 const { Types } = keystone.Field
 
-
 const Donation = new keystone.List('Donation', {
   map: {name: 'title'},
   singular: 'Donation',
