@@ -23,7 +23,6 @@ keystone.init({
   'port': process.env.PORT || 3000,
   'session store': 'mongo',
 
-
   'wysiwyg images': true,
   'wysiwyg additional buttons': 'searchreplace visualchars,'
     + ' charmap ltr rtl pagebreak paste, forecolor backcolor,'
