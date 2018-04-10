@@ -53,6 +53,8 @@ keystone.init({
 // Load your project's Models
 // keystone.import('models')
 
+console.log(keystone.get('env'))
+
 if(keystone.get('env') === 'production') {
   const context = require.context('./models', true, /\.js$/)
   context.keys().forEach(context)
