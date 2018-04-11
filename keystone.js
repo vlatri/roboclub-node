@@ -50,11 +50,10 @@ keystone.init({
   'user model': 'User',
 })
 
+
+console.log(`Running app in ${keystone.get('env')} environment`)
+
 // Load your project's Models
-// keystone.import('models')
-
-console.log(keystone.get('env'))
-
 if(keystone.get('env') === 'production') {
   const context = require.context('./models', true, /\.js$/)
   context.keys().forEach(context)
