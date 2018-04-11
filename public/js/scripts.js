@@ -113,6 +113,7 @@ $(document).ready(function() {
     autoplaySpeed: 5000,
     arrows: false,
     slidesToShow: 4,
+    adaptiveHeight: true,
     swipeToSlide: true,
     responsive: [{
       breakpoint: 992,

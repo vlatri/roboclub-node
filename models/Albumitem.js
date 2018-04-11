@@ -10,6 +10,7 @@ import {
   isFileReachable,
   fileExists,
   removeObsoleteFile,
+  validateBriefDescLength,
 } from '../utils'
 
 
@@ -26,7 +27,8 @@ const Albumitem = new keystone.List('Albumitem', {
 
 
 Albumitem.add({
-  title: {type: String, required: true},
+  title: {type: String, required: true, note: `${maxBriefDescriptionLength} characters max.`},
+  maxBriefDescriptionLength: {type: Number, hidden: true, default: maxBriefDescriptionLength, required: true},
   type: {type: Types.Select, options: ['photo', 'video'], required: true, initial: true, index: true, default: 'photo'},
   photo: {type: Types.File, storage, thumb: true, dependsOn: {type: 'photo'}},
   oldPhoto: {type: Types.File, storage, hidden: true},
@@ -39,7 +41,7 @@ Albumitem.add({
 
 
 Albumitem.schema.pre('save', async function(next) {
-  const {_id, type, photo, oldPhoto, video} = this
+  const {_id, title, type, photo, oldPhoto, video} = this
 
   await updateChildWithRelatedParent(keystone.list('Album').model, Albumitem.model, _id).catch(next)
 
@@ -59,6 +61,9 @@ Albumitem.schema.pre('save', async function(next) {
 
     fileExists(photo) && await removeFileAsync(storage, photo).catch(next)
   }
+
+  await validateBriefDescLength(title || '', maxBriefDescriptionLength).catch(next)
+
 
   next()
 })

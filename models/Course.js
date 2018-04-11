@@ -5,7 +5,7 @@ import {
   fileValidate,
   updateChildrenWithRelatedParent,
   validateBriefDescLength,
-  removeFile,
+  removeFileAsync,
   resizeImage,
   compressImage,
   configStorage,
@@ -71,7 +71,7 @@ Course.schema.pre('validate', async function(next) {
 })
 
 Course.schema.pre('remove', function(next) {
-  removeFile(storage, this.heroImage).then(next)
+  removeFileAsync(storage, this.heroImage).then(next)
 })
 
 Course.defaultColumns = 'title, field, age, active'

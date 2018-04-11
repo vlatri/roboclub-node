@@ -1,7 +1,8 @@
 extends ../layouts/default
 
 mixin quote(author, text, avatar)
-  blockquote.quotes-slider__slide!= text
+  blockquote.quotes-slider__slide
+    .quote-text!= text
     cite.quotes-slider__author=author
     img.quotes-slider__photo(src=avatar.url, height='46', width='46', alt='', title='')
 
@@ -17,7 +18,7 @@ block css
     }
 
 block content
-  //- .preloader
+  .preloader
     .preloader__inner
       .preloader__gear
       .preloader__logo

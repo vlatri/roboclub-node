@@ -5,9 +5,9 @@ block content
   main.content.partners
     h2.content-title Партнери
     .container
-      -for(let i=0; i<Math.ceil(partners.length/2); i++)
+      -for(let i=0; i<partners.length; i+=2)
         .row
-          if partners[i]
+          -if(partners[i])
             +partner(partners[i])
-          if partners[i+1]
+          -if(partners[i+1])
             +partner(partners[i+1])

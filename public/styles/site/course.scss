@@ -30,6 +30,15 @@
         }
       }
     }
+    .slick-track {
+      display: flex;
+    }
+    .slick-track .slick-slide {
+      display: flex;
+      height: auto;
+      align-items: center;
+      justify-content: center;
+    }
   }
   .lessons-desc {
     margin: 20px auto 30px auto;

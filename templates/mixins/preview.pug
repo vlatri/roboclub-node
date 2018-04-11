@@ -14,6 +14,7 @@ mixin preview(config)
     -config.stripy = 'blue'
     -buttonAttrs.class = 'swipebox'
     -buttonAttrs.rel = 'gallery'
+    -buttonAttrs.title = config.title
 
   if config.stripy
     if stripeConfig.index++ % stripeConfig.resetStripesEvery != 0

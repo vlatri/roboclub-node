@@ -21,24 +21,26 @@ block content
               .col-sm-6
                 h3.subtitle=course.rightColumnSubtitle
                 span.desc!=course.rightColumnText
-    .container-fluid.gallery-preview-wrapper
-      .container
-        .row
-          .col-xs-10.col-xs-offset-1.col-md-offset-0.gallery-preview
-            h3 Галерея
-            .gallery-preview-slider
-              each item in course.relatedAlbum.sections
-                if item.type == 'photo'
-                  .slide
-                    a(href=item.photo.url).swipebox(title=item.title)
-                      img(src=item.photo.url, alt=item.title)
+    if(course.relatedAlbum)
+      .container-fluid.gallery-preview-wrapper
+        .container
+          .row
+            .col-xs-10.col-xs-offset-1.col-md-offset-0.col-md-12.gallery-preview
+              h3 Галерея
+              .gallery-preview-slider
+                  each item in course.relatedAlbum.sections
+                    if item.type == 'photo'
+                      .slide
+                        a(href=item.photo.url).swipebox(title=item.title)
+                          img(src=item.photo.url, alt=item.title)
     .container.lessons-desc
       .row.lesson-desc
         each section in course.sections
           if section.fancyTitlebar
-            .lesson-title
-              h2= section.title
-              img(src='/images/icons/logo-gear.svg', alt='')
+            .row
+              .lesson-title
+                h2= section.title
+                img(src='/images/icons/logo-gear.svg', alt='')
           else
             span.task-subtitle= section.title
           .col-xs-10.col-xs-offset-1.col-md-offset-0.lesson-tasks!= section.text

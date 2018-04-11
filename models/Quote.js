@@ -22,7 +22,6 @@ Quote.add({
   author: {type: String, required: true},
   text: {type: Types.Html, wysiwyg: true, height: 300},
   authorAvatar: {
-    // For some reason it can't be required in Schema.
     // For further details see https://github.com/keystonejs/keystone/issues/4575
     type: Types.File,
     storage,

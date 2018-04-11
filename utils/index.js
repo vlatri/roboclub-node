@@ -116,7 +116,7 @@ export const updateChildrenWithRelatedParent = (parentModel, childModel, parent)
 
 export const validateBriefDescLength = (text, max) =>
   new Promise((resolve, reject) =>
-    (text.length < max) ?
+    (text.length <= max) ?
       resolve() :
       reject(new Error(`Brief description is ${text.length - max} characters too long.`))
   )
@@ -143,6 +143,9 @@ export const compressImage = image =>
 export const removeObsoleteFile = (storage, oldFile, newFile) =>
   new Promise((resolve, reject) =>
     fileExists(oldFile) && fileExists(newFile) ?
-      newFile.filename !== oldFile.filename && removeFileAsync(storage, oldFile).then(resolve) :
+      (newFile.filename !== oldFile.filename ?
+        removeFileAsync(storage, oldFile).then(resolve) :
+        resolve()
+      ) :
       resolve()
   )

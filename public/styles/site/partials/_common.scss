@@ -98,3 +98,27 @@ span p {
 .container-fluid {
   padding: 0;
 }
+
+.pager-list {
+  padding: 0;
+  margin: 0 0 40px;
+  list-style: none;
+  font-size: 16px;
+  text-align: center;
+
+  &__item{
+    margin: 0 10px;
+    display: inline-block;
+  }
+
+  &__link {
+    @extend .basic-btn;
+    @extend .basic-btn.yellow;
+    display: inline-block;
+
+    &[disabled] {
+      cursor: default;
+      opacity: 0.5;
+    }
+  }
+}
