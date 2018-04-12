@@ -26,7 +26,10 @@ Postsection.add({
   text: {type: Types.Html, wysiwyg: true, height: 300},
   image: {type: Types.File, storage, thumb: true},
   oldImage: {type: Types.File, storage, hidden: true},
-  relatedPost: {type: String, hidden: true},
+  relatedParent: {
+    _id: {type: String, hidden: true},
+    title: {type: String, hidden: true, label: 'Related Course'},
+  },
 })
 
 Postsection.schema.pre('save', async function(next) {
@@ -48,6 +51,6 @@ Postsection.schema.pre('remove', function(next) {
 
 Postsection.relationship({ ref: 'Post', refPath: 'sections' })
 
-Postsection.defaultColumns = 'subtitle, relatedPost, sequenceNumber|20%'
+Postsection.defaultColumns = 'subtitle, relatedParent.title, sequenceNumber|20%'
 
 Postsection.register()
