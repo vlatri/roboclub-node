@@ -9855,12 +9855,6 @@ input[type="reset"]:focus {
   .home .intro {
     text-align: center; } }
 
-@media (max-width: 480px) {
-  .person-short-desc {
-    text-align: center; }
-    .person-short-desc h3 {
-      font-size: 1em; } }
-
 .team .team-member-wrapper {
   color: white;
   margin: 0 0 30px 0; }
@@ -9925,6 +9919,23 @@ input[type="reset"]:focus {
 .team .button-wrapper {
   text-align: center;
   margin: 0 0 30px 0; }
+
+@media (max-width: 480px) {
+  .team-member-wrapper {
+    min-width: 300px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%); }
+    .team-member-wrapper .person-short-desc {
+      text-align: center; } }
+
+@media (max-width: 768px) and (min-width: 480px) {
+  .team-member-wrapper .person-short-desc h3 {
+    font-size: 1.5em; } }
+
+@media (min-width: 768px) {
+  .team-member-wrapper .person-short-desc h3 {
+    font-size: 1.25em; } }
 
 .faq-wrapper .item-wrapper {
   cursor: pointer;
