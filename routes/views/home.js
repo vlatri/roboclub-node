@@ -32,5 +32,5 @@ exports = module.exports = (req, res) => {
     })
   })
 
-  view.render('index')
+  view.render('home')
 }
