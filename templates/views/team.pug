@@ -2,8 +2,8 @@ extends ../layouts/default
 
 
 block content
-  script.
-    console.log(!{JSON.stringify(team)})
+  include ../mixins/teamMember
+
   main.content.team
     h2.content-title Наша команда
     .container

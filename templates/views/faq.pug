@@ -1,8 +1,8 @@
 extends ../layouts/default
 
 block content
-  script.
-    console.log(!{JSON.stringify(faqs)})
+  include ../mixins/faq
+
   main.content.faq
     h2.content-title FAQ
     .container.faq-wrapper

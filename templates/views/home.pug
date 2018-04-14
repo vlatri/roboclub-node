@@ -1,11 +1,5 @@
 extends ../layouts/default
 
-mixin quote(author, text, avatar)
-  blockquote.quotes-slider__slide
-    .quote-text!= text
-    cite.quotes-slider__author=author
-    img.quotes-slider__photo(src=avatar.url, height='46', width='46', alt='', title='')
-
 block css
   style.
     .intro {
@@ -13,11 +7,13 @@ block css
         linear-gradient(
           rgba(67, 65, 74, 0.6),
           rgba(67, 65, 74, 0.6)
-        ), url(!{layout.coverImage.url}) no-repeat center !important;
+        ), url(!{layout.coverImage.url}) no-repeat cover !important;
       background-size: auto, cover;
     }
 
 block content
+  include ../mixins/quote
+  include ../mixins/preview
   .preloader
     .preloader__inner
       .preloader__gear
