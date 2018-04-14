@@ -7,11 +7,15 @@
     "connect-mongo": "^2.0.1",
     "dotenv": "4.0.0",
     "gm": "^1.23.1",
+    "jquery": "^3.3.1",
+    "jquery-fatNav": "git+https://github.com/Glitchbone/jquery-fatNav",
+    "jquery-placeholder": "git+https://github.com/mathiasbynens/jquery-placeholder",
     "keystone": "git+https://github.com/keystonejs/keystone",
     "lodash": "^4.13.1",
     "node-sass": "4.5.0",
     "node-sass-middleware": "0.11.0",
     "pug": "2.0.0-beta11",
+    "slick-carousel": "^1.8.1",
     "webpack-requiredir": "^0.2.1"
   },
   "devDependencies": {
@@ -28,8 +32,9 @@
     "webpack-node-externals": "^1.7.2"
   },
   "scripts": {
-    "postinstall": "yarn build",
-    "build": "webpack -p",
+    "build": "yarn build-front && yarn build-back",
+    "build-front": "webpack -p --env.side frontend",
+    "build-back": "webpack -p --env.side backend",
     "babel-node": "NODE_ENV=development babel-node --presets=latest --plugins=transform-object-rest-spread",
     "start": "nodemon --exec npm run babel-node -- ./keystone.js"
   }
