@@ -9718,7 +9718,7 @@ input[type="reset"]:focus {
     position: relative; }
     .home .mission-section .cols-wrapper .robo-wrapper {
       position: absolute;
-      top: -30vw;
+      top: -150%;
       right: 0; } }
 
 .home .quotes-section {
