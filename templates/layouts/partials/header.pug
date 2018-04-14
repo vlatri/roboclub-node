@@ -26,12 +26,15 @@ header.row.header.inner
 .fat-nav
   ul
     each link in navLinks
-      li.fat-nav-item(class=(section == link.key ? 'active' : null))
-        a(href=link.href)= link.label
-        if(link.pages)
-          ul
-            each sublink in link.pages
-              li: a(href=sublink.href)= sublink.label
+      li.fat-nav-item(class=(section == link.key ? 'active' : null), data-navlink-key=link.key)
+        if link.key == 'contacts'
+          span.main-menu__link= link.label
+        else
+          a(href=link.href)= link.label
+          if(link.pages)
+            ul
+              each sublink in link.pages
+                li: a(href=sublink.href)= sublink.label
   ul
     li.social-icons-wrapper
       a.social-icon(href='https://www.facebook.com/RoboclubIF/')

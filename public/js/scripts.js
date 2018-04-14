@@ -167,7 +167,11 @@ $(document).ready(function() { // Gallery filter
 
 $(document).ready(function (){
   $.fatNav()
-  $('[data-navlink-key="contacts"]').click(function() {
-    $("html, body").animate({ scrollTop: $('.contacts-section').offset().top }, 1000);
+  const $scroll = () => $('html, body').animate({ scrollTop: $('.contacts-section').offset().top - $('.header').height() }, 1000)
+  $('.main-nav [data-navlink-key="contacts"]').click($scroll)
+  $('.fat-nav [data-navlink-key="contacts"]').click(() => {
+    $scroll()
+    $.fatNav().toggleNav()
+    $('.hamburger.active').removeClass('active')
   })
 })
