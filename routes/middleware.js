@@ -37,14 +37,6 @@ export const initLocals = (req, res, next) => {
 
   res.locals = Object.assign({}, res.locals, keystone.get('locals'))
 
-  console.log(res.locals)
-
-  // keystone.list('Common').model.findOne({}, {_id: false}).exec()
-  // .then(layout => {
-  //   res.locals.commonLayout = layout
-  //   next()
-  // })
-  // .catch(next)
   next()
 }
 
