@@ -35,14 +35,17 @@ export const initLocals = (req, res, next) => {
     { label: 'Контакти', key: 'contacts', href: ''},
   ]
 
-  res.locals.user = req.user
+  res.locals = Object.assign({}, res.locals, keystone.get('locals'))
 
-  keystone.list('Common').model.findOne({}, {_id: false}).exec()
-  .then(layout => {
-    res.locals.commonLayout = layout
-    next()
-  })
-  .catch(next)
+  console.log(res.locals)
+
+  // keystone.list('Common').model.findOne({}, {_id: false}).exec()
+  // .then(layout => {
+  //   res.locals.commonLayout = layout
+  //   next()
+  // })
+  // .catch(next)
+  next()
 }
 
 /**
@@ -62,6 +65,7 @@ export const flashMessages = (req, res, next) => {
 /**
   Prevents people from accessing protected pages when they're not signed in
  */
+
 exports.requireUser = (req, res, next) => {
   if (req.user) return next()
 

@@ -63,12 +63,18 @@ if(keystone.get('env') === 'production') {
 // Setup common locals for your templates. The following are required for the
 // bundled templates and layouts. Any runtime locals (that should be set uniquely
 // for each request) should be added to ./routes/middleware.js
-keystone.set('locals', {
-  _: require('lodash'),
+
+const defaultLocals = {
   env: keystone.get('env'),
-  utils: keystone.utils,
   editable: keystone.content.editable,
-})
+  utils: keystone.utils,
+}
+
+const setLocals = locals => keystone.set('locals', locals)
+
+keystone.list('Common').model.findOne({}, {_id: false}).exec()
+.then(layout => setLocals({ ...defaultLocals, commonLayout: layout }))
+.catch(() => setLocals(defaultLocals))
 
 // Load your project's Routes
 keystone.set('routes', require('./routes'))
@@ -76,6 +82,7 @@ keystone.set('routes', require('./routes'))
 
 // Configure the navigation bar in Keystone's Admin UI
 keystone.set('nav', {
+  common: 'commons',
   home: ['layouts', 'quotes'],
   about: ['participants', 'missions', 'donations', 'presentations', 'partners'],
   faq: ['faqs', 'faqsections'],
@@ -83,7 +90,6 @@ keystone.set('nav', {
   courses: ['courses', 'coursefields', 'coursesections'],
   albums: ['albums', 'albumitems'],
   enquiries: 'enquiries',
-  common: 'commons',
   users: 'users',
 })
 
