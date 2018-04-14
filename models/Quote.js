@@ -22,7 +22,6 @@ Quote.add({
   author: {type: String, required: true},
   text: {type: Types.Html, wysiwyg: true, height: 300},
   authorAvatar: {
-    // For further details see https://github.com/keystonejs/keystone/issues/4575
     type: Types.File,
     storage,
     note: 'Will be resized to 64x64',
