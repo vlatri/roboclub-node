@@ -7,7 +7,7 @@ To start the project in **development** mode, run:
 ```
 yarn start
 ```
-To start the project in **production** mode, you have to compile source into a bundle:
+To start the project in **production** mode, you have to compile sources into a bundle first:
 ```
 yarn build
 ```
