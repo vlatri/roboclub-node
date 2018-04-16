@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"roboclubif.layouts"},{"v":1,"key":{"footer.location.geo":"2dsphere"},"name":"footer.location.geo_2dsphere","ns":"roboclubif.layouts","background":true,"2dsphereIndexVersion":3}]}
