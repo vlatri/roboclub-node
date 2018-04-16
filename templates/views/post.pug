@@ -10,13 +10,14 @@ block content
         article.article
           if post.coverImage
             img(src=post.coverImage.url, alt=post.title)
-          each section in post.sections
-            if section.subtitle && section.showSubtitle
-              h3=section.subtitle
-            if section.text
-              p!=section.text
-            if section.image
-              img(src=section.image.url, alt=section.subtitle)
+          -for(let i=1; i<=post.content.sectionsCount; i++) {
+            if post.content[`${i}_subtitle`]
+              h3=post.content[`${i}_subtitle`]
+            if post.content[`${i}_text`]
+              p!=post.content[`${i}_text`]
+            if post.content[`${i}_image`] && post.content[`${i}_image`].url
+              img(src=post.content[`${i}_image`].url, alt=section.subtitle)
+          -}
         footer.article-footer
           .article-footer__share
           .article-footer__info

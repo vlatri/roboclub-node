@@ -149,3 +149,22 @@ export const removeObsoleteFile = (storage, oldFile, newFile) =>
       ) :
       resolve()
   )
+
+export const getSpecificFields = (obj, containedPattern) =>
+   Object.keys(obj)
+     .filter(key => ~key.indexOf(containedPattern))
+     .map(key => obj[key])
+
+export const generateContentFields = (n, Types, storage) => {
+  // FP
+  let result = { sectionsCount: {type: Number, default: n, required: true, hidden: true} }
+  for(let i=1; i <= n; i++) {
+    result = {...result,
+      [`${i}_subtitle`]: {type: String, collapse: true, label: `Subtitle ${i}`},
+      [`${i}_text`]: {type: Types.Html, wysiwyg: true, height: 300, collapse: true, label: `Text ${i}`},
+      [`${i}_image`]: {type: Types.File, storage, collapse: true, thumb: true, label: `Image ${i}`},
+      [`${i}_oldImage`]: {type: Types.File, storage, hidden: true},
+    }
+  }
+  return result
+}

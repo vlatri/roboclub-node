@@ -5,9 +5,10 @@ import {
   fileValidate,
   resizeImage,
   removeFile,
-  updateChildrenWithRelatedParent,
   validateBriefDescLength,
   removeObsoleteFile,
+  getSpecificFields,
+  generateContentFields,
 } from '../utils/'
 
 
@@ -35,15 +36,13 @@ Post.add({
   oldHeroImage: {type: Types.File, storage, hidden: true},
   briefDescription: {type: String, note: `${maxBriefDescriptionLength} characters max.`},
   maxBriefDescriptionLength: {type: Number, hidden: true, default: maxBriefDescriptionLength, required: true},
-  sections: { type: Types.Relationship, ref: 'Postsection', many: true },
+  content: generateContentFields(24, Types, storage),
 })
-
 
 
 Post.schema.pre('validate', async function(next) {
   const { heroImage, coverImage, oldCoverImage, oldHeroImage, briefDescription } = this
 
-  await updateChildrenWithRelatedParent(Post.model, keystone.list('Postsection').model, this).catch(next)
 
   this.coverImage =
     await fileValidate(storage, coverImage, {url: '/images/fallbacks/homeCover.jpg', mimetype: 'image/jpeg'})
@@ -53,13 +52,25 @@ Post.schema.pre('validate', async function(next) {
       .then(resizeImage(heroImage, 240, 240))
       .catch(next)
 
-  Promise.all([
+  const currentImages = getSpecificFields(this.content, 'image')
+  const oldImages = getSpecificFields(this.content, 'oldImage')
+
+  const pendingPromises = [
     removeObsoleteFile(storage, oldCoverImage, coverImage),
-    removeObsoleteFile(storage, oldHeroImage, heroImage)
-  ])
+    removeObsoleteFile(storage, oldHeroImage, heroImage),
+    ...currentImages.map((image, index) => removeObsoleteFile(storage, oldImages[index], currentImages[index])),
+  ]
+
+  Promise.all(pendingPromises)
   .then(() => {
     this.oldCoverImage = coverImage
     this.oldHeroImage = heroImage
+
+    // FP
+    for(let i=1; i<=this.content.sectionsCount; i++) {
+      this.content[`${i}_oldImage`] = this.content[`${i}_image`]
+    }
+
   })
   .catch(next)
 
