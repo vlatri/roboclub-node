@@ -10,6 +10,7 @@ import {
   compressImage,
   configStorage,
   removeObsoleteFile,
+  getSpecificFields,
 } from '../utils'
 
 
@@ -23,6 +24,19 @@ const Course = new keystone.List('Course', {
   singular: 'Course',
   plural: 'Courses',
 })
+
+export const generateContentFields = n => {
+  // FP
+  let result = { sectionsCount: {type: Number, default: n, required: true, hidden: true} }
+  for(let i=1; i <= n; i++) {
+    result = {...result,
+      [`${i}_title`]: {type: String, collapse: true, label: `Title ${i}`},
+      [`${i}_subtitle`]: {type: String, collapse: true, label: `Subtitle ${i}`},
+      [`${i}_text`]: {type: Types.Html, wysiwyg: true, height: 300, collapse: true, label: `Text ${i}`},
+    }
+  }
+  return result
+}
 
 Course.add({
   title: {type: String, required: true},
@@ -45,16 +59,15 @@ Course.add({
   leftColumnText: {type: Types.Html, wysiwyg: true},
   rightColumnSubtitle: {type: String},
   rightColumnText: {type: Types.Html, wysiwyg: true},
+  relatedAlbum: {type: Types.Relationship, ref: 'Album', many: false},
   maxBriefDescriptionLength: {type: Number, hidden: true, default: maxBriefDescriptionLength, required: true},
   applyToCourseLink: {type: Types.Url},
-  relatedAlbum: {type: Types.Relationship, ref: 'Album', many: false},
-  sections: { type: Types.Relationship, ref: 'Coursesection', many: true },
+  content: generateContentFields(24),
 })
 
 Course.schema.pre('validate', async function(next) {
   const {applyToCourseLink, heroImage, oldHeroImage, briefDescription} = this
 
-  await updateChildrenWithRelatedParent(Course.model, keystone.list('Coursesection').model, this).catch(next)
   await validateBriefDescLength(briefDescription || '', maxBriefDescriptionLength).catch(next)
 
   this.applyToCourseLink = linkValidate(applyToCourseLink)
@@ -64,8 +77,13 @@ Course.schema.pre('validate', async function(next) {
     .then(compressImage)
     .catch(next)
 
-    await removeObsoleteFile(storage, oldHeroImage, heroImage)
-    this.oldHeroImage = heroImage
+
+
+  const currentImages = getSpecificFields(this.content, 'image')
+  const oldImages = getSpecificFields(this.content, 'oldImage')
+
+  await removeObsoleteFile(storage, oldHeroImage, heroImage).catch(next)
+  this.oldHeroImage = heroImage
 
   next()
 })
