@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"roboclubif.participants"},{"v":1,"key":{"person":1},"name":"person_1","ns":"roboclubif.participants","background":true},{"v":1,"key":{"bio":1},"name":"bio_1","ns":"roboclubif.participants","background":true}]}

@@ -12,12 +12,12 @@
     "node-sass": "4.5.0",
     "node-sass-middleware": "0.11.0",
     "pug": "2.0.0-beta11",
-    "webpack": "^4.5.0",
-    "webpack-cli": "^2.0.14",
-    "webpack-node-externals": "^1.7.2",
     "webpack-requiredir": "^0.2.1"
   },
   "devDependencies": {
+    "webpack": "^4.5.0",
+    "webpack-cli": "^2.0.14",
+    "webpack-node-externals": "^1.7.2",
     "babel-cli": "^6.26.0",
     "babel-core": "6",
     "babel-loader": "^7.1.4",
@@ -34,7 +34,7 @@
     "gulp-rename": "^1.2.2"
   },
   "scripts": {
-    "heroku-postbuild": "yarn install --only=dev --no-shrinkwrap && yarn build",
+    "heroku-postbuild": "yarn install && yarn build",
     "build-front": "gulp --gulpfile ./public/gulpfile.js",
     "build": "webpack -p",
     "babel-node": "NODE_ENV=development babel-node --presets=latest --plugins=transform-object-rest-spread",
