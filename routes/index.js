@@ -42,8 +42,6 @@ exports = module.exports = app => {
   app.get('/posts', routes.views.posts)
   app.get('/post/:post', routes.views.post)
   app.get('/team', routes.views.team)
-  app.get('/mission', routes.views.mission)
-  app.get('/presentations', routes.views.presentations)
   app.get('/partners', routes.views.partners)
   app.get('/feedback', routes.views.feedback)
   app.get('/faq', routes.views.faq)

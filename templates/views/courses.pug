@@ -2,7 +2,11 @@ extends ../layouts/default
 
 block content
   include ../mixins/preview
-
+  -let minAge = Infinity
+  -let maxAge = -Infinity
+  each course in courses
+   -minAge = course.minimumAge < minAge ? course.minimumAge : minAge
+   -maxAge = course.maximumAge > maxAge ? course.maximumAge : maxAge
   main.content
    h2.content-title Курси
    .container
@@ -15,21 +19,20 @@ block content
              option(value=field._id)= field.title
        .courses-filter__form-line.age.col-sm-3
          select.basic-select(data-filter='age')
-           option(value='all') Вік
-           each age in courseAges
-             option(value=age)= `${age}+`
-       .courses-filter__form-line.col-sm-3
-         select.basic-select(data-filter='price')
-           option(value='all') Вартість
-           option(value='0') Безкоштовно
-           option(value='premium') Платно
+           option(value='all') Вік дитини
+           -for(let i=minAge; i<=maxAge; i++) {
+              option(value=i)= `${i}`
+           -}
      .courses.row.centered-items
        each course in courses
+         script.
+           console.log(!{JSON.stringify(course)})
          +preview({
            title: course.briefDescription,
-           attrs: { 'data-cat': course.field, 'data-age': course.age, 'data-price': course.price && 'premium' },
+           attrs: { 'data-cat': course.field, 'data-age': '1-29', 'data-min-age': course.minimumAge, 'data-max-age': course.maximumAge},
            icon: 'age',
            link: `/course/${course.slug}`,
            bgSRC: course.heroImage.url,
-           stripy: 'orange'
+           activeSince: course.activeSince,
+           stripy: 'orange',
          })

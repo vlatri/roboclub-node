@@ -45,7 +45,7 @@ mixin preview(config)
               if config.icon.slice(0, 2) === 'fa'
                 span(class= config.icon)
               if config.icon === 'age'
-                span.age-icon= config.attrs['data-age'] + '+'
+                span.age-icon= config.attrs['data-age']
           .button-wrapper
             a(href=config.link ? config.link : config.bgSRC, class=config.blue ? 'yellow' : 'blue')&attributes(buttonAttrs).basic-btn
               span.fa.fa-link

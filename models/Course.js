@@ -40,17 +40,15 @@ export const generateContentFields = n => {
 
 Course.add({
   title: {type: String, required: true},
-  active: {
-    type: Boolean,
+  activeSince: {
+    type: Types.Date,
     required: true,
     index: true,
     initial: true,
-    default: true,
-    note: 'Defines whether this course should be listed among the other, or should it be temporarily disabled.'
   },
   field: {type: Types.Relationship, index: true, initial: true, ref: 'Coursefield', many: false},
-  age: {type: Number, required: true, initial: true, index: true, default: 0},
-  price: {type: Number, note: '0 means for free', required: true, initial: true, index: true, default: 0},
+  minimumAge: {type: Number, required: true, initial: true, index: true, default: 0},
+  maximumAge: {type: Number, required: true, initial: true, index: true, default: 0},
   heroImage: {type: Types.File, storage, note: 'Small square image used on previews. Will be resized to 240x240.', thumb: true},
   oldHeroImage: {type: Types.File, storage, hidden: true},
   briefDescription: {type: String, note: `${maxBriefDescriptionLength} characters max.`, required: true, initial: true, index: true},
@@ -65,8 +63,19 @@ Course.add({
   content: generateContentFields(24),
 })
 
+const validateAge = (minAge, maxAge) => new Promise((resolve, reject) => {
+  if(minAge > maxAge)
+    return reject(new Error('Minimum age is greater than maximum age.'))
+  if(maxAge < 0 || minAge < 0)
+    return reject(new Error('Age is out of range.'))
+  resolve()
+})
+
+
 Course.schema.pre('validate', async function(next) {
-  const {applyToCourseLink, heroImage, oldHeroImage, briefDescription} = this
+  const {minimumAge, maximumAge, applyToCourseLink, heroImage, oldHeroImage, briefDescription} = this
+
+  await validateAge(minimumAge, maximumAge).catch(next)
 
   await validateBriefDescLength(briefDescription || '', maxBriefDescriptionLength).catch(next)
 
@@ -77,19 +86,16 @@ Course.schema.pre('validate', async function(next) {
     .then(compressImage)
     .catch(next)
 
-
-
-  const currentImages = getSpecificFields(this.content, 'image')
-  const oldImages = getSpecificFields(this.content, 'oldImage')
-
   await removeObsoleteFile(storage, oldHeroImage, heroImage).catch(next)
   this.oldHeroImage = heroImage
 
   next()
 })
 
-Course.schema.pre('remove', function(next) {
-  removeFileAsync(storage, this.heroImage).then(next)
+Course.schema.pre('remove', async function(next) {
+  await removeFileAsync(storage, this.heroImage).catch(next)
+
+  next()
 })
 
 Course.defaultColumns = 'title, field, age, active'

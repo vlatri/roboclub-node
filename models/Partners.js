@@ -22,7 +22,7 @@ const Partner = new keystone.List('Partner', {
 Partner.add({
   title: {type: String, required: true},
   text: {type: Types.Html, wysiwyg: true },
-  image: {type: Types.File, storage, note: 'Will be resized to 150x75', thumb: true},
+  image: {type: Types.File, storage, note: 'Please respect 2:1 ratio.', thumb: true},
   oldImage: {type: Types.File, storage, hidden: true},
   link: {type: Types.Url},
 })

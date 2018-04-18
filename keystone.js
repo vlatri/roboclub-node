@@ -84,7 +84,7 @@ keystone.set('routes', require('./routes'))
 keystone.set('nav', {
   common: 'commons',
   home: ['layouts', 'quotes'],
-  about: ['participants', 'missions', 'donations', 'presentations', 'partners'],
+  about: ['participants', 'presentations', 'partners'],
   faq: ['faqs', 'faqsections'],
   posts: ['posts'],
   courses: ['courses', 'coursefields'],

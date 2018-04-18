@@ -25,8 +25,8 @@ Common.add({
     secondaryPhoneNumber: {type: String},
     cityName: {type: String},
     address: {type: String},
-    geoLat: {type: String, note: 'This is used by Gmaps'},
-    geoLng: {type: String, note: 'This is used by Gmaps'},
+    geoLat: {type: String, note: 'Lattitude, used by Gmaps in footer.'},
+    geoLng: {type: String, note: 'Longitude, used by Gmaps in footer.'},
   },
 })
 
