@@ -64,10 +64,10 @@ export const removeFileAsync = (storage, file) =>
   )
 
 
-export const fileValidate = (storage, file, fallback) =>
+export const fileValidate = (storage, file, fallback={}) =>
   new Promise((resolve, reject) =>
     isFileReachable(file) ? (
-      isMimetypeValid(file, fallback.mimetype.split('/')[0]) ?
+      isMimetypeValid(file, 'image') ?
         resolve(file) :
         fileExists(file) ?
           removeFile(storage, file, err =>

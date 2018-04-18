@@ -1,6 +1,8 @@
 .feedback {
-  .container {
-    display: flex;
-    justify-content: center;
+  .fb-comments {
+    width:100% !important;
+    .fb_iframe_widget span[style]{
+      width:100% !important;
+    }
   }
 }

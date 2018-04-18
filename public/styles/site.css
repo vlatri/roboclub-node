@@ -10050,9 +10050,10 @@ input[type="reset"]:focus {
   margin: 20px -9999px 28px;
   padding: 9px 9999px 11px; }
 
-.feedback .container {
-  display: flex;
-  justify-content: center; }
+.feedback .fb-comments {
+  width: 100% !important; }
+  .feedback .fb-comments .fb_iframe_widget span[style] {
+    width: 100% !important; }
 
 .gallery .filter-wrapper {
   margin: 0 0 30px 0;

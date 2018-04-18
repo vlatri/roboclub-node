@@ -1,15 +1,25 @@
 extends ../layouts/default
 
+block head
+  meta(property="fb:admins" content="{vlatri}")
+
 block content
   main.content.feedback
     h2.content-title Відгуки
     .container
-      #google_comments
-      script(src='https://apis.google.com/js/plusone.js')
-      script.
-        gapi.comments.render('google_comments', {
-            href: window.location,
-            width: '650',
-            first_party_property: 'BLOGGER',
-            view_type: 'FILTERED_POSTMOD'
-        })
+      #fb-root
+      .fb-comments(
+        data-href="https://developers.facebook.com/docs/plugins/comments#configurator",
+        data-width="100%",
+        data-numposts="10"
+      )
+
+block js
+  script.
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = 'https://connect.facebook.net/uk_UA/sdk.js#xfbml=1&version=v2.12';
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));

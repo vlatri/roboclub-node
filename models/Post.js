@@ -40,14 +40,21 @@ const Post = new keystone.List('Post', {
 
 Post.add({
   title: {type: String, required: true},
-  author: {type: String},
-  state: { type: Types.Select, options: 'draft, published, archived', default: 'draft', index: true },
-  publishedDate: { type: Types.Date, index: true, dependsOn: { state: 'published' } },
+  author: {type: String, index: true, required: true, initial: true,},
+  state: { type: Types.Select, options: 'draft, published, archived', default: 'draft', index: true, initial: true, },
+  publishedDate: { type: Types.Date, index: true, initial: true, dependsOn: { state: 'published' } },
   coverImage: {type: Types.File, storage, thumb: true},
   oldCoverImage: {type: Types.File, storage, hidden: true},
-  heroImage: {type: Types.File, storage, note: 'Small square image used on previews. Will be resized to 240x240.', thumb: true},
+  heroImage: {type: Types.File, initial: true, storage, note: 'Small square image used on previews. Please preserve 1:1 ratio.', thumb: true},
   oldHeroImage: {type: Types.File, storage, hidden: true},
-  briefDescription: {type: String, note: `${maxBriefDescriptionLength} characters max.`},
+  briefDescription: {
+    type: String,
+    required: true,
+    index: true,
+    initial: true,
+    default: '',
+    note: `${maxBriefDescriptionLength} characters max.`,
+  },
   maxBriefDescriptionLength: {type: Number, hidden: true, default: maxBriefDescriptionLength, required: true},
   content: generateContentFields(24),
 })
@@ -57,9 +64,7 @@ Post.schema.pre('validate', async function(next) {
   const { heroImage, coverImage, oldCoverImage, oldHeroImage, briefDescription } = this
 
 
-  this.coverImage =
-    await fileValidate(storage, coverImage, {url: '/images/fallbacks/homeCover.jpg', mimetype: 'image/jpeg'})
-      .catch(next)
+  this.coverImage = await fileValidate(storage, coverImage).catch(next)
   this.heroImage =
     await fileValidate(storage, heroImage, {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
       .then(resizeImage(heroImage, 240, 240))

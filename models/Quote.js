@@ -46,7 +46,7 @@ Quote.schema.pre('validate', async function(next) {
 
 // TODO: Check for obsolete files and delete those.
 Quote.schema.pre('remove', function(next) {
-  removeFile(storage, this.coverImage, next)
+  removeFile(storage, this.authorAvatar, next)
 })
 
 Quote.defaultColumns = 'author|20%, text'

@@ -17,13 +17,12 @@ exports = module.exports = (req, res) => {
       state: 'published',
       slug: locals.filters.post,
     })
-    .populate({
-      path: 'sections',
-      options: { sort: {sequenceNumber: 1} }
-    })
+    .populate('sections')
     .exec((err, result) => {
-      locals.title = result.title
-      locals.post = result ? fixPublishedDate(result, 'DD/MM/YYYY') : res.redirect('/404')
+      if(result) {
+        locals.title = result.title
+        locals.post = fixPublishedDate(result, 'DD/MM/YYYY')
+      } else res.redirect('/404')
       next(err)
     })
   })

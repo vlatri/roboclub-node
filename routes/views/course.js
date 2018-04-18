@@ -22,9 +22,10 @@ exports = module.exports = (req, res) => {
       slug: locals.filters.course,
     })
     .populate({path: 'relatedAlbum', populate: {path: 'sections'}})
-    .populate({path: 'sections', options: { sort: {sequenceNumber: 1} } })
+    .populate('sections')
     .exec(function (err, result) {
-      locals.course = result
+      if(result) locals.course = result
+      else res.redirect('/404')
       next(err)
     })
   })
