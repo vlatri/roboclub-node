@@ -27,9 +27,14 @@ block content
        each course in courses
          script.
            console.log(!{JSON.stringify(course)})
+           console.log(!{serverTimestamp})
          +preview({
            title: course.briefDescription,
-           attrs: { 'data-cat': course.field, 'data-age': '1-29', 'data-min-age': course.minimumAge, 'data-max-age': course.maximumAge},
+           active: {
+            since: course.activeSince,
+            currentDate: currentServerDate,
+           },
+           attrs: { 'data-cat': course.field, 'data-min-age': course.minimumAge, 'data-max-age': course.maximumAge},
            icon: 'age',
            link: `/course/${course.slug}`,
            bgSRC: course.heroImage.url,

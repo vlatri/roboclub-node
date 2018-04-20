@@ -19,13 +19,20 @@
       min-width: 100%;
       vertical-align: top;
     }
-    .overlay {
+    .overlay,
+    .inactive-overlay {
       color: white;
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
+    }
+    .inactive-overlay {
+      background: rgba(#333, 0.6);
+      z-index: 2;
+    }
+    .overlay {
       background: rgba(#eba352, 0.6);
       &:after {
         z-index: 0;

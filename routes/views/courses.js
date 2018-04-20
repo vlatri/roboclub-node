@@ -7,6 +7,9 @@ exports = module.exports = (req, res) => {
 
   locals.title = 'Курси'
   locals.section = 'courses'
+  locals.currentServerDate = new Date()
+
+  console.log(locals.currentServerDate)
 
   view.query('courseFields', keystone.list('Coursefield').model.find())
   view.query('courses', keystone.list('Course').model.find())

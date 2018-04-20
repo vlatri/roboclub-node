@@ -1,5 +1,6 @@
 -var stripeConfig = {index: 0, resetStripesEvery: 4, currentColor: false };
 
+
 mixin preview(config)
   -config.sizes = config.sizes || {xs: 6, sm: 4, md: 3};
 
@@ -45,8 +46,14 @@ mixin preview(config)
               if config.icon.slice(0, 2) === 'fa'
                 span(class= config.icon)
               if config.icon === 'age'
-                span.age-icon= config.attrs['data-age']
+                span.age-icon= `${config.attrs['data-min-age']}-${config.attrs['data-max-age']}`
           .button-wrapper
             a(href=config.link ? config.link : config.bgSRC, class=config.blue ? 'yellow' : 'blue')&attributes(buttonAttrs).basic-btn
               span.fa.fa-link
               = (config.buttonText || 'Дивитись')
+      -var activeSinceDate = new Date(config.active.since)
+      -var datePadLeft = x => `0${x}`.slice(-2)
+      -if(activeSinceDate.getTime() > (new Date(config.active.currentDate)).getTime()) {
+        .inactive-overlay
+          span= `Starting on ${datePadLeft(activeSinceDate.getDate())}/${datePadLeft(activeSinceDate.getMonth()+1)}/${activeSinceDate.getFullYear()}`
+      -}
