@@ -21,8 +21,11 @@ export const configStorage = path => new keystone.Storage({
 })
 
 
+export const formatDate = (date, format) => moment(date).format(format)
+
+
 export const fixPublishedDate = (post, format) => {
-  return {...post.toObject(), publishedDate: moment(post.publishedDate).format(format) }
+  return {...post.toObject(), publishedDate: formatDate(post.publishedDate, format) }
 }
 
 
@@ -150,7 +153,47 @@ export const removeObsoleteFile = (storage, oldFile, newFile) =>
       resolve()
   )
 
+export const generateContentFields = (n, schemaType, Types, storage) => {
+  let result = { sectionsCount: {type: Number, default: n, required: true, hidden: true} }
+
+  const commonSchemaConstruct = i => ({
+    [`${i}_subtitle`]: {type: String, collapse: true, label: `Subtitle ${i}`},
+    [`${i}_text`]: {type: Types.Html, wysiwyg: true, height: 300, collapse: true, label: `Text ${i}`},
+  })
+
+  const postSchemaConstruct = i => ({
+    ...commonSchemaConstruct(i),
+    [`${i}_image`]: {type: Types.File, storage, collapse: true, thumb: true, label: `Image ${i}`},
+    [`${i}_oldImage`]: {type: Types.File, storage, hidden: true},
+  })
+
+  const activitySchemaConstruct = i => ({
+    [`${i}_title`]: {type: String, collapse: true, label: `Title ${i}`},
+    ...commonSchemaConstruct(i),
+  })
+
+  for(let i=1; i <= n; i++) {
+    const item =
+      schemaType === 'post' ?
+        postSchemaConstruct(i) :
+        activitySchemaConstruct(i)
+    result = {...result, ...item}
+  }
+  return result
+}
+
+
 export const getSpecificFields = (obj, containedPattern) =>
    Object.keys(obj)
      .filter(key => ~key.indexOf(containedPattern))
      .map(key => obj[key])
+
+
+export const validateAge = (minAge, maxAge) =>
+  new Promise((resolve, reject) => {
+    if(minAge > maxAge)
+      return reject(new Error('Minimum age is greater than maximum age.'))
+    if(maxAge < 0 || minAge < 0)
+      return reject(new Error('Age is out of range.'))
+    resolve()
+  })

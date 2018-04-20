@@ -1,5 +1,7 @@
 import keystone from 'keystone'
 
+import {formatDate} from '../../utils/'
+
 
 exports = module.exports = (req, res) => {
   const view = new keystone.View(req, res)
@@ -7,12 +9,30 @@ exports = module.exports = (req, res) => {
 
   locals.title = 'Курси'
   locals.section = 'courses'
-  locals.currentServerDate = new Date()
+  locals.courses = []
+  locals.courseFields = []
+  locals.serverTimestamp = (new Date()).getTime()
 
-  console.log(locals.currentServerDate)
+  // view.query('courseFields', keystone.list('Coursefield').model.find())
 
-  view.query('courseFields', keystone.list('Coursefield').model.find())
-  view.query('courses', keystone.list('Course').model.find())
+  view.on('init', function (next) {
+    const fieldsQuery = keystone.list('Coursefield').model.find().exec()
+    .then(fields => locals.courseFields = fields)
+
+    const coursesQuery = keystone.list('Course').model.find().exec().then((courses=[]) =>
+      locals.courses = courses.map(
+        course => ({
+          ...course.toObject(),
+          activeSinceTimestamp: (new Date(course.activeSince)).getTime(),
+          activeSinceFormattedDate: formatDate(course.activeSince, 'DD MMMM YYYY')
+        })
+      )
+    )
+
+    Promise.all([fieldsQuery, coursesQuery])
+    .then(next)
+    .catch(next)
+  })
 
   view.render('courses')
 }

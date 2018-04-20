@@ -2,8 +2,6 @@
 
 
 mixin preview(config)
-  -config.sizes = config.sizes || {xs: 6, sm: 4, md: 3};
-
   if config.attrs && config.attrs['data-type'] == 'photo'
     -config.icon = 'fa fa-camera';
 
@@ -29,13 +27,18 @@ mixin preview(config)
   if !config.bgSRC
     -config.bgSRC = '/images/fallbacks/heroNews.jpg'
 
-  .preview(
-    class=config.sizes.xs ? 'col-xs-' + config.sizes.xs : '',
-    class=config.sizes.sm ? 'col-sm-' + config.sizes.sm : '',
-    class=config.sizes.md ? 'col-md-' + config.sizes.md : '',
-    class=config.sizes.lg ? 'col-lg-' + config.sizes.lg : '')&attributes(config.attrs)
-    .preview-wrapper(class=config.blue ? 'blue' : '')
-      img.preview-img(src=(config.forceBgLazyLoad ? undefined : config.bgSRC), data-lazy=(config.forceBgLazyLoad ? config.bgSRC : undefined), alt=config.title)
+  -var isInactive = config.active && config.active.sinceTimestamp > config.active.currentTimestamp
+
+  .preview.col-xs-6.col-sm-4.col-md-3&attributes(config.attrs)
+    .preview-wrapper(
+      class=config.blue ? 'blue' : '',
+      class=isInactive ? 'inactive' : ''
+    )
+      img.preview-img(
+        src=(config.forceBgLazyLoad ? undefined : config.bgSRC),
+        data-lazy=(config.forceBgLazyLoad ? config.bgSRC : undefined),
+        alt=config.title
+      )
       .overlay
         .overlay-content
           h3.title= config.title
@@ -47,13 +50,9 @@ mixin preview(config)
                 span(class= config.icon)
               if config.icon === 'age'
                 span.age-icon= `${config.attrs['data-min-age']}-${config.attrs['data-max-age']}`
+          if isInactive
+            span.active-since=`Доступно з ${config.active.sinceFormattedDate}`
           .button-wrapper
             a(href=config.link ? config.link : config.bgSRC, class=config.blue ? 'yellow' : 'blue')&attributes(buttonAttrs).basic-btn
               span.fa.fa-link
               = (config.buttonText || 'Дивитись')
-      -var activeSinceDate = new Date(config.active.since)
-      -var datePadLeft = x => `0${x}`.slice(-2)
-      -if(activeSinceDate.getTime() > (new Date(config.active.currentDate)).getTime()) {
-        .inactive-overlay
-          span= `Starting on ${datePadLeft(activeSinceDate.getDate())}/${datePadLeft(activeSinceDate.getMonth()+1)}/${activeSinceDate.getFullYear()}`
-      -}

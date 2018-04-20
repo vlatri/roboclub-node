@@ -17,13 +17,10 @@ exports = module.exports = (req, res) => {
   // Load the current course
   view.on('init', function (next) {
     keystone.list('Course').model
-    .findOne({
-      active: true,
-      slug: locals.filters.course,
-    })
+    .findOne({ slug: locals.filters.course })
     .populate({path: 'relatedAlbum', populate: {path: 'sections'}})
     .populate('sections')
-    .exec(function (err, result) {
+    .exec((err, result) => {
       if(result) locals.course = result
       else res.redirect('/404')
       next(err)

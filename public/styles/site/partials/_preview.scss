@@ -1,6 +1,7 @@
 .preview{
   margin: 0 0 30px 0;
   .preview-wrapper {
+    color: white;
     position: relative;
     height: 100%;
     border-radius: 5px;
@@ -19,20 +20,12 @@
       min-width: 100%;
       vertical-align: top;
     }
-    .overlay,
-    .inactive-overlay {
-      color: white;
+    .overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-    }
-    .inactive-overlay {
-      background: rgba(#333, 0.6);
-      z-index: 2;
-    }
-    .overlay {
       background: rgba(#eba352, 0.6);
       &:after {
         z-index: 0;
@@ -75,7 +68,14 @@
             border-radius: 50%;
           }
         }
+        .active-since {
+          color: #aaa;
+          display: block;
+          margin-top: 2em;
+          font-weight: bold;
+        }
         .button-wrapper {
+          z-index: 3;
           position: absolute;
           left: 50%;
           opacity: 0;
@@ -97,6 +97,14 @@
         background: rgba($clr-blue, 0.6);
         &:after {
           border-color: rgba($clr-blue, 0.6) transparent transparent transparent;
+        }
+      }
+    }
+    &.inactive {
+      .overlay {
+        background: rgba(#333, 0.8);
+        &:after {
+          border-color: rgba(#333, 0.8) transparent transparent transparent;
         }
       }
     }

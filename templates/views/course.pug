@@ -9,10 +9,10 @@ block content
       .row.short-desc
         .row
           .col-xs-10.col-xs-offset-1.col-md-offset-0
-            h3.subtitle План занять
+            h3.subtitle!=course.mainTitle
         .row
           .col-xs-10.col-xs-offset-1.col-md-offset-0.course-plan
-            span.plan-wrapper!=course.plan
+            span.plan-wrapper!=course.mainText
         .row
           .col-xs-10.col-xs-offset-1.col-md-offset-0.course-tasks
             .row
@@ -52,18 +52,9 @@ block content
             if course.content[`${i}_text`]
               .col-xs-10.col-xs-offset-1.col-md-offset-0.lesson-tasks!= course.content[`${i}_text`]
         -}
-        //- each section in course.sections
-        //-   if section.fancyTitlebar
-        //-     .row
-        //-       .lesson-title
-        //-         h2= section.title
-        //-         img(src='/images/icons/logo-gear.svg', alt='')
-        //-   else
-        //-     span.task-subtitle= section.title
-        //-   .col-xs-10.col-xs-offset-1.col-md-offset-0.lesson-tasks!= section.text
       .row.course-actions
         .col-xs-4.signin-button-wrapper
-          a.basic-btn.red.signin-button(href=course.applyToCourseLink) Записатись на курс
+          a.basic-btn.red.signin-button(href=course.applyLink) Записатись на курс
         .socials-wrapper.col-md-3.col-sm-6.col-xs-8.pull-right
           a(target='_blank').fa.fa-facebook.fb-share
           a(target='_blank').fa.fa-twitter.twitter-share

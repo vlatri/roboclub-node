@@ -8,26 +8,13 @@ import {
   validateBriefDescLength,
   removeObsoleteFile,
   getSpecificFields,
+  generateContentFields,
 } from '../utils/'
 
 
 const storage = configStorage('/images/posts/')
 const maxBriefDescriptionLength = 50
 const { Types } = keystone.Field
-
-export const generateContentFields = n => {
-  // FP
-  let result = { sectionsCount: {type: Number, default: n, required: true, hidden: true} }
-  for(let i=1; i <= n; i++) {
-    result = {...result,
-      [`${i}_subtitle`]: {type: String, collapse: true, label: `Subtitle ${i}`},
-      [`${i}_text`]: {type: Types.Html, wysiwyg: true, height: 300, collapse: true, label: `Text ${i}`},
-      [`${i}_image`]: {type: Types.File, storage, collapse: true, thumb: true, label: `Image ${i}`},
-      [`${i}_oldImage`]: {type: Types.File, storage, hidden: true},
-    }
-  }
-  return result
-}
 
 
 const Post = new keystone.List('Post', {
@@ -56,7 +43,7 @@ Post.add({
     note: `${maxBriefDescriptionLength} characters max.`,
   },
   maxBriefDescriptionLength: {type: Number, hidden: true, default: maxBriefDescriptionLength, required: true},
-  content: generateContentFields(24),
+  content: generateContentFields(24, 'post', Types, storage),
 })
 
 
