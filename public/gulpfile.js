@@ -13,11 +13,19 @@ const jsSRC = [
   './js/scripts.js',
 ]
 
+const onError = err => {
+  console.log(err)
+  this.emit('end')
+}
+
+gulp.task('watch', () => gulp.watch(jsSRC, ['default']))
+
 gulp.task('default', function() {
   return gulp.src(jsSRC)
     .pipe(concat('build.js'))
     .pipe(gulp.dest('./js'))
     .pipe(rename('build.min.js'))
     .pipe(babel({presets: ['minify']}))
+    .on('error', onError)
     .pipe(gulp.dest('./js'))
 });

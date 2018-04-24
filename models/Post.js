@@ -4,10 +4,11 @@ import {
   configStorage,
   fileValidate,
   resizeImage,
-  removeFile,
+  removeFileAsync,
   validateBriefDescLength,
   removeObsoleteFile,
   getSpecificFields,
+  getSpecificFieldNames,
   generateContentFields,
 } from '../utils/'
 
@@ -50,7 +51,6 @@ Post.add({
 Post.schema.pre('validate', async function(next) {
   const { heroImage, coverImage, oldCoverImage, oldHeroImage, briefDescription } = this
 
-
   this.coverImage = await fileValidate(storage, coverImage).catch(next)
   this.heroImage =
     await fileValidate(storage, heroImage, {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
@@ -63,18 +63,17 @@ Post.schema.pre('validate', async function(next) {
   const pendingPromises = [
     removeObsoleteFile(storage, oldCoverImage, coverImage),
     removeObsoleteFile(storage, oldHeroImage, heroImage),
+    ...currentImages.map(image => fileValidate(storage, image)),
     ...currentImages.map((image, index) => removeObsoleteFile(storage, oldImages[index], currentImages[index])),
   ]
 
-  Promise.all(pendingPromises)
+  await Promise.all(pendingPromises)
   .then(() => {
     this.oldCoverImage = coverImage
     this.oldHeroImage = heroImage
 
-    // FP
-    for(let i=1; i<=this.content.sectionsCount; i++) {
-      this.content[`${i}_oldImage`] = this.content[`${i}_image`]
-    }
+     getSpecificFieldNames(this.content, 'image')
+    .map(fieldName => this.content[fieldName.replace('image', 'oldImage')] = this.content[fieldName])
 
   })
   .catch(next)
@@ -85,10 +84,18 @@ Post.schema.pre('validate', async function(next) {
 })
 
 Post.schema.pre('remove', function(next) {
-  removeFile(storage, this.heroImage).then(next)
+  removeFileAsync(storage, this.heroImage)
+
+  const images = getSpecificFields(this.content, 'image')
+
+  // No need to catch errors from this promise as long as most of them are ENOENT
+  images.map(image => removeFileAsync(storage, image))
+
+
+  next()
 })
 
 
-Post.defaultColumns = 'title, sections, author|10%, state|10%, publishedDate|15%'
+Post.defaultColumns = 'title, author|10%, state|10%, publishedDate|15%'
 
 Post.register()

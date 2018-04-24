@@ -2,11 +2,13 @@ extends ../layouts/default
 
 block content
   include ../mixins/preview
+
   -let minAge = Infinity
   -let maxAge = -Infinity
   each course in courses
    -minAge = course.minimumAge < minAge ? course.minimumAge : minAge
    -maxAge = course.maximumAge > maxAge ? course.maximumAge : maxAge
+
   main.content
    h2.content-title Курси
    .container
@@ -19,7 +21,7 @@ block content
              option(value=field._id)= field.title
        .courses-filter__form-line.age.col-sm-3
          select.basic-select(data-filter='age')
-           option(value='all') Вік дитини
+           option(value='all') Вік
            -for(let i=minAge; i<=maxAge; i++) {
               option(value=i)= `${i}`
            -}

@@ -4,10 +4,12 @@ import {
   configStorage,
   fileValidate,
   resizeImage,
-  removeFile,
+  removeFileAsync,
   compressImage,
-  updateChildrenWithRelatedParent,
   removeObsoleteFile,
+  generateContentFields,
+  getSpecificFields,
+  getSpecificFieldNames,
 } from '../utils/'
 
 
@@ -25,36 +27,59 @@ const Album = new keystone.List('Album', {
 Album.add({
   title: {type: String, required: true},
   publishedDate: { type: Types.Date, index: true},
-  heroImage: {type: Types.File, storage, note: 'Small square image used fpr previews. Will be resized to 240x240.', thumb: true},
+  heroImage: {type: Types.File, storage, note: 'Small square image used for previews. Please preserve 1:1 ratio.', thumb: true},
   oldHeroImage: {type: Types.File, storage, hidden: true},
-  text: {type: Types.Html, wysiwyg: true},
-  sections: { type: Types.Relationship, ref: 'Albumitem', many: true },
+  content: generateContentFields(100, 'album', Types, storage)
 })
 
 
 Album.schema.pre('validate', async function(next) {
   const {heroImage, oldHeroImage} = this
 
-  await updateChildrenWithRelatedParent(Album.model, keystone.list('Albumitem').model, this).catch(next)
-
   this.heroImage = await fileValidate(storage, heroImage, {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
     .then(resizeImage(heroImage, 240, 240))
     .then(compressImage)
     .catch(next)
 
-  await removeObsoleteFile(storage, oldHeroImage, heroImage).catch(next)
-  this.oldHeroImage = heroImage
+
+  const photos = getSpecificFields(this.content, 'photo')
+  const oldPhotos = getSpecificFields(this.content, 'oldPhoto')
+
+  const pendingPromises = [
+    removeObsoleteFile(storage, oldHeroImage, heroImage).catch(next),
+    ...photos.map(photo => fileValidate(storage, photo)),
+    ...photos.map((photo, index) => removeObsoleteFile(storage, oldPhotos[index], photos[index])),
+  ]
+
+  await Promise.all(pendingPromises)
+  .then(() => {
+    this.oldHeroImage = heroImage
+
+    getSpecificFieldNames(this.content, 'photo')
+    .map(fieldName => this.content[fieldName.replace('photo', 'oldPhoto')] = this.content[fieldName])
+  })
+  .catch(next)
 
   next()
 })
 
 Album.schema.pre('remove', function(next) {
-  removeFile(storage, this.heroImage).then(next)
+  removeFileAsync(storage, this.heroImage).catch(next)
+
+  const photos = getSpecificFields(this.content, 'photo')
+
+  // No need to catch errors from this promise as long as most of them are ENOENT
+  photos.map(photo => removeFileAsync(storage, photo))
+
+  next()
 })
 
 
-Album.relationship({ ref: 'Course', refPath: 'relatedAlbum' })
-Album.defaultColumns = 'title, sections, publishedDate|15%'
+Album.relationship = { ref: 'Course', refPath: 'relatedAlbum' }
+Album.relationship = { ref: 'Camp', refPath: 'relatedAlbum' }
+Album.relationship = { ref: 'Event', refPath: 'relatedAlbum' }
+
+Album.defaultColumns = 'title, publishedDate|15%'
 
 
 Album.register()

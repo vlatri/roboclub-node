@@ -36,6 +36,7 @@
   "scripts": {
     "heroku-postbuild": "yarn install && yarn build",
     "build-front": "gulp --gulpfile ./public/gulpfile.js",
+    "watch-front": "gulp watch --gulpfile ./public/gulpfile.js",
     "build": "webpack -p",
     "babel-node": "NODE_ENV=development babel-node --presets=latest --plugins=transform-object-rest-spread",
     "start": "nodemon --exec npm run babel-node -- ./keystone.js"

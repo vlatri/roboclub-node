@@ -56,7 +56,7 @@ export const resizeImage = (image, width, height) =>
   )
 
 
-export const removeFile = (storage, file, cb) => storage.removeFile(file, cb)
+export const removeFile = (storage, file, cb) => file.filename && storage.removeFile(file, cb)
 
 
 export const removeFileAsync = (storage, file) =>
@@ -172,21 +172,43 @@ export const generateContentFields = (n, schemaType, Types, storage) => {
     ...commonSchemaConstruct(i),
   })
 
+  const albumSchemaConstruct = i => {
+    let schema = {
+      [`${i}_item_subtitle`]: {type: String, label: `${i%2 ? 'Photo' : 'Video'} title`},
+    }
+
+    if(i%2)
+      schema = {
+        ...schema,
+        [`${i}_photo`]: {type: Types.File, storage, thumb: true, label: `Photo`},
+        [`${i}_oldPhoto`]: {type: Types.File, storage, hidden: true},
+      }
+    else
+      schema = {
+        ...schema,
+        [`${i}_video`]: {type: Types.Url, label: `Video`},
+      }
+    return schema
+  }
+
   for(let i=1; i <= n; i++) {
-    const item =
-      schemaType === 'post' ?
-        postSchemaConstruct(i) :
-        activitySchemaConstruct(i)
-    result = {...result, ...item}
+    let schema
+
+    if(schemaType === 'post') schema = postSchemaConstruct(i)
+    if(schemaType === 'activity') schema = activitySchemaConstruct(i)
+    if(schemaType === 'album') schema = albumSchemaConstruct(i)
+
+    result = {...result, ...schema}
   }
   return result
 }
 
-
-export const getSpecificFields = (obj, containedPattern) =>
+export const getSpecificFieldNames = (obj, containedPattern) =>
    Object.keys(obj)
      .filter(key => ~key.indexOf(containedPattern))
-     .map(key => obj[key])
+
+export const getSpecificFields = (obj, containedPattern) =>
+  getSpecificFieldNames(obj, containedPattern).map(key => obj[key])
 
 
 export const validateAge = (minAge, maxAge) =>

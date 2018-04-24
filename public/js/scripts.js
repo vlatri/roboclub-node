@@ -30,22 +30,26 @@ $(function() {
   /*---------------------------------------------------*/
 
   $('body').on('change', '.courses-filter select', function() {
-    var filterType = $(this).data('filter'),
-      filterVal = $(this).val(),
-      $filteredItems = $('.courses .preview')
+    const $itemsToFilter = $('.courses .preview')
+    const ageVal = $('select[data-filter="age"]').val()
+    const catVal = $('select[data-filter="cat"]').val()
 
-    if (!filterType) return 0
-    if(filterVal === 'all') return $filteredItems.show(300)
+    const filterFunc = (i, el) => {
+      const minAge = +$(el).data('min-age')
+      const maxAge = +$(el).data('max-age')
+      const age = parseFloat(ageVal)
+      const cat = $(el).data('cat')
 
-    const filterFunc = filterType === 'age' ?
-      ((i, el) => $(el).data(filterType) <= filterVal) :
-      ((i, el) => $(el).data(filterType) == filterVal)
+      if(ageVal === 'all' || (age >= minAge && age <= maxAge))
+        if(catVal === 'all' || catVal === cat) return true
+      return false
+    }
 
-    const $itemsToShow = $filteredItems.filter(filterFunc)
-    const $itemsToHide = $filteredItems.filter((i, el) => !filterFunc(i, el))
+    const $itemsToShow = $itemsToFilter.filter(filterFunc)
+    const $itemsToHide = $itemsToFilter.filter((i, el) => !filterFunc(i, el))
 
-    $itemsToHide.hide(300)
-    $itemsToShow.show(300)
+    $itemsToHide.hide(300).add('filtered')
+    $itemsToShow.show(300).removeClass('filtered')
 
   })
 

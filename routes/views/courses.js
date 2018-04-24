@@ -16,7 +16,7 @@ exports = module.exports = (req, res) => {
   // view.query('courseFields', keystone.list('Coursefield').model.find())
 
   view.on('init', function (next) {
-    const fieldsQuery = keystone.list('Coursefield').model.find().exec()
+    const fieldsQuery = keystone.list('Activityfield').model.find().exec()
     .then(fields => locals.courseFields = fields)
 
     const coursesQuery = keystone.list('Course').model.find().exec().then((courses=[]) =>
