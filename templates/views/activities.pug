@@ -5,19 +5,19 @@ block content
 
   -let minAge = Infinity
   -let maxAge = -Infinity
-  each course in courses
-   -minAge = course.minimumAge < minAge ? course.minimumAge : minAge
-   -maxAge = course.maximumAge > maxAge ? course.maximumAge : maxAge
+  each activity in activities
+   -minAge = activity.minimumAge < minAge ? activity.minimumAge : minAge
+   -maxAge = activity.maximumAge > maxAge ? activity.maximumAge : maxAge
 
   main.content
-   h2.content-title Курси
+   h2.content-title= title
    .container
      form.courses-filter.row
        h4.courses-filter__title.col-sm-3 Фільтрувати
        .courses-filter__form-line.col-sm-3
          select.basic-select(data-filter='cat')
            option(value='all') Напрям
-           each field in courseFields
+           each field in fields
              option(value=field._id)= field.title
        .courses-filter__form-line.age.col-sm-3
          select.basic-select(data-filter='age')
@@ -26,18 +26,18 @@ block content
               option(value=i)= `${i}`
            -}
      .courses.row.centered-items
-       each course in courses
+       each activity in activities
          +preview({
-           title: course.briefDescription,
+           title: activity.briefDescription,
            active: {
-            sinceFormattedDate: course.activeSinceFormattedDate,
-            sinceTimestamp: course.activeSinceTimestamp,
+            sinceFormattedDate: activity.activeSinceFormattedDate,
+            sinceTimestamp: activity.activeSinceTimestamp,
             currentTimestamp: serverTimestamp,
            },
-           attrs: { 'data-cat': course.field, 'data-min-age': course.minimumAge, 'data-max-age': course.maximumAge},
+           attrs: { 'data-cat': activity.field, 'data-min-age': activity.minimumAge, 'data-max-age': activity.maximumAge},
            icon: 'age',
-           link: `/course/${course.slug}`,
-           bgSRC: course.heroImage.url,
-           activeSince: course.activeSince,
+           link: `/${path}/${activity.slug}`,
+           bgSRC: activity.heroImage.url,
+           activeSince: activity.activeSince,
            stripy: 'orange',
          })

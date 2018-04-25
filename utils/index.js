@@ -153,6 +153,7 @@ export const removeObsoleteFile = (storage, oldFile, newFile) =>
       resolve()
   )
 
+
 export const generateContentFields = (n, schemaType, Types, storage) => {
   let result = { sectionsCount: {type: Number, default: n, required: true, hidden: true} }
 
@@ -172,24 +173,13 @@ export const generateContentFields = (n, schemaType, Types, storage) => {
     ...commonSchemaConstruct(i),
   })
 
-  const albumSchemaConstruct = i => {
-    let schema = {
-      [`${i}_item_subtitle`]: {type: String, label: `${i%2 ? 'Photo' : 'Video'} title`},
-    }
-
-    if(i%2)
-      schema = {
-        ...schema,
-        [`${i}_photo`]: {type: Types.File, storage, thumb: true, label: `Photo`},
-        [`${i}_oldPhoto`]: {type: Types.File, storage, hidden: true},
-      }
-    else
-      schema = {
-        ...schema,
-        [`${i}_video`]: {type: Types.Url, label: `Video`},
-      }
-    return schema
-  }
+  const albumSchemaConstruct = i => ({
+    [`${i}_subtitlePhoto`]: {type: String, label: 'Photo title'},
+    [`${i}_photo`]: {type: Types.File, storage, thumb: true, label: 'Photo'},
+    [`${i}_oldPhoto`]: {type: Types.File, storage, hidden: true},
+    [`${i}_subtitleVideo`]: {type: String, label: 'Video title'},
+    [`${i}_video`]: {type: Types.Url, label: 'Video'},
+  })
 
   for(let i=1; i <= n; i++) {
     let schema
@@ -203,9 +193,11 @@ export const generateContentFields = (n, schemaType, Types, storage) => {
   return result
 }
 
+
 export const getSpecificFieldNames = (obj, containedPattern) =>
    Object.keys(obj)
      .filter(key => ~key.indexOf(containedPattern))
+
 
 export const getSpecificFields = (obj, containedPattern) =>
   getSpecificFieldNames(obj, containedPattern).map(key => obj[key])

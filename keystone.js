@@ -87,7 +87,7 @@ keystone.set('nav', {
   about: ['participants', 'presentations', 'partners'],
   faq: ['faqs', 'faqsections'],
   posts: ['posts'],
-  activities: ['courses', 'camps', 'events'],
+  activities: ['courses', 'camps', 'events', 'projects'],
   fields: 'activityfields',
   albums: 'albums',
   enquiries: 'enquiries',

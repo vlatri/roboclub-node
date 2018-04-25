@@ -8,7 +8,7 @@ exports = module.exports = (req, res) => {
 
   // locals.section is used to set the currently selected
   // item in the header navigation.
-  locals.section = '500'
+  locals.section = 'home'
   res.status(500)
   // Render the view
   view.render('errors/500')

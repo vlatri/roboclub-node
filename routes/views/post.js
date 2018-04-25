@@ -9,13 +9,11 @@ exports = module.exports = (req, res) => {
 
   locals.section = 'posts'
 
-  locals.filters = { post: req.params.post }
-
   view.on('init', function (next) {
     keystone.list('Post').model
     .findOne({
       state: 'published',
-      slug: locals.filters.post,
+      slug: req.params.item,
     })
     .populate('sections')
     .exec((err, result) => {
@@ -29,7 +27,7 @@ exports = module.exports = (req, res) => {
 
   view.on('init', next => {
     keystone.list('Post').model
-    .find({slug: {$ne: req.params.post}})
+    .find({slug: {$ne: req.params.item}})
     .where('state', 'published')
     .select({
       heading: 1,

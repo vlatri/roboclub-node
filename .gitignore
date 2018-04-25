@@ -1,7 +1,7 @@
 node_modules
 .env
 build.js
-# /public/images
-# !/public/images/fallbacks
-# !/public/images/vendor
-# !/public/images/*
+/public/images
+!/public/images/fallbacks
+!/public/images/vendor
+!/public/images/*

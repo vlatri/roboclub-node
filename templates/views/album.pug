@@ -3,6 +3,7 @@ extends ../layouts/default
 
 block content
   include ../mixins/preview
+  include ../mixins/getYoutubePreview
 
   main.content.gallery
     h2.content-title= album.title
@@ -12,12 +13,33 @@ block content
         .basic-btn.yellow.filter-button(data-filter='photo') Фото
         .basic-btn.yellow.filter-button(data-filter='video') Відео
       .row.centered-items
-        each item in album.sections
-          +preview({
-            title: item.title,
-            attrs: {'data-type': item.type},
-            date: album.publishedDate,
-            bgSRC: item.type === 'photo' ? item.photo.url : album.heroImage.url,
-            link: item.type === 'video' ? item.video : null,
-            gallery: true,
-          })
+        -for(let i=1; i<=album.content.sectionsCount; i++) {
+          -
+            let photoSubtitle = album.content[`${i}_subtitlePhoto`]
+            let videoSubtitle = album.content[`${i}_subtitleVideo`]
+            let photo = album.content[`${i}_photo`]
+            let video = album.content[`${i}_video`]
+            let previewConfig = {
+              gallery: true,
+              date: album.publishedDate,
+            }
+          -if(photoSubtitle || (photo && photo.url)) {
+            -
+              Object.assign(previewConfig, {
+                title: photoSubtitle,
+                attrs: {'data-type': 'photo'},
+                bgSRC: photo && photo.url,
+              })
+            +preview(previewConfig)
+          -}
+          -if(videoSubtitle || video) {
+            -
+              Object.assign(previewConfig, {
+                title: videoSubtitle,
+                attrs: {'data-type': 'video'},
+                bgSRC: getYoutubePreview(video),
+                link: video,
+              })
+            +preview(previewConfig)
+          -}
+        -}

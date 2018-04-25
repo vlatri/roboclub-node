@@ -1,6 +1,7 @@
-import { createActivity } from '../config/ActivityModel.js'
+import { createActivity } from '../utils/activitiesFactory/model'
 
 
 createActivity('Course', 'Courses')
 createActivity('Event', 'Events')
 createActivity('Camp', 'Camps')
+createActivity('Project', 'Projects')

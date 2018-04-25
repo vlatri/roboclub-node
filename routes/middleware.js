@@ -24,11 +24,15 @@ export const initLocals = (req, res, next) => {
     { label: 'Про нас', key: 'about', href: '/team', pages: [
       { label: 'Команда', key: 'team', href: '/team' },
       { label: 'Галерея', key: 'albums', href: '/albums'},
+      { label: 'Проекти', key: 'projects', href: '/projects'},
       { label: 'Партнери', key: 'partners', href: '/partners' },
       { label: 'Відгуки', key: 'feedback', href: '/feedback' },
     ]},
     { label: 'Новини', key: 'posts', href: '/posts'},
-    { label: 'Навчання', key: 'courses', href: '/courses', pages: [
+    { label: 'Навчання', key: 'studying', pages: [
+      { label: 'Курси', key: 'courses', href: '/courses' },
+      { label: 'Кемпи', key: 'camps', href: '/camps' },
+      { label: 'Заходи', key: 'events', href: '/events' },
       { label: 'FAQ', key: 'faq', href: '/faq' },
     ]},
     { label: 'Контакти', key: 'contacts', href: ''},

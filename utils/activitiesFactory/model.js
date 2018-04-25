@@ -11,7 +11,7 @@ import {
   generateContentFields,
   validateAge,
   configStorage
-} from '../utils/'
+} from '../'
 
 const { Types } = keystone.Field
 const maxBriefDescriptionLength = 50
@@ -51,7 +51,7 @@ export const createActivity = (singularListName, pluralListName) => {
     relatedAlbum: {type: Types.Relationship, ref: 'Album', many: false},
     maxBriefDescriptionLength: {type: Number, hidden: true, default: maxBriefDescriptionLength, required: true},
     applyLink: {type: Types.Url},
-    content: generateContentFields(24, 'course', Types, storage),
+    content: generateContentFields(24, 'activity', Types, storage),
   })
 
   List.schema.pre('validate', async function(next) {
@@ -74,8 +74,8 @@ export const createActivity = (singularListName, pluralListName) => {
     next()
   })
 
-  List.schema.pre('remove', async function(next) {
-    await removeFileAsync(storage, this.heroImage).catch(next)
+  List.schema.pre('remove', function(next) {
+    removeFileAsync(storage, this.heroImage)
     next()
   })
 

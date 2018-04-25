@@ -29,7 +29,7 @@ Album.add({
   publishedDate: { type: Types.Date, index: true},
   heroImage: {type: Types.File, storage, note: 'Small square image used for previews. Please preserve 1:1 ratio.', thumb: true},
   oldHeroImage: {type: Types.File, storage, hidden: true},
-  content: generateContentFields(100, 'album', Types, storage)
+  content: generateContentFields(50, 'album', Types, storage)
 })
 
 
@@ -44,6 +44,8 @@ Album.schema.pre('validate', async function(next) {
 
   const photos = getSpecificFields(this.content, 'photo')
   const oldPhotos = getSpecificFields(this.content, 'oldPhoto')
+
+  console.log(photos)
 
   const pendingPromises = [
     removeObsoleteFile(storage, oldHeroImage, heroImage).catch(next),

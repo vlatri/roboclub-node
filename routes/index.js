@@ -35,24 +35,34 @@ keystone.pre('render', middleware.flashMessages)
 // Import Route Controllers
 const routes = { views }
 
+const { activities } = routes.views
+
 // Setup Route Bindings
 exports = module.exports = app => {
   // Views
-  app.get('/', routes.views.home)
-  app.get('/posts', routes.views.posts)
-  app.get('/post/:post', routes.views.post)
-  app.get('/team', routes.views.team)
-  app.get('/partners', routes.views.partners)
-  app.get('/feedback', routes.views.feedback)
-  app.get('/faq', routes.views.faq)
-  app.get('/courses', routes.views.courses)
-  app.get('/course/:course', routes.views.course)
-  app.get('/albums', routes.views.albums)
-  app.get('/album/:album', routes.views.album)
-  app.post('/contact', routes.views.contact)
+  app.get('/',              routes.views.home)
+
+  app.get('/team',          routes.views.team)
+  app.get('/partners',      routes.views.partners)
+  app.get('/feedback',      routes.views.feedback)
+  app.get('/faq',           routes.views.faq)
+  app.get('/posts',         routes.views.posts)
+  app.get('/post/:item',    routes.views.post)
+  app.get('/courses',       activities.courses.multi)
+  app.get('/course/:item',  activities.courses.single)
+  app.get('/camps',         activities.camps.multi)
+  app.get('/camp/:item',    activities.camps.single)
+  app.get('/events',        activities.events.multi)
+  app.get('/event/:item',   activities.events.single)
+  app.get('/projects',      activities.events.multi)
+  app.get('/project/:item', activities.events.single)
+  app.get('/albums',        routes.views.albums)
+  app.get('/album/:item',   routes.views.album)
+  app.post('/contact',      routes.views.contact)
 
   app.get('/500', routes.views.errors[500])
-  app.all('*', routes.views.errors[404])
+  app.all('*',    routes.views.errors[404])
+
 
   // NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 
