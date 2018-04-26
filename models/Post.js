@@ -3,10 +3,12 @@ import keystone from 'keystone'
 import {
   configStorage,
   fileValidate,
-  resizeImage,
+  filesValidate,
+  saveHeroImage,
   removeFileAsync,
   validateBriefDescLength,
   removeObsoleteFile,
+  removeObsoleteFiles,
   getSpecificFields,
   getSpecificFieldNames,
   generateContentFields,
@@ -49,36 +51,25 @@ Post.add({
 
 
 Post.schema.pre('validate', async function(next) {
-  const { heroImage, coverImage, oldCoverImage, oldHeroImage, briefDescription } = this
+  const { heroImage, coverImage, content, oldCoverImage, oldHeroImage, briefDescription } = this
 
-  this.coverImage = await fileValidate(storage, coverImage).catch(next)
-  this.heroImage =
-    await fileValidate(storage, heroImage, {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
-      .then(resizeImage(heroImage, 240, 240))
-      .catch(next)
-
-  const currentImages = getSpecificFields(this.content, 'image')
-  const oldImages = getSpecificFields(this.content, 'oldImage')
-
-  const pendingPromises = [
-    removeObsoleteFile(storage, oldCoverImage, coverImage),
-    removeObsoleteFile(storage, oldHeroImage, heroImage),
-    ...currentImages.map(image => fileValidate(storage, image)),
-    ...currentImages.map((image, index) => removeObsoleteFile(storage, oldImages[index], currentImages[index])),
-  ]
-
-  await Promise.all(pendingPromises)
-  .then(() => {
-    this.oldCoverImage = coverImage
-    this.oldHeroImage = heroImage
-
-     getSpecificFieldNames(this.content, 'image')
-    .map(fieldName => this.content[fieldName.replace('image', 'oldImage')] = this.content[fieldName])
-
-  })
-  .catch(next)
+  const images = getSpecificFields(content, 'image')
+  const oldImages = getSpecificFields(content, 'oldImage')
+  const oldImagesFieldNames = getSpecificFieldNames(content, 'oldImage')
 
   await validateBriefDescLength(briefDescription, maxBriefDescriptionLength).catch(next)
+
+  this.coverImage = await fileValidate(storage, coverImage).catch(next)
+  this.heroImage = await saveHeroImage(storage, heroImage).catch(next)
+  this.oldHeroImage = await removeObsoleteFile(storage, oldHeroImage, heroImage).catch(next)
+
+  await filesValidate(storage, images).catch(next)
+
+  const approvedImages = await removeObsoleteFiles(storage, images, oldImages).catch(next)
+
+  oldImagesFieldNames.map((fieldName, index) =>
+    this.content[fieldName] = approvedImages[index]
+  )
 
   next()
 })

@@ -49,10 +49,11 @@ Album.schema.pre('validate', async function(next) {
   this.oldHeroImage = await removeObsoleteFile(storage, oldHeroImage, heroImage).catch(next)
 
   await filesValidate(storage, photos).catch(next)
-  const approvedImages = await removeObsoleteFiles(storage, photos, oldPhotos).catch(next)
+
+  const approvedPhotos = await removeObsoleteFiles(storage, photos, oldPhotos).catch(next)
 
   oldPhotosFieldNames.map((fieldName, index) =>
-    this.content[fieldName] = approvedImages[index]
+    this.content[fieldName] = approvedPhotos[index]
   )
 
   next()
