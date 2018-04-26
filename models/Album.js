@@ -2,18 +2,20 @@ import keystone from 'keystone'
 
 import {
   configStorage,
-  fileValidate,
-  resizeImage,
+  filesValidate,
   removeFileAsync,
-  compressImage,
+  saveHeroImage,
   removeObsoleteFile,
+  removeObsoleteFiles,
   generateContentFields,
   getSpecificFields,
   getSpecificFieldNames,
+  validateBriefDescLength
 } from '../utils/'
 
 
 const storage = configStorage('/images/albums/')
+const maxBriefDescriptionLength = 50
 const { Types } = keystone.Field
 
 const Album = new keystone.List('Album', {
@@ -29,38 +31,29 @@ Album.add({
   publishedDate: { type: Types.Date, index: true},
   heroImage: {type: Types.File, storage, note: 'Small square image used for previews. Please preserve 1:1 ratio.', thumb: true},
   oldHeroImage: {type: Types.File, storage, hidden: true},
+  maxBriefDescriptionLength: {type: Number, hidden: true, default: maxBriefDescriptionLength, required: true},
   content: generateContentFields(50, 'album', Types, storage)
 })
 
 
 Album.schema.pre('validate', async function(next) {
-  const {heroImage, oldHeroImage} = this
+  const {heroImage, oldHeroImage, title, content} = this
 
-  this.heroImage = await fileValidate(storage, heroImage, {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
-    .then(resizeImage(heroImage, 240, 240))
-    .then(compressImage)
-    .catch(next)
+  const photos = getSpecificFields(content, 'photo')
+  const oldPhotos = getSpecificFields(content, 'oldPhoto')
+  const oldPhotosFieldNames = getSpecificFieldNames(content, 'oldPhoto')
 
+  await validateBriefDescLength(title, maxBriefDescriptionLength).catch(next)
 
-  const photos = getSpecificFields(this.content, 'photo')
-  const oldPhotos = getSpecificFields(this.content, 'oldPhoto')
+  this.heroImage = await saveHeroImage(storage, heroImage).catch(next)
+  this.oldHeroImage = await removeObsoleteFile(storage, oldHeroImage, heroImage).catch(next)
 
-  console.log(photos)
+  await filesValidate(storage, photos).catch(next)
+  const approvedImages = await removeObsoleteFiles(storage, photos, oldPhotos).catch(next)
 
-  const pendingPromises = [
-    removeObsoleteFile(storage, oldHeroImage, heroImage).catch(next),
-    ...photos.map(photo => fileValidate(storage, photo)),
-    ...photos.map((photo, index) => removeObsoleteFile(storage, oldPhotos[index], photos[index])),
-  ]
-
-  await Promise.all(pendingPromises)
-  .then(() => {
-    this.oldHeroImage = heroImage
-
-    getSpecificFieldNames(this.content, 'photo')
-    .map(fieldName => this.content[fieldName.replace('photo', 'oldPhoto')] = this.content[fieldName])
-  })
-  .catch(next)
+  oldPhotosFieldNames.map((fieldName, index) =>
+    this.content[fieldName] = approvedImages[index]
+  )
 
   next()
 })

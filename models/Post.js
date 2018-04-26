@@ -78,7 +78,7 @@ Post.schema.pre('validate', async function(next) {
   })
   .catch(next)
 
-  await validateBriefDescLength(briefDescription || '', maxBriefDescriptionLength).catch(next)
+  await validateBriefDescLength(briefDescription, maxBriefDescriptionLength).catch(next)
 
   next()
 })

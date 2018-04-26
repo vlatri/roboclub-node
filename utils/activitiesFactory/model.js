@@ -62,6 +62,7 @@ export const createActivity = (singularListName, pluralListName) => {
     await validateBriefDescLength(briefDescription || '', maxBriefDescriptionLength).catch(next)
 
     this.applyLink = linkValidate(applyLink)
+
     this.heroImage =
       await fileValidate(storage, heroImage, {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
       .then(resizeImage(heroImage, 240, 240))

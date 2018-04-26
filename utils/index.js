@@ -81,6 +81,9 @@ export const fileValidate = (storage, file, fallback={}) =>
     : resolve(fallback)
   )
 
+export const filesValidate = (storage, files) =>
+  Promise.all(files.map(image => fileValidate(storage, image)))
+
 
 export const linkValidate = link => link ?
   link.slice(0, 4).toLowerCase() === 'http' ?
@@ -88,36 +91,7 @@ export const linkValidate = link => link ?
   : link
 
 
-export const updateChildWithRelatedParent = (parentModel, childModel, childId) =>
-  parentModel.findOne({sections: childId}, {title: true}).exec((err, res) => {
-    if(err) return new Error(err)
-    if(!res) res = {_id: null, title: null}
-
-    return childModel.update({_id: childId}, {
-      relatedParent: {
-        _id: res._id,
-        title: res.title,
-      }
-    }).exec()
-  })
-
-
-export const updateChildrenWithRelatedParent = (parentModel, childModel, parent) =>
-  // Reset parent for all children which think current parent is related to them
-  childModel.update({'relatedParent._id': parent._id},
-    {relatedParent: {_id: null, title: null}},
-    {multi: true}
-  ).exec()
-  .then((err, res) =>
-    // Set relation for only selected children
-    childModel.update({_id: {$in: parent.sections}}, {
-      relatedParent: {_id: parent._id, title: parent.title}
-    }, {multi: true}
-    ).exec()
-  )
-
-
-export const validateBriefDescLength = (text, max) =>
+export const validateBriefDescLength = (text='', max) =>
   new Promise((resolve, reject) =>
     (text.length <= max) ?
       resolve() :
@@ -148,10 +122,21 @@ export const removeObsoleteFile = (storage, oldFile, newFile) =>
     fileExists(oldFile) && fileExists(newFile) ?
       (newFile.filename !== oldFile.filename ?
         removeFileAsync(storage, oldFile).then(resolve) :
-        resolve()
+        resolve(newFile)
       ) :
-      resolve()
+      resolve(newFile)
   )
+
+export const removeObsoleteFiles = (storage, images, oldImages) =>
+  new Promise((resolve, reject) => {
+
+    const promises =
+      images.map((photo, index) =>
+        removeObsoleteFile(storage, oldImages[index], images[index])
+      )
+
+    return Promise.all(promises).then(resolve).catch(reject)
+  })
 
 
 export const generateContentFields = (n, schemaType, Types, storage) => {
@@ -211,3 +196,8 @@ export const validateAge = (minAge, maxAge) =>
       return reject(new Error('Age is out of range.'))
     resolve()
   })
+
+
+export const saveHeroImage = (storage, heroImage) =>
+  fileValidate(storage, heroImage, {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
+    .then(resizeImage(heroImage, 240, 240))
