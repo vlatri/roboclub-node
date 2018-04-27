@@ -38,9 +38,12 @@ export const initLocals = (req, res, next) => {
     { label: 'Контакти', key: 'contacts', href: ''},
   ]
 
-  res.locals = Object.assign({}, res.locals, keystone.get('locals'))
-
-  next()
+  keystone.list('Common').model.findOne({}, {_id: false}).exec()
+  .then(layout => {
+    res.locals.commonLayout = layout
+    next()
+  })
+  .catch(next)
 }
 
 /**

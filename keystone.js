@@ -64,17 +64,11 @@ if(keystone.get('env') === 'production') {
 // bundled templates and layouts. Any runtime locals (that should be set uniquely
 // for each request) should be added to ./routes/middleware.js
 
-const defaultLocals = {
+keystone.set('locals', {
   env: keystone.get('env'),
-  editable: keystone.content.editable,
   utils: keystone.utils,
-}
-
-const setLocals = locals => keystone.set('locals', locals)
-
-keystone.list('Common').model.findOne({}, {_id: false}).exec()
-.then(layout => setLocals({ ...defaultLocals, commonLayout: layout }))
-.catch(() => setLocals(defaultLocals))
+  editable: keystone.content.editable,
+})
 
 // Load your project's Routes
 keystone.set('routes', require('./routes'))
