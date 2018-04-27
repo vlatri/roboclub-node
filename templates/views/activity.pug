@@ -42,11 +42,11 @@ block content
                   if(photoSubtitle || (photo && photo.url))
                     .slide
                       a(href=photo.url, title=photoSubtitle).swipebox
-                        img(src=photo.url, alt=photoSubtitle)
+                        img(data-lazy=photo.url, alt=photoSubtitle)
                   if(videoSubtitle || video)
                     .slide
                       a(href=video, title=video).swipebox
-                        img(src=getYoutubePreview(video), alt=video)
+                        img(data-lazy=getYoutubePreview(video), alt=video)
                 -}
     .container.lessons-desc
       .row.lesson-desc

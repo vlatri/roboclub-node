@@ -113,6 +113,7 @@ $(document).ready(function() { // FAQ Sliding
 
 $(document).ready(function() {
   $('.gallery-preview-slider').slick({
+    lazyLoad: 'progressive',
     autoplay: true,
     autoplaySpeed: 5000,
     arrows: false,
