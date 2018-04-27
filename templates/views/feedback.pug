@@ -15,11 +15,11 @@ block content
 
 block js
   script.
-    document.getElementsByClassName('fb-comments')[0].setAttribute('data-href', window.location);
+    document.getElementsByClassName('fb-comments')[0].setAttribute('data-href', window.location.href);
     (function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) return;
       js = d.createElement(s); js.id = id;
-      js.src = 'https://connect.facebook.net/uk_UA/sdk.js#xfbml=1&version=v2.12';
+      js.src = 'https://connect.facebook.net/uk_UA/sdk.js#xfbml=1&version=v2.7';
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
