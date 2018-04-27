@@ -1,7 +1,7 @@
 extends ../layouts/default
 
 block head
-  meta(property="fb:admins" content="100006370776258")
+  meta(property="fb:app_id" content="360300397815440")
 
 block content
   main.content.feedback
@@ -20,6 +20,6 @@ block js
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) return;
       js = d.createElement(s); js.id = id;
-      js.src = 'https://connect.facebook.net/uk_UA/sdk.js#xfbml=1&version=v2.7';
+      js.src = 'https://connect.facebook.net/uk_UA/sdk.js#xfbml=1&version=v2.12';
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
