@@ -1,6 +1,7 @@
 node_modules
 .env
 build.js
+yarn-error.log
 /public/images
 !/public/images/fallbacks
 !/public/images/vendor

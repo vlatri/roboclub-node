@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn watch-front
+  /usr/local/bin/node /usr/local/bin/yarn setup-db
 
 PATH: 
   /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/vlad/.vimpkg/bin
@@ -54,6 +54,7 @@ npm manifest:
       "build-front": "gulp --gulpfile ./public/gulpfile.js",
       "watch-front": "gulp watch --gulpfile ./public/gulpfile.js",
       "build": "webpack -p",
+      "setup-db": "./config/db-dump/restore-db.sh",
       "babel-node": "NODE_ENV=development babel-node --presets=latest --plugins=transform-object-rest-spread",
       "start": "nodemon --exec npm run babel-node -- ./keystone.js"
     }
@@ -8975,7 +8976,7 @@ Trace:
   Error: Command failed.
   Exit code: 1
   Command: sh
-  Arguments: -c gulp watch --gulpfile ./public/gulpfile.js
+  Arguments: -c ./config/db-dump/restore-db.sh
   Directory: /home/vlad/webdev/roboclub-node
   Output:
   
