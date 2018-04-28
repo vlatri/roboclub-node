@@ -1,8 +1,9 @@
 extends ../layouts/default
 
 block head
-  meta(property="fb:app_id" content="360300397815440")
-
+  //- meta(property="fb:app_id" content="360300397815440")
+  meta(property="fb:admins", content="vlatri")
+  meta(property="og:url")
 block content
   main.content.feedback
     h2.content-title Відгуки
@@ -16,6 +17,7 @@ block content
 block js
   script.
     document.getElementsByClassName('fb-comments')[0].setAttribute('data-href', window.location.href);
+    document.querySelector('meta[property="og:url"]').setAttribute('content', window.location.href);
     (function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) return;
