@@ -82,8 +82,7 @@
     background: linear-gradient(
       rgba(67, 65, 74, 0.6),
       rgba(67, 65, 74, 0.6)
-    ), url(/images/fallbacks/homeCover.jpg) no-repeat center;
-    background-size: auto, cover;
+    ), url(/images/fallbacks/homeCover.jpg) no-repeat center center/cover;
 
     &:before {
       content: '';

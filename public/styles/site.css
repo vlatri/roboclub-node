@@ -9658,8 +9658,7 @@ input[type="reset"]:focus {
   margin: 0 0 -42px;
   min-height: 622px;
   position: relative;
-  background: linear-gradient(rgba(67, 65, 74, 0.6), rgba(67, 65, 74, 0.6)), url(/images/fallbacks/homeCover.jpg) no-repeat center;
-  background-size: auto, cover; }
+  background: linear-gradient(rgba(67, 65, 74, 0.6), rgba(67, 65, 74, 0.6)), url(/images/fallbacks/homeCover.jpg) no-repeat center center/cover; }
   .home .intro:before {
     content: '';
     position: absolute;
