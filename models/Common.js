@@ -20,6 +20,7 @@ Common.add({
     facebookLink: {type: Types.Url},
     instagramLink: {type: Types.Url},
   },
+  becomeTeamMemberLink: {type: Types.Url},
   footer: {
     primaryPhoneNumber: {type: String},
     secondaryPhoneNumber: {type: String},
@@ -32,10 +33,13 @@ Common.add({
 
 
 Common.schema.pre('save', function(next) {
-  const { facebookLink, instagramLink } = this.header
+  const { header, becomeTeamMemberLink } = this
+  const { facebookLink, instagramLink } = header
 
-  this.facebookLink = linkValidate(facebookLink)
-  this.instagramLink = linkValidate(instagramLink)
+
+  this.header.facebookLink = linkValidate(facebookLink)
+  this.header.instagramLink = linkValidate(instagramLink)
+  this.becomeTeamMemberLink = linkValidate(becomeTeamMemberLink)
 
   next()
 })
