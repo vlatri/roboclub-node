@@ -20,7 +20,7 @@ keystone.init({
   'view engine': 'pug',
 
   'mongo': process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/roboclubif',
-  'port': process.env.PORT || 3000,
+  'port': keystone.get('env') === 'production' ? process.env.PORT : 3000,
   'session store': 'mongo',
 
   'wysiwyg images': true,
