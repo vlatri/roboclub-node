@@ -168,9 +168,11 @@
       .cols-wrapper {
         position: relative;
         .robo-wrapper {
-          position: absolute;
-          top: -150%;
-          right: 0;
+          position: relative;
+          img {
+            position: absolute;
+            bottom: -5em;
+          }
         }
       }
     }

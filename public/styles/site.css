@@ -9719,9 +9719,10 @@ input[type="reset"]:focus {
   .home .mission-section .cols-wrapper {
     position: relative; }
     .home .mission-section .cols-wrapper .robo-wrapper {
-      position: absolute;
-      top: -150%;
-      right: 0; } }
+      position: relative; }
+      .home .mission-section .cols-wrapper .robo-wrapper img {
+        position: absolute;
+        bottom: -3em; } }
 
 .home .quotes-section {
   min-height: 302px;
