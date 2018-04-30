@@ -8859,6 +8859,8 @@ span p {
     .fat-nav ul .fat-nav-item.active > a {
       font-weight: bold;
       text-decoration: underline; }
+    .fat-nav ul .fat-nav-item a[href] {
+      text-decoration: underline; }
   .fat-nav ul .social-icons-wrapper .social-icon {
     font-size: 2em;
     margin-right: 30px; }

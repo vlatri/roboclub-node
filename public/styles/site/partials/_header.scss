@@ -276,6 +276,8 @@
 			font-size: 1.25em;
 			&.active > a {
 				font-weight: bold;
+			}
+			a[href]{
 				text-decoration: underline;
 			}
 		}
