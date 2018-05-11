@@ -8857,8 +8857,7 @@ span p {
     padding: 10px 0;
     font-size: 1.25em; }
     .fat-nav ul .fat-nav-item.active > a {
-      font-weight: bold;
-      text-decoration: underline; }
+      font-weight: bold; }
     .fat-nav ul .fat-nav-item a[href] {
       text-decoration: underline; }
   .fat-nav ul .social-icons-wrapper .social-icon {
@@ -8906,9 +8905,11 @@ span p {
         text-decoration: underline; }
   .contacts-section .basic-form .captcha-wrapper img {
     width: 100%; }
-  .contacts-section .basic-form .submit-button-wrapper button {
-    min-width: 0;
-    width: 100%; }
+  .contacts-section .basic-form .submit-button-wrapper {
+    margin-bottom: 1em; }
+    .contacts-section .basic-form .submit-button-wrapper button {
+      min-width: 0;
+      width: 100%; }
   .contacts-section .map-wrapper {
     position: absolute;
     top: 0;
@@ -8950,6 +8951,9 @@ span p {
   text-align: center;
   padding: 0;
   margin: 0; }
+  .f-copy a {
+    color: white;
+    text-decoration: underline; }
 
 .basic-btn, .pager-list__link {
   position: relative;
