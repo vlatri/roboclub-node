@@ -70,7 +70,8 @@ block content
         h3.section__subtitle!= layout.introText
         a.basic-btn.yellow.centered(href=layout.registerLink) Зареєструватись
     section.section.partners.container
-      h2.section__title Наші партнери
+      h2.section__title.partners-title
+        a(href='/partners') Наші партнери
       .partners-list
         each partner in partners
           .item

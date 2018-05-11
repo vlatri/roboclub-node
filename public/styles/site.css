@@ -9648,6 +9648,10 @@ input[type="reset"]:focus {
     margin: 0;
     padding: 0;
     color: #f89f4f; }
+    .home .section__title.partners-title a {
+      color: #f89f4f; }
+      .home .section__title.partners-title a:hover {
+        text-decoration: underline; }
   .home .section__subtitle {
     font-size: 16px;
     line-height: 1.4;

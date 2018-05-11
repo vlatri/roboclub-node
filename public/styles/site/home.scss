@@ -53,6 +53,12 @@
       margin: 0;
       padding: 0;
       color: $clr-yellow;
+      &.partners-title a {
+        color: $clr-yellow;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
 
     &__subtitle{
