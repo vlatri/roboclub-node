@@ -20,11 +20,12 @@ block content
            each field in fields
              option(value=field._id)= field.title
        .courses-filter__form-line.age.col-sm-3
-         select.basic-select(data-filter='age')
-           option(value='all') Вік
-           -for(let i=minAge; i<=maxAge; i++) {
-              option(value=i)= `${i}`
-           -}
+         if path !== 'product'
+           select.basic-select(data-filter='age')
+             option(value='all') Вік
+             -for(let i=minAge; i<=maxAge; i++) {
+                option(value=i)= i
+             -}
      .courses.row.centered-items
        each activity in activities
          +preview({
@@ -34,8 +35,8 @@ block content
             sinceTimestamp: activity.activeSinceTimestamp,
             currentTimestamp: serverTimestamp,
            },
-           attrs: { 'data-cat': activity.field, 'data-min-age': activity.minimumAge, 'data-max-age': activity.maximumAge},
-           icon: 'age',
+           attrs: { 'data-cat': activity.field, 'data-min-age': activity.minimumAge, 'data-max-age': activity.maximumAge },
+           icon: path === 'product' ? 'fa fa-graduation-cap' : 'age',
            link: `/${path}/${activity.slug}`,
            bgSRC: activity.heroImage.url,
            activeSince: activity.activeSince,

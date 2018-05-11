@@ -25,7 +25,7 @@ export const initLocals = (req, res, next) => {
       { label: 'Команда', key: 'team', href: '/team' },
       { label: 'Галерея', key: 'albums', href: '/albums'},
       { label: 'Проекти', key: 'projects', href: '/projects'},
-      { label: 'Партнери', key: 'partners', href: '/partners' },
+      { label: 'Продукти', key: 'products', href: '/products' },
       { label: 'Відгуки', key: 'feedback', href: '/feedback' },
     ]},
     { label: 'Новини', key: 'posts', href: '/posts'},

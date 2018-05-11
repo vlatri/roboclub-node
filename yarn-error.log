@@ -1,8 +1,8 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn setup-db
+  /usr/local/bin/node /usr/local/bin/yarn stat
 
 PATH: 
-  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/vlad/.vimpkg/bin
+  /home/vlad/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.10.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/vlad/.vimpkg/bin
 
 Yarn version: 
   1.5.1
@@ -54,7 +54,7 @@ npm manifest:
       "build-front": "gulp --gulpfile ./public/gulpfile.js",
       "watch-front": "gulp watch --gulpfile ./public/gulpfile.js",
       "build": "webpack -p",
-      "setup-db": "./config/db-dump/restore-db.sh",
+      "setup-db": "mongorestore -d roboclubif ./config/db-dump/roboclubif",
       "babel-node": "NODE_ENV=development babel-node --presets=latest --plugins=transform-object-rest-spread",
       "start": "nodemon --exec npm run babel-node -- ./keystone.js"
     }
@@ -8973,16 +8973,14 @@ Lockfile:
       yeoman-environment "^2.0.5"
 
 Trace: 
-  Error: Command failed.
-  Exit code: 1
-  Command: sh
-  Arguments: -c ./config/db-dump/restore-db.sh
-  Directory: /home/vlad/webdev/roboclub-node
-  Output:
-  
-      at ProcessTermError.MessageError (/usr/local/share/.config/yarn/global/node_modules/yarn/lib/cli.js:186:110)
-      at new ProcessTermError (/usr/local/share/.config/yarn/global/node_modules/yarn/lib/cli.js:226:113)
-      at ChildProcess.<anonymous> (/usr/local/share/.config/yarn/global/node_modules/yarn/lib/cli.js:30281:17)
-      at ChildProcess.emit (events.js:159:13)
-      at maybeClose (internal/child_process.js:943:16)
-      at Process.ChildProcess._handle.onexit (internal/child_process.js:220:5)
+  Error: Command "stat" not found. Did you mean "start"?
+      at new MessageError (/usr/local/share/.config/yarn/global/node_modules/yarn/lib/cli.js:186:110)
+      at /usr/local/share/.config/yarn/global/node_modules/yarn/lib/cli.js:87307:17
+      at Generator.next (<anonymous>)
+      at step (/usr/local/share/.config/yarn/global/node_modules/yarn/lib/cli.js:98:30)
+      at /usr/local/share/.config/yarn/global/node_modules/yarn/lib/cli.js:116:14
+      at new Promise (<anonymous>)
+      at new F (/usr/local/share/.config/yarn/global/node_modules/yarn/lib/cli.js:23451:28)
+      at /usr/local/share/.config/yarn/global/node_modules/yarn/lib/cli.js:95:12
+      at runCommand (/usr/local/share/.config/yarn/global/node_modules/yarn/lib/cli.js:87312:22)
+      at Object.<anonymous> (/usr/local/share/.config/yarn/global/node_modules/yarn/lib/cli.js:87412:14)

@@ -7,9 +7,6 @@ export default (keystone, formatDate) => (title, listName, path, section) => ({
     locals.section = section
     locals.path = path
 
-      console.log(listName, req.params.item)
-
-
     // Load the current activity
     view.on('init', function (next) {
       keystone.list(listName).model

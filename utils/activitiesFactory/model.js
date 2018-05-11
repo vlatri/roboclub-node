@@ -16,7 +16,7 @@ import {
 const { Types } = keystone.Field
 const maxBriefDescriptionLength = 50
 
-export const createActivity = (singularListName, pluralListName) => {
+export const createActivity = (singularListName, pluralListName, props) => {
   const fieldName = `${singularListName}field`
 
   const storage = configStorage(`/images/${pluralListName.toLowerCase()}`)
@@ -28,7 +28,7 @@ export const createActivity = (singularListName, pluralListName) => {
     plural: pluralListName,
   })
 
-  List.add({
+  let schema = {
     title: {type: String, required: true},
     activeSince: {
       type: Types.Date,
@@ -36,9 +36,9 @@ export const createActivity = (singularListName, pluralListName) => {
       index: true,
       initial: true,
     },
-    field: {type: Types.Relationship, index: true, initial: true, ref: 'Activityfield', many: false},
-    minimumAge: {type: Number, required: true, initial: true, index: true, default: 0},
-    maximumAge: {type: Number, required: true, initial: true, index: true, default: 0},
+    minimumAge: {type: Number, hidden: true, default: 0},
+    maximumAge: {type: Number, hidden: true, default: 0},
+    field: {type: Types.Relationship, hidden: true, ref: 'Activityfield', many: false},
     heroImage: {type: Types.File, storage, note: 'Small square image used on previews. Please, respect 1:1 ratio.', thumb: true},
     oldHeroImage: {type: Types.File, storage, hidden: true},
     briefDescription: {type: String, note: `${maxBriefDescriptionLength} characters max.`, required: true, initial: true, index: true},
@@ -51,8 +51,21 @@ export const createActivity = (singularListName, pluralListName) => {
     relatedAlbum: {type: Types.Relationship, ref: 'Album', many: false},
     maxBriefDescriptionLength: {type: Number, hidden: true, default: maxBriefDescriptionLength, required: true},
     applyLink: {type: Types.Url},
+    applyLinkText: {type: String, default: 'Записатись'},
     content: generateContentFields(24, 'activity', Types, storage),
+  }
+
+  const additionalProps = props.map(prop => {
+    if(prop === 'age') return {
+      minimumAge: {type: Number, required: true, initial: true, index: true, default: 0},
+      maximumAge: {type: Number, required: true, initial: true, index: true, default: 0},
+    }
+    if(prop === 'field') return {
+      field: {type: Types.Relationship, index: true, initial: true, ref: 'Activityfield', many: false},
+    }
   })
+
+  List.add(Object.assign(schema, ...additionalProps))
 
   List.schema.pre('validate', async function(next) {
     const {minimumAge, maximumAge, applyLink, heroImage, oldHeroImage, briefDescription} = this

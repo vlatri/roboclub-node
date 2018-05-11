@@ -1,8 +1,8 @@
 import { createActivity } from '../utils/activitiesFactory/model'
 
 
-createActivity('Course', 'Courses')
-createActivity('Event', 'Events')
-createActivity('Camp', 'Camps')
-createActivity('Project', 'Projects')
-createActivity('Product', 'Products')
+createActivity('Course', 'Courses', ['age', 'field'])
+createActivity('Event', 'Events', ['age', 'field'])
+createActivity('Camp', 'Camps', ['age', 'field'])
+createActivity('Project', 'Projects', ['age', 'field'])
+createActivity('Product', 'Products', ['field'])

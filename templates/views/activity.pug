@@ -20,7 +20,7 @@ block content
               .col-sm-6
                 h3.subtitle=activity.leftColumnSubtitle
                 span.desc!=activity.leftColumnText
-                a.basic-btn.red.signinButton(href=activity.applyLink) Записатись
+                a.basic-btn.red.signinButton(href=activity.applyLink)!=activity.applyLinkText
               .col-sm-6
                 h3.subtitle=activity.rightColumnSubtitle
                 span.desc!=activity.rightColumnText
@@ -65,7 +65,7 @@ block content
         -}
       .row.course-actions
         .col-xs-4.signin-button-wrapper
-          a.basic-btn.red.signin-button(href=activity.applyLink) Записатись
+          a.basic-btn.red.signin-button(href=activity.applyLink)!=activity.applyLinkText
         .socials-wrapper.col-md-3.col-sm-6.col-xs-8.pull-right
           a(target='_blank').fa.fa-facebook.fb-share
           a(target='_blank').fa.fa-twitter.twitter-share

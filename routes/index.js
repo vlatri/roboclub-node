@@ -48,6 +48,7 @@ exports = module.exports = app => {
   app.get('/faq',           routes.views.faq)
   app.get('/posts',         routes.views.posts)
   app.get('/post/:item',    routes.views.post)
+
   app.get('/courses',       activities.courses.multi)
   app.get('/course/:item',  activities.courses.single)
   app.get('/camps',         activities.camps.multi)
@@ -56,6 +57,9 @@ exports = module.exports = app => {
   app.get('/event/:item',   activities.events.single)
   app.get('/projects',      activities.projects.multi)
   app.get('/project/:item', activities.projects.single)
+  app.get('/products',      activities.products.multi)
+  app.get('/product/:item', activities.products.single)
+
   app.get('/albums',        routes.views.albums)
   app.get('/album/:item',   routes.views.album)
   app.post('/contact',      routes.views.contact)
