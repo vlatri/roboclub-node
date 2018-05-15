@@ -9520,6 +9520,8 @@ input[type="reset"]:focus {
       float: left;
       display: block;
       padding-top: 100%; }
+    .preview .preview-wrapper a.swipebox {
+      cursor: hover; }
     .preview .preview-wrapper .preview-img {
       position: absolute;
       margin: 0 50%;

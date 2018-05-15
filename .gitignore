@@ -2,6 +2,7 @@ node_modules
 .env
 build.js
 yarn-error.log
+/public/styles/site.css
 /public/images
 !/public/images/fallbacks
 !/public/images/vendor
