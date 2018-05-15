@@ -2,7 +2,7 @@ mixin partner(config)
   .col-sm-6
     .row.partner-wrapper
         .col-xs-4.partner-logo-wrapper
-          a(href=config.link)
+          a(href=config.link, target='_blank')
             img.partner-logo(src=config.image.url, alt=config.title)
         .col-xs-8.partner-desc-wrapper
           h3.partner-name= config.title
