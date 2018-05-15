@@ -1,3 +1,11 @@
+mixin previewImg(config)
+  img.preview-img(
+    src=(config.forceBgLazyLoad ? undefined : config.bgSRC),
+    data-lazy=(config.forceBgLazyLoad ? config.bgSRC : undefined),
+    alt=config.title
+  )
+
+
 -var stripeConfig = {index: 0, resetStripesEvery: 4, currentColor: false };
 
 
@@ -34,25 +42,25 @@ mixin preview(config)
       class=config.blue ? 'blue' : '',
       class=isInactive ? 'inactive' : ''
     )
-      img.preview-img(
-        src=(config.forceBgLazyLoad ? undefined : config.bgSRC),
-        data-lazy=(config.forceBgLazyLoad ? config.bgSRC : undefined),
-        alt=config.title
-      )
-      .overlay
-        .overlay-content
-          h3.title= config.title
-          if config.date
-            span.date= config.date
-          .icon
-            if config.icon
-              if config.icon.slice(0, 2) === 'fa'
-                span(class= config.icon)
-              if config.icon === 'age'
-                span.age-icon= `${config.attrs['data-min-age']}-${config.attrs['data-max-age']}`
-          if isInactive
-            span.active-since=`Доступно з ${config.active.sinceFormattedDate}`
-          .button-wrapper
-            a(href=config.link ? config.link : config.bgSRC, class=config.blue ? 'yellow' : 'blue')&attributes(buttonAttrs).basic-btn
-              span.fa.fa-link
-              = (config.buttonText || 'Дивитись')
+      if config.gallery
+        a(href=config.link ? config.link : config.bgSRC)&attributes(buttonAttrs)
+          +previewImg(config)
+      else
+        +previewImg(config)
+        .overlay
+          .overlay-content
+            h3.title= config.title
+            if config.date
+              span.date= config.date
+            .icon
+              if config.icon
+                if config.icon.slice(0, 2) === 'fa'
+                  span(class= config.icon)
+                if config.icon === 'age'
+                  span.age-icon= `${config.attrs['data-min-age']}-${config.attrs['data-max-age']}`
+            if isInactive
+              span.active-since=`Доступно з ${config.active.sinceFormattedDate}`
+            .button-wrapper
+              a(href=config.link ? config.link : config.bgSRC, class=config.blue ? 'yellow' : 'blue')&attributes(buttonAttrs).basic-btn
+                span.fa.fa-link
+                = (config.buttonText || 'Дивитись')
