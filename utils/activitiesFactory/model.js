@@ -19,7 +19,7 @@ const maxBriefDescriptionLength = 50
 export const createActivity = (singularListName, pluralListName, props) => {
   const fieldName = `${singularListName}field`
 
-  const storage = configStorage(`/images/${pluralListName.toLowerCase()}`)
+  const storage = configStorage(`/images/${pluralListName.toLowerCase()}/`)
 
   const List = new keystone.List(singularListName, {
     map: {name: 'title'},
