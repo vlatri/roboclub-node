@@ -50,7 +50,7 @@ export const resizeImage = (image, width, height) =>
         .strip()
         .resizeExact(width, height)
         .quality(50)
-        .colorspace('RGB')
+        // .colorspace('RGB') // FIXME: F*cks JPEG a lot.
         .write(image.path + image.filename, err => err ? reject(err) : resolve()) :
       resolve()
   )
