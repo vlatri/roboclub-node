@@ -10,7 +10,8 @@ import {
   generateContentFields,
   getSpecificFields,
   getSpecificFieldNames,
-  validateBriefDescLength
+  validateBriefDescLength,
+  shrinkImage,
 } from '../utils/'
 
 
@@ -51,6 +52,8 @@ Album.schema.pre('validate', async function(next) {
   await filesValidate(storage, photos).catch(next)
 
   const approvedPhotos = await removeObsoleteFiles(storage, photos, oldPhotos).catch(next)
+
+  await Promise.all(approvedPhotos.map(x => shrinkImage(x, 1366))).catch(next)
 
   oldPhotosFieldNames.map((fieldName, index) =>
     this.content[fieldName] = approvedPhotos[index]

@@ -12,6 +12,7 @@ import {
   getSpecificFields,
   getSpecificFieldNames,
   generateContentFields,
+  shrinkImage,
 } from '../utils/'
 
 
@@ -66,6 +67,8 @@ Post.schema.pre('validate', async function(next) {
   await filesValidate(storage, images).catch(next)
 
   const approvedImages = await removeObsoleteFiles(storage, images, oldImages).catch(next)
+
+  await Promise.all(approvedImages.map(x => shrinkImage(x, 1366))).catch(next)
 
   oldImagesFieldNames.map((fieldName, index) =>
     this.content[fieldName] = approvedImages[index]

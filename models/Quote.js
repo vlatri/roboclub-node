@@ -5,6 +5,7 @@ import {
   fileValidate,
   removeFile,
   resizeImage,
+  compressImage,
   removeObsoleteFile,
 } from '../utils/'
 
@@ -36,6 +37,7 @@ Quote.schema.pre('validate', async function(next) {
   this.authorAvatar =
     await fileValidate(storage, authorAvatar, {url: '/images/fallbacks/quotesAuthors.png', mimetype: 'image/png'})
       .then(resizeImage(authorAvatar, 64, 64))
+      .then(compressImage(authorAvatar))
       .catch(next)
 
   await removeObsoleteFile(storage, oldAuthorAvatar, authorAvatar)

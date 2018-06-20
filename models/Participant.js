@@ -5,7 +5,9 @@ import {
   validateMimeType,
   linkValidate,
   fileValidate,
+  shrinkImage,
   removeObsoleteFile,
+  compressImage,
 } from '../utils/'
 
 
@@ -39,6 +41,7 @@ Participant.schema.pre('validate', async function(next) {
   this.instagramLink = linkValidate(instagramLink)
   this.avatar =
     await fileValidate(storage, avatar, {url: '/images/fallbacks/participant.png', mimetype: 'image/png'})
+      .then(image => shrinkImage(image, 500))
       .catch(next)
 
   await removeObsoleteFile(storage, oldAvatar, avatar)

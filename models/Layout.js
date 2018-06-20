@@ -5,6 +5,7 @@ import {
   linkValidate,
   fileValidate,
   removeObsoleteFile,
+  shrinkImage
 } from '../utils/'
 
 const { Types } = keystone.Field
@@ -41,7 +42,9 @@ Layout.schema.pre('save', async function(next) {
     await fileValidate(storage, coverImage, {
       url: '/images/fallbacks/homeCover.jpg',
       mimetype: 'image/jpeg'
-    }).catch(next)
+    })
+    .then(() => shrinkImage(coverImage, 1600))
+    .catch(next)
 
     await removeObsoleteFile(storage, oldCoverImage, coverImage).catch(next)
     this.oldCoverImage = coverImage

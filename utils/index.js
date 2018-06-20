@@ -3,8 +3,13 @@ import moment from 'moment'
 import gm from 'gm'
 
 
+import imagemin  from 'imagemin'
+import imageminJpegtran from 'imagemin-jpegtran'
+import imageminPngquant from 'imagemin-pngquant'
+
 moment.locale('uk')
 const im = gm.subClass({imageMagick: true})
+
 
 
 export const configStorage = path => new keystone.Storage({
@@ -43,18 +48,38 @@ export const setFallback = (model, doc, fileField, fallback) =>
 export const isMimetypeValid = (file, desiredMimetype) => file && (~file.mimetype.indexOf(desiredMimetype))
 
 
+export const compressImage = image =>
+  new Promise((resolve, reject) =>
+    fileExists(image) ?
+      imagemin([image.path + image.filename], image.path, {
+        plugins: [imageminJpegtran(), imageminPngquant({quality: '65-80'})]
+      })
+      .then(() => resolve(image))
+      .catch(reject)
+    : resolve(image)
+  )
+
+
 export const resizeImage = (image, width, height) =>
   new Promise((resolve, reject) =>
     fileExists(image) ?
       im(image.path + image.filename)
-        .strip()
-        .resizeExact(width, height)
-        .quality(50)
-        // .colorspace('RGB') // FIXME: F*cks JPEG a lot.
+        .resize(width, height)
         .write(image.path + image.filename, err => err ? reject(err) : resolve()) :
       resolve()
   )
 
+
+export const shrinkImage = (image, maxSize) =>
+  new Promise((resolve, reject) =>
+    fileExists(image) ?
+      im(image.path + image.filename).size((err, size) => {
+        if(err) return reject(err)
+        if(size.width > maxSize) return resizeImage(image, maxSize, null).then(() => resolve(image))
+      })
+    : resolve(image)
+  )
+  .then(() => compressImage(image))
 
 export const removeFile = (storage, file, cb) => file.filename && storage.removeFile(file, cb)
 
@@ -81,6 +106,7 @@ export const fileValidate = (storage, file, fallback={}) =>
     : resolve(fallback)
   )
 
+
 export const filesValidate = (storage, files) =>
   Promise.all(files.map(image => fileValidate(storage, image)))
 
@@ -96,24 +122,6 @@ export const validateBriefDescLength = (text='', max) =>
     (text.length <= max) ?
       resolve() :
       reject(new Error(`Brief description is ${text.length - max} characters too long.`))
-  )
-
-
-export const compressImage = image =>
-  new Promise((resolve, reject) =>
-    fileExists(image) ?
-      im(image.path + image.filename).size((err, size) =>
-        (err ?
-          reject(err) :
-          im(image.path + image.filename)
-            .strip() // Remove all meta data (EXIF, commnents, etc)
-            .resize(size.width > 1366 ? 1366 : null) // Force resize to 1366*N if the image is wider than 1336px
-            .quality(50)
-            .colorspace('RGB')
-            .write(image.path + image.filename, err => err ? reject(err) : resolve(image))
-        )
-      ) :
-      resolve(image)
   )
 
 
@@ -200,4 +208,5 @@ export const validateAge = (minAge, maxAge) =>
 
 export const saveHeroImage = (storage, heroImage) =>
   fileValidate(storage, heroImage, {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
-    .then(resizeImage(heroImage, 240, 240))
+    .then(() =>resizeImage(heroImage, 240, 240))
+    .then(() =>compressImage(heroImage))

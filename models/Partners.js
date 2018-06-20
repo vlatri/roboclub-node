@@ -7,6 +7,7 @@ import {
   removeFile,
   linkValidate,
   removeObsoleteFile,
+  compressImage,
 } from '../utils/'
 
 const storage = configStorage('/images/partners/')
@@ -32,9 +33,12 @@ Partner.schema.pre('save', async function(next) {
   const { link, image, oldImage } = this
 
   this.link = linkValidate(link)
+
   this.image =
     await fileValidate(storage, image, {url: '/images/fallbacks/partner.jpg', mimetype: 'image/jpeg'})
       .then(resizeImage(image, 150, 75))
+      .then(compressImage(image))
+      .catch(next)
 
   await removeObsoleteFile(storage, oldImage, image)
   this.oldImage = image
