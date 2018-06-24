@@ -3,6 +3,7 @@ extends ../layouts/default
 block content
   include ../mixins/preview
   include ../mixins/getYoutubePreview
+  include ../mixins/galleryPreview
 
   main.content.course
     h2.content-title=activity.title
@@ -25,29 +26,7 @@ block content
                 h3.subtitle=activity.rightColumnSubtitle
                 span.desc!=activity.rightColumnText
     if(activity.relatedAlbum)
-      .container-fluid.gallery-preview-wrapper
-        .container
-          .row
-            .col-xs-10.col-xs-offset-1.col-md-offset-0.col-md-12.gallery-preview
-              a(href=`/album/${activity.relatedAlbum.slug}`)
-                h3 Галерея
-              .gallery-preview-slider
-                -const album = activity.relatedAlbum
-                -for(let i=1; i<=album.content.sectionsCount; i++) {
-                  -
-                    let photoSubtitle = album.content[`${i}_subtitlePhoto`]
-                    let videoSubtitle = album.content[`${i}_subtitleVideo`]
-                    let photo = album.content[`${i}_photo`]
-                    let video = album.content[`${i}_video`]
-                  if(photoSubtitle || (photo && photo.url))
-                    .slide
-                      a(href=photo.url, title=photoSubtitle).swipebox
-                        img(data-lazy=photo.url, alt=photoSubtitle)
-                  if(videoSubtitle || video)
-                    .slide
-                      a(href=video, title=video).swipebox
-                        img(data-lazy=getYoutubePreview(video), alt=video)
-                -}
+      +galleryPreview(activity.relatedAlbum)
     .container.lessons-desc
       .row.lesson-desc
         -for(let i=1; i<=activity.content.sectionsCount; i++) {

@@ -46,6 +46,7 @@ Post.add({
     default: '',
     note: `${maxBriefDescriptionLength} characters max.`,
   },
+  relatedAlbum: {type: Types.Relationship, ref: 'Album', many: false},
   maxBriefDescriptionLength: {type: Number, hidden: true, default: maxBriefDescriptionLength, required: true},
   content: generateContentFields(24, 'post', Types, storage),
 })
@@ -67,7 +68,6 @@ Post.schema.pre('validate', async function(next) {
   await filesValidate(storage, images).catch(next)
 
   const approvedImages = await removeObsoleteFiles(storage, images, oldImages).catch(next)
-
   await Promise.all(approvedImages.map(x => shrinkImage(x, 1366))).catch(next)
 
   oldImagesFieldNames.map((fieldName, index) =>

@@ -1,0 +1,27 @@
+.gallery-preview-wrapper {
+  background: #f79f50;
+  margin: 50px 0 0 0;
+  .gallery-preview {
+    h3 {
+      color: white;
+    }
+    .gallery-preview-slider {
+      margin: 0 -5px 30px -5px;
+      .slide {
+        margin: 0 5px;
+        img {
+          width: 100%;
+        }
+      }
+    }
+  }
+  .slick-track {
+    display: flex;
+  }
+  .slick-track .slick-slide {
+    display: flex;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+  }
+}

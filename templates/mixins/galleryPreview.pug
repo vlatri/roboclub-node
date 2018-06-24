@@ -1,0 +1,24 @@
+mixin galleryPreview(album)
+  if(album && album.content && album.content.sectionsCount)
+    .container-fluid.gallery-preview-wrapper
+      .container
+        .row
+          .col-xs-10.col-xs-offset-1.col-md-offset-0.col-md-12.gallery-preview
+            a(href=`/album/${album.slug}`)
+              h3 Галерея
+            .gallery-preview-slider
+              -for(let i=1; i<=album.content.sectionsCount; i++) {
+                -
+                  let photoSubtitle = album.content[`${i}_subtitlePhoto`]
+                  let videoSubtitle = album.content[`${i}_subtitleVideo`]
+                  let photo = album.content[`${i}_photo`]
+                  let video = album.content[`${i}_video`]
+                if(photoSubtitle || (photo && photo.url))
+                  .slide
+                    a(href=photo.url, title=photoSubtitle).swipebox
+                      img(data-lazy=photo.url, alt=photoSubtitle)
+                if(videoSubtitle || video)
+                  .slide
+                    a(href=video, title=video).swipebox
+                      img(data-lazy=getYoutubePreview(video), alt=video)
+              -}

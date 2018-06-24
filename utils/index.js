@@ -11,7 +11,6 @@ moment.locale('uk')
 const im = gm.subClass({imageMagick: true})
 
 
-
 export const configStorage = path => new keystone.Storage({
   adapter: keystone.Storage.Adapters.FS,
   fs: {
@@ -76,6 +75,7 @@ export const shrinkImage = (image, maxSize) =>
       im(image.path + image.filename).size((err, size) => {
         if(err) return reject(err)
         if(size.width > maxSize) return resizeImage(image, maxSize, null).then(() => resolve(image))
+        resolve(image)
       })
     : resolve(image)
   )

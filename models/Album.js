@@ -75,8 +75,11 @@ Album.schema.pre('remove', function(next) {
 
 
 Album.relationship = { ref: 'Course', refPath: 'relatedAlbum' }
-Album.relationship = { ref: 'Camp', refPath: 'relatedAlbum' }
 Album.relationship = { ref: 'Event', refPath: 'relatedAlbum' }
+Album.relationship = { ref: 'Camp', refPath: 'relatedAlbum' }
+Album.relationship = { ref: 'Project', refPath: 'relatedAlbum' }
+Album.relationship = { ref: 'Product', refPath: 'relatedAlbum' }
+Album.relationship = { ref: 'Post', refPath: 'relatedAlbum' }
 
 Album.defaultColumns = 'title, publishedDate|15%'
 

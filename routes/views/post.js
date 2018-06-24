@@ -16,6 +16,7 @@ exports = module.exports = (req, res) => {
       slug: req.params.item,
     })
     .populate('sections')
+    .populate('relatedAlbum')
     .exec((err, result) => {
       if(result) {
         locals.title = result.title
