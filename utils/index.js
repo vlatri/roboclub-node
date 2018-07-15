@@ -64,8 +64,8 @@ export const resizeImage = (image, width, height) =>
     fileExists(image) ?
       im(image.path + image.filename)
         .resize(width, height)
-        .write(image.path + image.filename, err => err ? reject(err) : resolve()) :
-      resolve()
+        .write(image.path + image.filename, err => err ? reject(err) : resolve(image)) :
+      resolve(image)
   )
 
 
@@ -208,5 +208,5 @@ export const validateAge = (minAge, maxAge) =>
 
 export const saveHeroImage = (storage, heroImage) =>
   fileValidate(storage, heroImage, {url: '/images/fallbacks/heroNews.jpg', mimetype: 'image/jpeg'})
-    .then(() =>resizeImage(heroImage, 240, 240))
-    .then(() =>compressImage(heroImage))
+    .then(image => resizeImage(image, 240, 240))
+    .then(image => compressImage(image))
