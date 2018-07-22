@@ -11,6 +11,6 @@ exports = module.exports = {
   courses: carriedFactory('Курси', 'Course', 'course', 'studying'),
   camps: carriedFactory('Кемпи', 'Camp', 'camp', 'studying'),
   events: carriedFactory('Заходи', 'Event', 'event', 'studying'),
-  projects: carriedFactory('Проекти', 'Project', 'project', 'about'),
-  products: carriedFactory('Продукти', 'Product', 'product', 'about'),
+//  projects: carriedFactory('Проекти', 'Project', 'project', 'about'),
+//  products: carriedFactory('Продукти', 'Product', 'product', 'about'),
 }
