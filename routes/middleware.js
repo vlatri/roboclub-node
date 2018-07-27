@@ -22,18 +22,19 @@ export const initLocals = (req, res, next) => {
   res.locals.navLinks = [
     { label: 'Головна', key: 'home', href: '/' },
     { label: 'Про нас', key: 'about', href: '/team', pages: [
+      { label: 'FAQ', key: 'faq', href: '/faq' },
       { label: 'Команда', key: 'team', href: '/team' },
       { label: 'Галерея', key: 'albums', href: '/albums'},
 //    { label: 'Проекти', key: 'projects', href: '/projects'},
 //    { label: 'Продукти', key: 'products', href: '/products' },
-      { label: 'Відгуки', key: 'feedback', href: '/feedback' },
+//    { label: 'Відгуки', key: 'feedback', href: '/feedback' },
     ]},
     { label: 'Новини', key: 'posts', href: '/posts'},
-    { label: 'Навчання', key: 'studying', pages: [
+    { label: 'Послуги', key: 'studying', pages: [
       { label: 'Курси', key: 'courses', href: '/courses' },
-      { label: 'Кемпи', key: 'camps', href: '/camps' },
-      { label: 'Заходи', key: 'events', href: '/events' },
-      { label: 'FAQ', key: 'faq', href: '/faq' },
+//    { label: 'Кемпи', key: 'camps', href: '/camps' },
+      { label: 'Події', key: 'events', href: '/events' },
+      { label: 'Оренда', key: 'renting', href: '/renting' },
     ]},
     { label: 'Контакти', key: 'contacts', href: ''},
   ]

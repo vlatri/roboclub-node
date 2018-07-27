@@ -40,7 +40,7 @@ $(function() {
       const age = parseFloat(ageVal)
       const cat = $(el).data('cat')
 
-      if(ageVal === 'all' || (age >= minAge && age <= maxAge))
+      if(ageVal === 'all' || (age >= minAge && age <= maxAge) || minAge === 0)
         if(catVal === 'all' || catVal === cat) return true
       return false
     }

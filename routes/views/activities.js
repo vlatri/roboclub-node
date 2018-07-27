@@ -9,8 +9,9 @@ const carriedFactory = (title, listName, path, section) =>
 
 exports = module.exports = {
   courses: carriedFactory('Курси', 'Course', 'course', 'studying'),
-  camps: carriedFactory('Кемпи', 'Camp', 'camp', 'studying'),
-  events: carriedFactory('Заходи', 'Event', 'event', 'studying'),
-//  projects: carriedFactory('Проекти', 'Project', 'project', 'about'),
-//  products: carriedFactory('Продукти', 'Product', 'product', 'about'),
+  events: carriedFactory('Події', 'Event', 'event', 'studying'),
+  renting: carriedFactory('Оренда', 'Renting', 'renting', 'studying'),
+//   camps: carriedFactory('Кемпи', 'Camp', 'camp', 'studying'),
+//   projects: carriedFactory('Проекти', 'Project', 'project', 'about'),
+//   products: carriedFactory('Продукти', 'Product', 'product', 'about'),
 }
