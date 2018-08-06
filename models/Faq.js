@@ -1,8 +1,5 @@
 import keystone from 'keystone'
 
-import {
-  updateChildrenWithRelatedParent
-} from '../utils/'
 
 const { Types } = keystone.Field
 
@@ -16,10 +13,6 @@ Faq.add({
   title: {type: String, required: true},
   sequenceNumber: {type: Types.Number, default: 0 },
   sections: { type: Types.Relationship, ref: 'Faqsection', many: true },
-})
-
-Faq.schema.pre('save', function(next) {
-  updateChildrenWithRelatedParent(Faq.model, keystone.list('Faqsection').model, this).then(next).catch(next)
 })
 
 
