@@ -125,3 +125,9 @@
     left: 50%;
   }
 }
+
+@media (hover: none) { // Touchscreen devices
+  .preview .button-wrapper {
+    opacity: 1 !important; // Needs to default to 0 above and be overriden by !important, as long as some browsers don't support hover queries
+  }
+}
