@@ -7,7 +7,7 @@ $(document).ready(function() {
       $loader[0].style.opacity = 0
       $loader[0].style.visibility = 'hidden'
       $body.style.overflow = 'visible'
-    }, 1000)
+    }, 1500)
   }
 })
 
