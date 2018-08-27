@@ -88,5 +88,7 @@ keystone.set('nav', {
   users: 'users',
 })
 
+keystone.set('cors allow origin', true)
 
 keystone.start()
+

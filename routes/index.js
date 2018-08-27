@@ -39,6 +39,7 @@ const { activities } = routes.views
 
 // Setup Route Bindings
 exports = module.exports = app => {
+  app.all('/*', keystone.middleware.cors)
   // Views
   app.get('/',              routes.views.home)
 
