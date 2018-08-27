@@ -1,4 +1,17 @@
-window.onload = function () {
+
+//   var $body = $('body')[0]
+//   var $loader = $('.preloader')
+
+//   if ($loader.size() > 0) {
+//     setTimeout(function() {
+//       $loader[0].style.opacity = 0
+//       $loader[0].style.visibility = 'hidden'
+//       $body.style.overflow = 'visible'
+//     }, 1000)
+//   }
+// }
+
+$(document).ready(function() {
   var $body = $('body')[0]
   var $loader = $('.preloader')
 
@@ -9,7 +22,7 @@ window.onload = function () {
       $body.style.overflow = 'visible'
     }, 1000)
   }
-}
+})
 
 $(function() {
   $('.quotes-slider__photo').hide()
