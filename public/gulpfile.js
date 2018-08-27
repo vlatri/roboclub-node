@@ -25,7 +25,7 @@ gulp.task('default', function() {
     .pipe(concat('build.js'))
     .pipe(gulp.dest('./js'))
     .pipe(rename('build.min.js'))
-    .pipe(babel({presets: ['minify']}))
+    .pipe(babel({presets: ['minify', 'env']}))
     .on('error', onError)
     .pipe(gulp.dest('./js'))
 });
