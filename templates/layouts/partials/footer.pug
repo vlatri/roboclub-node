@@ -41,23 +41,23 @@ section.section.contacts-section.dark.row
     #map
     script.
       var footerConfig = !{commonLayout.footer}
-    script.
-      function initMap() {
-        var mapDiv = document.getElementById('map');
-        var map = new google.maps.Map(mapDiv, {
-          center: {lat: +footerConfig.geoLat, lng: +footerConfig.geoLng},
-          zoom: 17,
-          disableDefaultUI: true,
-          draggable: true
-        })
-        var marker = new google.maps.Marker({
-          position: new google.maps.LatLng(+footerConfig.geoLat, +footerConfig.geoLng),
-          map: map,
-          title: 'Робоклуб',
-          icon: '/images/icons/marker.svg'
-        })
-      }
-    script(async, defer, src='https://maps.googleapis.com/maps/api/js?key=AIzaSyA-ZEocFpuybFyJZg92LhWsvIJdo56S34s&callback=initMap&language=uk&region=UA"')
+    // script.
+    //   function initMap() {
+    //     var mapDiv = document.getElementById('map');
+    //     var map = new google.maps.Map(mapDiv, {
+    //       center: {lat: +footerConfig.geoLat, lng: +footerConfig.geoLng},
+    //       zoom: 17,
+    //       disableDefaultUI: true,
+    //       draggable: true
+    //     })
+    //     var marker = new google.maps.Marker({
+    //       position: new google.maps.LatLng(+footerConfig.geoLat, +footerConfig.geoLng),
+    //       map: map,
+    //       title: 'Робоклуб',
+    //       icon: '/images/icons/marker.svg'
+    //     })
+    //   }
+    // script(async, defer, src='https://maps.googleapis.com/maps/api/js?key=AIzaSyA-ZEocFpuybFyJZg92LhWsvIJdo56S34s&callback=initMap&language=uk&region=UA"')
 footer.footer
   p.f-copy Made with passion by #[a(href='https://www.linkedin.com/in/v-trishch/', target='_blank') Vlad Trishch]
     | @
