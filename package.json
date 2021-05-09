@@ -11,7 +11,7 @@
     "imagemin-jpegtran": "^5.0.2",
     "imagemin-pngquant": "^5.1.0",
     "keystone": "git+https://github.com/keystonejs/keystone",
-    "lodash": "^4.13.1",
+    "lodash": "^4.17.21",
     "node-sass": "^4.9.2",
     "node-sass-middleware": "0.11.0",
     "pug": "2.0.0-beta11",
